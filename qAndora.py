@@ -13,7 +13,7 @@ class MainWindow(QMainWindow, Ui_qAndora):
         self.assignButtons()
         
         self.radioPlayer = playerVLC.volcanoPlayer()
-        self.radioPlayer.auth( "jeffhoogland@linux.com", "turtlethesquirrel")
+        self.radioPlayer.auth( "jeffhoogland@linux.com", "")
         self.radioPlayer.setStation(self.radioPlayer.getStations()[0])
         self.radioPlayer.setChangeCallBack( self.songChange )
         self.radioPlayer.addSongs()
