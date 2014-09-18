@@ -16,8 +16,8 @@
   <widget class="QToolButton" name="playPauseButton">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>220</y>
+     <x>10</x>
+     <y>20</y>
      <width>71</width>
      <height>61</height>
     </rect>
@@ -29,8 +29,8 @@
   <widget class="QToolButton" name="skipButton">
    <property name="geometry">
     <rect>
-     <x>110</x>
-     <y>220</y>
+     <x>10</x>
+     <y>90</y>
      <width>71</width>
      <height>61</height>
     </rect>
@@ -42,8 +42,8 @@
   <widget class="QToolButton" name="loveButton">
    <property name="geometry">
     <rect>
-     <x>200</x>
-     <y>220</y>
+     <x>10</x>
+     <y>160</y>
      <width>71</width>
      <height>61</height>
     </rect>
@@ -55,8 +55,8 @@
   <widget class="QToolButton" name="banButton">
    <property name="geometry">
     <rect>
-     <x>290</x>
-     <y>220</y>
+     <x>10</x>
+     <y>230</y>
      <width>71</width>
      <height>61</height>
     </rect>
@@ -68,9 +68,9 @@
   <widget class="QLabel" name="titleLabel">
    <property name="geometry">
     <rect>
-     <x>30</x>
+     <x>100</x>
      <y>20</y>
-     <width>321</width>
+     <width>201</width>
      <height>21</height>
     </rect>
    </property>
@@ -81,7 +81,7 @@
   <widget class="QLabel" name="albumLabel">
    <property name="geometry">
     <rect>
-     <x>30</x>
+     <x>100</x>
      <y>50</y>
      <width>201</width>
      <height>21</height>
@@ -91,14 +91,23 @@
     <string>Album Name Goes Here</string>
    </property>
   </widget>
-  <widget class="QGraphicsView" name="albumArtView">
+  <widget class="QLabel" name="albumImage">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>90</y>
-     <width>201</width>
-     <height>111</height>
+     <x>100</x>
+     <y>80</y>
+     <width>241</width>
+     <height>191</height>
     </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>241</width>
+     <height>191</height>
+    </size>
+   </property>
+   <property name="text">
+    <string>TextLabel</string>
    </property>
   </widget>
  </widget>

@@ -1,10 +1,17 @@
 import sys
+import os
 
 from PySide.QtGui import *
 
 from ui_qAndora import Ui_qAndora
 
 import playerVLC
+import tempfile
+import urllib
+
+tempdir = tempfile.gettempdir()
+
+print "Current tmp directory is %s"%tempdir
 
 class MainWindow(QMainWindow, Ui_qAndora):
     def __init__(self, parent=None):
@@ -13,7 +20,7 @@ class MainWindow(QMainWindow, Ui_qAndora):
         self.assignButtons()
         
         self.radioPlayer = playerVLC.volcanoPlayer()
-        self.radioPlayer.auth( "jeffhoogland@linux.com", "")
+        self.radioPlayer.auth( "jeffhoogland@linux.com", "turtlethesquirrel")
         self.radioPlayer.setStation(self.radioPlayer.getStations()[0])
         self.radioPlayer.setChangeCallBack( self.songChange )
         self.radioPlayer.addSongs()
@@ -37,6 +44,17 @@ class MainWindow(QMainWindow, Ui_qAndora):
             self.loveButton.setIcon(QIcon("images/love.png"))
         else:
             self.loveButton.setIcon(QIcon("images/favorite.png"))
+            
+        try:
+            os.remove(os.path.join(tempdir, 'albumart.png'))
+        except:
+            pass
+        urllib.urlretrieve(str(info['thumbnail']), os.path.join(tempdir, 'albumart.png'))
+        
+        albumart = QPixmap(os.path.join(tempdir, 'albumart.png'))
+        print albumart
+        
+        self.albumImage.setPixmap(albumart)
         
     def playPausePressed( self ):
         if self.radioPlayer.playing:
