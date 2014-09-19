@@ -18,7 +18,8 @@ Usage:
   - Install GIT (On Ubuntu/Debian sudo apt-get install git)
   - Clone sources: git clone https://github.com/JeffHoogland/qAndora.git
   - Run qAndora.py: python qAndora.py
-  
+
+
  Windows
   - Download zip file -> https://github.com/JeffHoogland/qAndora/blob/master/windows-build.zip?raw=true
   - Extract the contents
