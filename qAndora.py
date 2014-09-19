@@ -5,6 +5,7 @@ from PySide.QtGui import *
 from PySide import QtCore
 
 from ui_qAndora import Ui_qAndora
+from ui_qLogin import Ui_qLogin
 
 import playerVLC
 import tempfile
@@ -30,7 +31,8 @@ class MainWindow(QMainWindow, Ui_qAndora):
             self.radioPlayer.auth(lines[0].rstrip("\n"), lines[1].rstrip("\n"))
         else:
             #TODO: write login screen
-            pass
+            loginWin = LoginWindow()
+            loginWin.show()
             
         #Set default station
         home = os.path.expanduser("~")
@@ -88,10 +90,10 @@ class MainWindow(QMainWindow, Ui_qAndora):
         self.albumLabel.setText(info['album'])
         if info['rating'] == "love":
             self.loveButton.setIcon(QIcon("images/love.png"))
-            self.loveButton.setToolTip(QtGui.QApplication.translate("qAndora", "Favorited", None, QtGui.QApplication.UnicodeUTF8))
+            self.loveButton.setToolTip(QApplication.translate("qAndora", "Favorited", None, QApplication.UnicodeUTF8))
         else:
             self.loveButton.setIcon(QIcon("images/favorite.png"))
-            self.loveButton.setToolTip(QtGui.QApplication.translate("qAndora", "Mark Favorite", None, QtGui.QApplication.UnicodeUTF8))
+            self.loveButton.setToolTip(QApplication.translate("qAndora", "Mark Favorite", None, QApplication.UnicodeUTF8))
             
         '''try:
             os.remove(os.path.join(tempdir, 'albumart.png'))
@@ -109,11 +111,11 @@ class MainWindow(QMainWindow, Ui_qAndora):
         if self.radioPlayer.playing:
             self.radioPlayer.pauseSong()
             self.playPauseButton.setIcon(QIcon("images/play.png"))
-            self.playPauseButton.setToolTip(QtGui.QApplication.translate("qAndora", "Play", None, QtGui.QApplication.UnicodeUTF8))
+            self.playPauseButton.setToolTip(QApplication.translate("qAndora", "Play", None, QApplication.UnicodeUTF8))
         else:
             self.radioPlayer.playSong()
             self.playPauseButton.setIcon(QIcon("images/pause.png"))
-            self.playPauseButton.setToolTip(QtGui.QApplication.translate("qAndora", "Pause", None, QtGui.QApplication.UnicodeUTF8))
+            self.playPauseButton.setToolTip(QApplication.translate("qAndora", "Pause", None, QApplication.UnicodeUTF8))
     
     def skipPressed( self ):
         self.radioPlayer.skipSong()
@@ -121,10 +123,15 @@ class MainWindow(QMainWindow, Ui_qAndora):
     def lovePressed( self ):
         self.radioPlayer.loveSong()
         self.loveButton.setIcon(QIcon("images/love.png"))
-        self.loveButton.setToolTip(QtGui.QApplication.translate("qAndora", "Mark Favorite", None, QtGui.QApplication.UnicodeUTF8))
+        self.loveButton.setToolTip(QApplication.translate("qAndora", "Favorited", None, QApplication.UnicodeUTF8))
         
     def banPressed( self ):
         self.radioPlayer.banSong()
+        
+class LoginWindow(QDialog, Ui_qLogin):
+    def __init__(self, parent=None):
+        super(LoginWindow, self).__init__(parent)
+        self.setupUi(self)
         
 """Code from stack overflow to add events to the GUI thread from VLC backend
 
@@ -154,6 +161,6 @@ def invoke_in_main_thread(fn, *args, **kwargs):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    frame = MainWindow()
-    frame.show()
+    mainWin = MainWindow()
+    mainWin.show()
     sys.exit( app.exec_() )
