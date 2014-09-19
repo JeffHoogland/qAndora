@@ -31,8 +31,41 @@ class MainWindow(QMainWindow, Ui_qAndora):
         else:
             #TODO: write login screen
             pass
-        self.radioPlayer.setStation(self.radioPlayer.getStations()[0])
+            
+        #Set default station
+        home = os.path.expanduser("~")
+        if os.path.exists("%s/.config/qAndora/stationinfo"%home):
+            f = open('%s/.config/qAndora/stationinfo'%home, 'r')
+            lines = f.readlines()
+            self.radioPlayer.setStation(self.radioPlayer.getStationFromName(lines[0].rstrip("\n")))
+        else:
+            self.radioPlayer.setStation(self.radioPlayer.getStations()[0])
+        
         self.radioPlayer.setChangeCallBack( self.songChangeQ )
+        self.radioPlayer.addSongs()
+        
+        stations = self.radioPlayer.getStations()
+        
+        for station in stations:
+            self.stationBox.addItem(station['stationName'])
+            #print station['stationName']
+            
+        #Hook to read when the box changes
+        self.stationBox.activated[str].connect(self.stationChange)
+        
+    def stationChange( self, newStation ):
+        self.radioPlayer.setStation(self.radioPlayer.getStationFromName(newStation))
+        
+        home = os.path.expanduser("~")
+        if not os.path.exists("%s/.config/qAndora"%home):
+            os.makedirs("%s/.config/qAndora"%home)
+        if os.path.exists("%s/.config/qAndora/stationinfo"%home):
+            os.remove('%s/.config/qAndora/stationinfo'%home)
+        f = open('%s/.config/qAndora/stationinfo'%home, 'w')
+        f.write('%s\n'%newStation)
+        f.close()
+        self.radioPlayer.pauseSong()
+        self.radioPlayer.clearSongs()
         self.radioPlayer.addSongs()
         
     def assignButtons( self ):

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'qAndora.ui'
 #
-# Created: Thu Sep 18 19:44:06 2014
+# Created: Thu Sep 18 21:39:32 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -38,9 +38,9 @@ class Ui_qAndora(object):
         self.albumImage.setMinimumSize(QtCore.QSize(241, 191))
         self.albumImage.setScaledContents(True)
         self.albumImage.setObjectName("albumImage")
-        self.comboBox = QtGui.QComboBox(qAndora)
-        self.comboBox.setGeometry(QtCore.QRect(10, 310, 361, 31))
-        self.comboBox.setObjectName("comboBox")
+        self.stationBox = QtGui.QComboBox(qAndora)
+        self.stationBox.setGeometry(QtCore.QRect(10, 310, 361, 31))
+        self.stationBox.setObjectName("stationBox")
 
         self.retranslateUi(qAndora)
         QtCore.QMetaObject.connectSlotsByName(qAndora)

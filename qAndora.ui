@@ -119,7 +119,7 @@
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QComboBox" name="comboBox">
+  <widget class="QComboBox" name="stationBox">
    <property name="geometry">
     <rect>
      <x>10</x>
