@@ -35,7 +35,6 @@ class volcanoPlayer(object):
         self.songChangeCallBack = callback
     
     def auth( self, user, passwd):
-        print "User %s - Password %s"%(user, passwd)
         self.settings['username'] = user
         self.settings['password'] = passwd
         try:
@@ -153,13 +152,13 @@ class volcanoPlayer(object):
         info = self.songinfo[self.curSong]
         self.displaysongs.append(info)
         self.song = info['title']
-        print(info['url'])
+        #print(info['url'])
         self.player.set_media(vlc.Media(info['url']))
         self.playing = True
         self.player.play()
         self.songChangeCallBack()
-        print("Playing: %s"%info['title'])
-        print(self.player.is_playing())
+        #print("Playing: %s"%info['title'])
+        #print(self.player.is_playing())
         #self.curSong += 1
         if self.curSong >= len(self.songinfo)-1:
             self.addSongs()

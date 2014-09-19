@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'qAndora.ui'
 #
-# Created: Thu Sep 18 14:14:31 2014
+# Created: Thu Sep 18 19:44:06 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,7 +12,7 @@ from PySide import QtCore, QtGui
 class Ui_qAndora(object):
     def setupUi(self, qAndora):
         qAndora.setObjectName("qAndora")
-        qAndora.resize(400, 300)
+        qAndora.resize(381, 361)
         self.playPauseButton = QtGui.QToolButton(qAndora)
         self.playPauseButton.setGeometry(QtCore.QRect(10, 20, 71, 61))
         self.playPauseButton.setObjectName("playPauseButton")
@@ -26,15 +26,21 @@ class Ui_qAndora(object):
         self.banButton.setGeometry(QtCore.QRect(10, 230, 71, 61))
         self.banButton.setObjectName("banButton")
         self.titleLabel = QtGui.QLabel(qAndora)
-        self.titleLabel.setGeometry(QtCore.QRect(100, 20, 201, 21))
+        self.titleLabel.setGeometry(QtCore.QRect(100, 20, 261, 21))
+        self.titleLabel.setWordWrap(True)
         self.titleLabel.setObjectName("titleLabel")
         self.albumLabel = QtGui.QLabel(qAndora)
-        self.albumLabel.setGeometry(QtCore.QRect(100, 50, 201, 21))
+        self.albumLabel.setGeometry(QtCore.QRect(100, 50, 261, 21))
+        self.albumLabel.setWordWrap(True)
         self.albumLabel.setObjectName("albumLabel")
         self.albumImage = QtGui.QLabel(qAndora)
         self.albumImage.setGeometry(QtCore.QRect(100, 80, 241, 191))
         self.albumImage.setMinimumSize(QtCore.QSize(241, 191))
+        self.albumImage.setScaledContents(True)
         self.albumImage.setObjectName("albumImage")
+        self.comboBox = QtGui.QComboBox(qAndora)
+        self.comboBox.setGeometry(QtCore.QRect(10, 310, 361, 31))
+        self.comboBox.setObjectName("comboBox")
 
         self.retranslateUi(qAndora)
         QtCore.QMetaObject.connectSlotsByName(qAndora)

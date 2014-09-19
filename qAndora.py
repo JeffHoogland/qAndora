@@ -2,6 +2,7 @@ import sys
 import os
 
 from PySide.QtGui import *
+from PySide import QtCore
 
 from ui_qAndora import Ui_qAndora
 
@@ -20,9 +21,18 @@ class MainWindow(QMainWindow, Ui_qAndora):
         self.assignButtons()
         
         self.radioPlayer = playerVLC.volcanoPlayer()
-        self.radioPlayer.auth( "jeffhoogland@linux.com", "")
+        
+        #Read login information
+        home = os.path.expanduser("~")
+        if os.path.exists("%s/.config/qAndora/userinfo"%home):
+            f = open('%s/.config/qAndora/userinfo'%home, 'r')
+            lines = f.readlines()
+            self.radioPlayer.auth(lines[0].rstrip("\n"), lines[1].rstrip("\n"))
+        else:
+            #TODO: write login screen
+            pass
         self.radioPlayer.setStation(self.radioPlayer.getStations()[0])
-        self.radioPlayer.setChangeCallBack( self.songChange )
+        self.radioPlayer.setChangeCallBack( self.songChangeQ )
         self.radioPlayer.addSongs()
         
     def assignButtons( self ):
@@ -34,6 +44,9 @@ class MainWindow(QMainWindow, Ui_qAndora):
         self.loveButton.clicked.connect(self.lovePressed)
         self.banButton.setIcon(QIcon("images/ban.png"))
         self.banButton.clicked.connect(self.banPressed)
+        
+    def songChangeQ( self ):
+        invoke_in_main_thread(self.songChange())
     
     def songChange( self ):
         print "Song changed"
@@ -45,16 +58,17 @@ class MainWindow(QMainWindow, Ui_qAndora):
         else:
             self.loveButton.setIcon(QIcon("images/favorite.png"))
             
-        try:
+        '''try:
             os.remove(os.path.join(tempdir, 'albumart.png'))
         except:
-            pass
-        urllib.urlretrieve(str(info['thumbnail']), os.path.join(tempdir, 'albumart.png'))
+            pass'''
+        urllib.urlretrieve(str(info['thumbnail']), os.path.join(tempdir, 'albumart.jpg'))
         
-        albumart = QPixmap(os.path.join(tempdir, 'albumart.png'))
-        print albumart
-        
+        albumart = QPixmap(os.path.join(tempdir, 'albumart.jpg'))
+        print os.path.join(tempdir, 'albumart.jpg')
+        print albumart.isNull()
         self.albumImage.setPixmap(albumart)
+        print self.albumImage.pixmap()
         
     def playPausePressed( self ):
         if self.radioPlayer.playing:
@@ -73,6 +87,32 @@ class MainWindow(QMainWindow, Ui_qAndora):
         
     def banPressed( self ):
         self.radioPlayer.banSong()
+        
+"""Code from stack overflow to add events to the GUI thread from VLC backend
+
+http://stackoverflow.com/questions/10991991/pyside-easier-way-of-updating-gui-from-another-thread"""
+class InvokeEvent(QtCore.QEvent):
+    EVENT_TYPE = QtCore.QEvent.Type(QtCore.QEvent.registerEventType())
+
+    def __init__(self, fn, *args, **kwargs):
+        QtCore.QEvent.__init__(self, InvokeEvent.EVENT_TYPE)
+        self.fn = fn
+        self.args = args
+        self.kwargs = kwargs
+
+
+class Invoker(QtCore.QObject):
+    def event(self, event):
+        #event.fn(*event.args, **event.kwargs)
+
+        return True
+
+_invoker = Invoker()
+
+
+def invoke_in_main_thread(fn, *args, **kwargs):
+    QtCore.QCoreApplication.postEvent(_invoker,
+        InvokeEvent(fn, *args, **kwargs))
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
