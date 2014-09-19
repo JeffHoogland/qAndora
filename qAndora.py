@@ -88,8 +88,10 @@ class MainWindow(QMainWindow, Ui_qAndora):
         self.albumLabel.setText(info['album'])
         if info['rating'] == "love":
             self.loveButton.setIcon(QIcon("images/love.png"))
+            self.loveButton.setToolTip(QtGui.QApplication.translate("qAndora", "Favorited", None, QtGui.QApplication.UnicodeUTF8))
         else:
             self.loveButton.setIcon(QIcon("images/favorite.png"))
+            self.loveButton.setToolTip(QtGui.QApplication.translate("qAndora", "Mark Favorite", None, QtGui.QApplication.UnicodeUTF8))
             
         '''try:
             os.remove(os.path.join(tempdir, 'albumart.png'))
@@ -107,9 +109,11 @@ class MainWindow(QMainWindow, Ui_qAndora):
         if self.radioPlayer.playing:
             self.radioPlayer.pauseSong()
             self.playPauseButton.setIcon(QIcon("images/play.png"))
+            self.playPauseButton.setToolTip(QtGui.QApplication.translate("qAndora", "Play", None, QtGui.QApplication.UnicodeUTF8))
         else:
             self.radioPlayer.playSong()
             self.playPauseButton.setIcon(QIcon("images/pause.png"))
+            self.playPauseButton.setToolTip(QtGui.QApplication.translate("qAndora", "Pause", None, QtGui.QApplication.UnicodeUTF8))
     
     def skipPressed( self ):
         self.radioPlayer.skipSong()
@@ -117,6 +121,7 @@ class MainWindow(QMainWindow, Ui_qAndora):
     def lovePressed( self ):
         self.radioPlayer.loveSong()
         self.loveButton.setIcon(QIcon("images/love.png"))
+        self.loveButton.setToolTip(QtGui.QApplication.translate("qAndora", "Mark Favorite", None, QtGui.QApplication.UnicodeUTF8))
         
     def banPressed( self ):
         self.radioPlayer.banSong()

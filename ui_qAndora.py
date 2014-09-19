@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'qAndora.ui'
 #
-# Created: Thu Sep 18 21:39:32 2014
+# Created: Thu Sep 18 22:35:18 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -47,9 +47,13 @@ class Ui_qAndora(object):
 
     def retranslateUi(self, qAndora):
         qAndora.setWindowTitle(QtGui.QApplication.translate("qAndora", " qAndora", None, QtGui.QApplication.UnicodeUTF8))
+        self.playPauseButton.setToolTip(QtGui.QApplication.translate("qAndora", "Pause", None, QtGui.QApplication.UnicodeUTF8))
         self.playPauseButton.setText(QtGui.QApplication.translate("qAndora", "Pause", None, QtGui.QApplication.UnicodeUTF8))
+        self.skipButton.setToolTip(QtGui.QApplication.translate("qAndora", "Skip Song", None, QtGui.QApplication.UnicodeUTF8))
         self.skipButton.setText(QtGui.QApplication.translate("qAndora", "Skip", None, QtGui.QApplication.UnicodeUTF8))
+        self.loveButton.setToolTip(QtGui.QApplication.translate("qAndora", "Mark Favorite", None, QtGui.QApplication.UnicodeUTF8))
         self.loveButton.setText(QtGui.QApplication.translate("qAndora", "Love", None, QtGui.QApplication.UnicodeUTF8))
+        self.banButton.setToolTip(QtGui.QApplication.translate("qAndora", "Ban Song", None, QtGui.QApplication.UnicodeUTF8))
         self.banButton.setText(QtGui.QApplication.translate("qAndora", "Ban", None, QtGui.QApplication.UnicodeUTF8))
         self.titleLabel.setText(QtGui.QApplication.translate("qAndora", "Song Title Goes Here", None, QtGui.QApplication.UnicodeUTF8))
         self.albumLabel.setText(QtGui.QApplication.translate("qAndora", "Album Name Goes Here", None, QtGui.QApplication.UnicodeUTF8))
