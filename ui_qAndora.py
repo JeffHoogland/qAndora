@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'qAndora.ui'
 #
-# Created: Thu Sep 18 23:00:00 2014
+# Created: Thu Sep 18 23:30:41 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -34,7 +34,7 @@ class Ui_qAndora(object):
         self.albumLabel.setWordWrap(True)
         self.albumLabel.setObjectName("albumLabel")
         self.albumImage = QtGui.QLabel(qAndora)
-        self.albumImage.setGeometry(QtCore.QRect(100, 80, 241, 191))
+        self.albumImage.setGeometry(QtCore.QRect(100, 80, 261, 211))
         self.albumImage.setMinimumSize(QtCore.QSize(241, 191))
         self.albumImage.setScaledContents(True)
         self.albumImage.setObjectName("albumImage")

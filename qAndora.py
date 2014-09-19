@@ -13,7 +13,7 @@ import urllib
 
 tempdir = tempfile.gettempdir()
 
-print "Current tmp directory is %s"%tempdir
+#print "Current tmp directory is %s"%tempdir
 
 class MainWindow(QMainWindow, Ui_qAndora):
     def __init__(self, parent=None):
@@ -23,22 +23,28 @@ class MainWindow(QMainWindow, Ui_qAndora):
         
         self.radioPlayer = playerVLC.volcanoPlayer()
         
+        self.loginWin = LoginWindow( self )
+        
         #Read login information
         home = os.path.expanduser("~")
         if os.path.exists("%s/.config/qAndora/userinfo"%home):
             f = open('%s/.config/qAndora/userinfo'%home, 'r')
             lines = f.readlines()
-            self.radioPlayer.auth(lines[0].rstrip("\n"), lines[1].rstrip("\n"))
+            self.loginUser(lines[0].rstrip("\n"), lines[1].rstrip("\n"))
         else:
-            #TODO: write login screen
-            loginWin = LoginWindow()
-            loginWin.show()
-            
-        #Set default station
+            self.loginWin.show()
+    
+    def loginUser( self, userName, userPassword ):
+        self.radioPlayer.auth( userName, userPassword )
+        
+        lines = []
+        
+        #Get last used station
         home = os.path.expanduser("~")
         if os.path.exists("%s/.config/qAndora/stationinfo"%home):
             f = open('%s/.config/qAndora/stationinfo'%home, 'r')
             lines = f.readlines()
+            #print "Last station: %s"%lines[0]
             self.radioPlayer.setStation(self.radioPlayer.getStationFromName(lines[0].rstrip("\n")))
         else:
             self.radioPlayer.setStation(self.radioPlayer.getStations()[0])
@@ -47,13 +53,18 @@ class MainWindow(QMainWindow, Ui_qAndora):
         self.radioPlayer.addSongs()
         
         stations = self.radioPlayer.getStations()
-        
+        stationlist = []
         for station in stations:
             self.stationBox.addItem(station['stationName'])
-            #print station['stationName']
-            
+            stationlist.append(station['stationName'])
+        
+        if len(lines):
+            self.stationBox.setCurrentIndex(stationlist.index(lines[0].rstrip("\n")))
+        
         #Hook to read when the box changes
         self.stationBox.activated[str].connect(self.stationChange)
+        
+        self.show()
         
     def stationChange( self, newStation ):
         self.radioPlayer.setStation(self.radioPlayer.getStationFromName(newStation))
@@ -84,7 +95,7 @@ class MainWindow(QMainWindow, Ui_qAndora):
         invoke_in_main_thread(self.songChange())
     
     def songChange( self ):
-        print "Song changed"
+        #print "Song changed"
         info = self.radioPlayer.songinfo[self.radioPlayer.curSong]
         self.titleLabel.setText(info['title'])
         self.albumLabel.setText(info['album'])
@@ -102,10 +113,10 @@ class MainWindow(QMainWindow, Ui_qAndora):
         urllib.urlretrieve(str(info['thumbnail']), os.path.join(tempdir, 'albumart.jpg'))
         
         albumart = QPixmap(os.path.join(tempdir, 'albumart.jpg'))
-        print os.path.join(tempdir, 'albumart.jpg')
-        print albumart.isNull()
+        #print os.path.join(tempdir, 'albumart.jpg')
+        #print albumart.isNull()
         self.albumImage.setPixmap(albumart)
-        print self.albumImage.pixmap()
+        #print self.albumImage.pixmap()
         
     def playPausePressed( self ):
         if self.radioPlayer.playing:
@@ -132,6 +143,23 @@ class LoginWindow(QDialog, Ui_qLogin):
     def __init__(self, parent=None):
         super(LoginWindow, self).__init__(parent)
         self.setupUi(self)
+        self.assignButtons()
+        
+        self.rent = parent
+        
+    def assignButtons( self ):
+        self.loginButton.clicked.connect(self.loginPressed)
+        
+    def loginPressed( self ):
+        home = os.path.expanduser("~")
+        if not os.path.exists("%s/.config/qAndora"%home):
+            os.makedirs("%s/.config/qAndora"%home)
+        f = open('%s/.config/qAndora/userinfo'%home, 'w')
+        f.write('%s\n'%self.nameEdit.text())
+        f.write('%s\n'%self.passwordEdit.text())
+        f.close()
+        self.hide()
+        self.rent.loginUser( self.nameEdit.text(), self.passwordEdit.text() )
         
 """Code from stack overflow to add events to the GUI thread from VLC backend
 
@@ -162,5 +190,5 @@ def invoke_in_main_thread(fn, *args, **kwargs):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     mainWin = MainWindow()
-    mainWin.show()
+    #mainWin.show()
     sys.exit( app.exec_() )
