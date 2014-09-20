@@ -20,6 +20,6 @@ Linux
   - Run qAndora.py: python qAndora.py
 
 Windows
-  - Download zip file -> https://github.com/JeffHoogland/qAndora/blob/master/windows-build.zip?raw=true
+  - Download zip file -> https://github.com/JeffHoogland/qAndora/blob/master/windows_9-14-2014.zip?raw=true
   - Extract the contents
   - Run qAndora.exe
