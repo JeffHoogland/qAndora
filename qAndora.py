@@ -2,7 +2,7 @@ import sys
 import os
 
 from PySide.QtGui import *
-from PySide import QtCore
+from PySide.QtCore import *
 
 from ui_qAndora import Ui_qAndora
 from ui_qLogin import Ui_qLogin
@@ -92,13 +92,14 @@ class MainWindow(QMainWindow, Ui_qAndora):
         self.banButton.clicked.connect(self.banPressed)
         
     def songChangeQ( self ):
-        invoke_in_main_thread(self.songChange())
+        invoke_in_main_thread(self.songChange)
     
     def songChange( self ):
         #print "Song changed"
         info = self.radioPlayer.songinfo[self.radioPlayer.curSong]
-        self.titleLabel.setText(info['title'])
-        self.albumLabel.setText(info['album'])
+        self.titleLabel.setText('<b>Song:</b> <a href="%s">%s</a>'%(info['object'].songDetailURL, info['title']))
+        self.albumLabel.setText('<b>Album:</b> <a href="%s">%s</a>'%(info['object'].albumDetailURL, info['album']))
+        self.artistLabel.setText("<b>Artist:</b> %s"%info['artist'])
         if info['rating'] == "love":
             self.loveButton.setIcon(QIcon("images/love.png"))
             self.loveButton.setToolTip(QApplication.translate("qAndora", "Favorited", None, QApplication.UnicodeUTF8))
@@ -164,28 +165,26 @@ class LoginWindow(QDialog, Ui_qLogin):
 """Code from stack overflow to add events to the GUI thread from VLC backend
 
 http://stackoverflow.com/questions/10991991/pyside-easier-way-of-updating-gui-from-another-thread"""
-class InvokeEvent(QtCore.QEvent):
-    EVENT_TYPE = QtCore.QEvent.Type(QtCore.QEvent.registerEventType())
+from Queue import Queue
 
-    def __init__(self, fn, *args, **kwargs):
-        QtCore.QEvent.__init__(self, InvokeEvent.EVENT_TYPE)
-        self.fn = fn
-        self.args = args
-        self.kwargs = kwargs
+class Invoker(QObject):
+    def __init__(self):
+        super(Invoker, self).__init__()
+        self.queue = Queue()
 
+    def invoke(self, func, *args):
+        f = lambda: func(*args)
+        self.queue.put(f)
+        QMetaObject.invokeMethod(self, "handler", Qt.QueuedConnection)
 
-class Invoker(QtCore.QObject):
-    def event(self, event):
-        #event.fn(*event.args, **event.kwargs)
+    @Slot()
+    def handler(self):
+        f = self.queue.get()
+        f()
+invoker = Invoker()
 
-        return True
-
-_invoker = Invoker()
-
-
-def invoke_in_main_thread(fn, *args, **kwargs):
-    QtCore.QCoreApplication.postEvent(_invoker,
-        InvokeEvent(fn, *args, **kwargs))
+def invoke_in_main_thread(func, *args):
+    invoker.invoke(func,*args)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
