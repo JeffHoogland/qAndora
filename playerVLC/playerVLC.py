@@ -117,6 +117,7 @@ class volcanoPlayer(object):
     def clearSongs( self ):
         self.song = None
         self.songCount = 0
+        self.curSong = -1
         self.songinfo = []
         self.displaysongs = []
 
