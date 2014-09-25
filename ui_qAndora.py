@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'qAndora.ui'
 #
-# Created: Wed Sep 24 22:49:10 2014
+# Created: Wed Sep 24 23:46:29 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
