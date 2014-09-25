@@ -7,9 +7,10 @@ from PySide.QtCore import *
 from ui_qAndora import Ui_qAndora
 from ui_qLogin import Ui_qLogin
 
-import playerVLC
+from playerVLC import volcanoPlayer
 import tempfile
 import urllib
+import webbrowser
 
 tempdir = tempfile.gettempdir()
 
@@ -21,7 +22,7 @@ class MainWindow(QMainWindow, Ui_qAndora):
         self.setupUi(self)
         self.assignButtons()
         
-        self.radioPlayer = playerVLC.volcanoPlayer()
+        self.radioPlayer = volcanoPlayer()
         
         self.loginWin = LoginWindow( self )
         
@@ -82,13 +83,9 @@ class MainWindow(QMainWindow, Ui_qAndora):
         self.radioPlayer.addSongs()
         
     def assignButtons( self ):
-        self.playPauseButton.setIcon(QIcon("images/pause.png"))
         self.playPauseButton.clicked.connect(self.playPausePressed)
-        self.skipButton.setIcon(QIcon("images/skip.png"))
         self.skipButton.clicked.connect(self.skipPressed)
-        self.loveButton.setIcon(QIcon("images/favorite.png"))
         self.loveButton.clicked.connect(self.lovePressed)
-        self.banButton.setIcon(QIcon("images/ban.png"))
         self.banButton.clicked.connect(self.banPressed)
         
     def songChangeQ( self ):
@@ -150,6 +147,7 @@ class LoginWindow(QDialog, Ui_qLogin):
         
     def assignButtons( self ):
         self.loginButton.clicked.connect(self.loginPressed)
+        self.accountButton.clicked.connect(self.accountPressed)
         
     def loginPressed( self ):
         home = os.path.expanduser("~")
@@ -162,15 +160,25 @@ class LoginWindow(QDialog, Ui_qLogin):
         self.hide()
         self.rent.loginUser( self.nameEdit.text(), self.passwordEdit.text() )
         
+    def accountPressed( self ):
+        openBrowser("http://www.pandora.com")
+        
+def openBrowser(url):
+    print("Opening %s"%url)
+    webbrowser.open(url)
+    try:
+        os.wait() # workaround for http://bugs.python.org/issue5993
+    except:
+        pass
 """Code from stack overflow to add events to the GUI thread from VLC backend
 
 http://stackoverflow.com/questions/10991991/pyside-easier-way-of-updating-gui-from-another-thread"""
-from Queue import Queue
+import Queue
 
 class Invoker(QObject):
     def __init__(self):
         super(Invoker, self).__init__()
-        self.queue = Queue()
+        self.queue = Queue.Queue()
 
     def invoke(self, func, *args):
         f = lambda: func(*args)

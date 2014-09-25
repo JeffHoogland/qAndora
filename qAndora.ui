@@ -7,11 +7,15 @@
     <x>0</x>
     <y>0</y>
     <width>381</width>
-    <height>339</height>
+    <height>340</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string> qAndora</string>
+   <string> qAndora - Internet Radio</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>images/qAndora.png</normaloff>images/qAndora.png</iconset>
   </property>
   <widget class="QLabel" name="titleLabel">
    <property name="geometry">
@@ -107,6 +111,10 @@
     <property name="text">
      <string>Pause</string>
     </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>images/pause.png</normaloff>images/pause.png</iconset>
+    </property>
    </widget>
    <widget class="QToolButton" name="skipButton">
     <property name="geometry">
@@ -122,6 +130,10 @@
     </property>
     <property name="text">
      <string>Skip</string>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>images/skip.png</normaloff>images/skip.png</iconset>
     </property>
    </widget>
    <widget class="QToolButton" name="loveButton">
@@ -139,6 +151,10 @@
     <property name="text">
      <string>Love</string>
     </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>images/favorite.png</normaloff>images/favorite.png</iconset>
+    </property>
    </widget>
    <widget class="QToolButton" name="banButton">
     <property name="geometry">
@@ -154,6 +170,10 @@
     </property>
     <property name="text">
      <string>Ban</string>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>images/ban.png</normaloff>images/ban.png</iconset>
     </property>
    </widget>
   </widget>

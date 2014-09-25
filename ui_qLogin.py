@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'qLogin.ui'
 #
-# Created: Fri Sep 19 23:16:14 2014
+# Created: Wed Sep 24 22:49:10 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -13,6 +13,9 @@ class Ui_qLogin(object):
     def setupUi(self, qLogin):
         qLogin.setObjectName("qLogin")
         qLogin.resize(400, 212)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("images/qAndora.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        qLogin.setWindowIcon(icon)
         self.nameFrame = QtGui.QFrame(qLogin)
         self.nameFrame.setGeometry(QtCore.QRect(20, 10, 361, 71))
         self.nameFrame.setFrameShape(QtGui.QFrame.StyledPanel)
@@ -37,9 +40,12 @@ class Ui_qLogin(object):
         self.passwordEdit.setEchoMode(QtGui.QLineEdit.Password)
         self.passwordEdit.setObjectName("passwordEdit")
         self.loginButton = QtGui.QPushButton(qLogin)
-        self.loginButton.setGeometry(QtCore.QRect(60, 170, 271, 31))
+        self.loginButton.setGeometry(QtCore.QRect(30, 170, 161, 31))
         self.loginButton.setAutoDefault(False)
         self.loginButton.setObjectName("loginButton")
+        self.accountButton = QtGui.QToolButton(qLogin)
+        self.accountButton.setGeometry(QtCore.QRect(205, 170, 161, 29))
+        self.accountButton.setObjectName("accountButton")
 
         self.retranslateUi(qLogin)
         QtCore.QMetaObject.connectSlotsByName(qLogin)
@@ -50,4 +56,5 @@ class Ui_qLogin(object):
         self.nameLabel.setText(QtGui.QApplication.translate("qLogin", "Pandora Login Name:", None, QtGui.QApplication.UnicodeUTF8))
         self.passwordLabel.setText(QtGui.QApplication.translate("qLogin", "Password:", None, QtGui.QApplication.UnicodeUTF8))
         self.loginButton.setText(QtGui.QApplication.translate("qLogin", "Login", None, QtGui.QApplication.UnicodeUTF8))
+        self.accountButton.setText(QtGui.QApplication.translate("qLogin", "Create Account", None, QtGui.QApplication.UnicodeUTF8))
 
