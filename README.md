@@ -10,16 +10,17 @@ TODO List:
 - notifications
 - Configuration options (quality)
 
-Usage:
- Install VLC http://www.videolan.org/
- 
-Linux
-  - Install PySide (On Ubuntu/Debian sudo apt-get install python-pyside)
-  - Install GIT (On Ubuntu/Debian sudo apt-get install git)
-  - Clone sources: git clone https://github.com/JeffHoogland/qAndora.git
-  - Run qAndora.py: python qAndora.py
+Ubuntu/Debian
+  - Download and install .deb file -> https://github.com/JeffHoogland/qAndora/blob/master/Compiled-Packages/qandora.deb?raw=true
+  - Launch qAndora.desktop or run qAndora in terminal
 
 Windows
-  - Download zip file -> https://github.com/JeffHoogland/qAndora/blob/master/windows_9-14-2014.zip?raw=true
+  - Install VLC http://www.videolan.org/
+  - Download zip file -> https://github.com/JeffHoogland/qAndora/blob/master/Compiled-Packages/windows.zip?raw=true
   - Extract the contents
   - Run qAndora.exe
+
+Other OS
+  - Install PySide, VLC, and GIT
+  - Clone sources: git clone https://github.com/JeffHoogland/qAndora.git
+  - Run qAndora.py: python qAndora.py
