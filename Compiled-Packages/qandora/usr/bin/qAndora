@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cd /opt/qAndora
+python qAndora.py
