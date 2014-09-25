@@ -11,6 +11,7 @@ from playerVLC import volcanoPlayer
 import tempfile
 import urllib
 import webbrowser
+import datetime
 
 tempdir = tempfile.gettempdir()
 
@@ -20,9 +21,10 @@ class MainWindow(QMainWindow, Ui_qAndora):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
-        self.assignButtons()
+        self.assignWidgets()
         
         self.radioPlayer = volcanoPlayer()
+        self.radioPlayer.setVolume( 75 )
         
         self.loginWin = LoginWindow( self )
         
@@ -65,7 +67,28 @@ class MainWindow(QMainWindow, Ui_qAndora):
         #Hook to read when the box changes
         self.stationBox.activated[str].connect(self.stationChange)
         
+        #Start a loop for updating current track time
+        self.timer = QTimer()
+        self.timer.setSingleShot(False)
+        self.timer.timeout.connect(self.timerTick)
+        self.timer.start(500)
+        
         self.show()
+        
+    def timerTick( self ):
+        pos = self.radioPlayer.player.get_time() / 1000.0
+
+        pos = str(datetime.timedelta(seconds=int(pos)))
+        dur = str(datetime.timedelta(seconds=int(self.radioPlayer.player.get_length() / 1000.0)))
+        
+        posh, posm, poss = pos.split(":")
+        durh, durm, durs = dur.split(":")
+        
+        pos = "%s:%s"%(posm, poss)
+        dur = "%s:%s"%(durm, durs)
+        
+        t = "<b>%s  /  %s</b>" % (pos, dur)
+        self.positionLabel.setText(t)
         
     def stationChange( self, newStation ):
         self.radioPlayer.setStation(self.radioPlayer.getStationFromName(newStation))
@@ -82,11 +105,17 @@ class MainWindow(QMainWindow, Ui_qAndora):
         self.radioPlayer.clearSongs()
         self.radioPlayer.addSongs()
         
-    def assignButtons( self ):
+    def assignWidgets( self ):
         self.playPauseButton.clicked.connect(self.playPausePressed)
         self.skipButton.clicked.connect(self.skipPressed)
         self.loveButton.clicked.connect(self.lovePressed)
         self.banButton.clicked.connect(self.banPressed)
+        self.volumeSlider.valueChanged.connect(self.volumeChange)
+        
+    def volumeChange( self, val ):
+        #print("New audio value is %s"%val)
+        
+        self.radioPlayer.setVolume( val )
         
     def songChangeQ( self ):
         invoke_in_main_thread(self.songChange)
@@ -136,6 +165,7 @@ class MainWindow(QMainWindow, Ui_qAndora):
         
     def banPressed( self ):
         self.radioPlayer.banSong()
+        self.radioPlayer.skipSong()
         
 class LoginWindow(QDialog, Ui_qLogin):
     def __init__(self, parent=None):

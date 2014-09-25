@@ -29,6 +29,7 @@ class volcanoPlayer(object):
         self.displaysongs = []
         self.songCount = 0
         self.songChangeCallBack = None
+        self.curVolume = 75
         self.player = vlc.MediaPlayer()
         
     def setChangeCallBack( self, callback ):
@@ -41,6 +42,10 @@ class volcanoPlayer(object):
             self.pandora.connect(self.settings['username'], self.settings['password'])
         except:
             pass
+            
+    def setVolume( self, newVol ):
+        self.player.audio_set_volume( newVol )
+        self.curVolume = newVol
 
     def playSong( self ):
         self.playing = True
@@ -147,6 +152,7 @@ class volcanoPlayer(object):
         if self.player.is_playing():
             self.player.stop()
         self.player = vlc.MediaPlayer()
+        self.player.audio_set_volume( self.curVolume )
         self.event_manager = self.player.event_manager()
         self.event_manager.event_attach(vlc.EventType.MediaPlayerEndReached,      self.nextSong)
         self.curSong += 1
