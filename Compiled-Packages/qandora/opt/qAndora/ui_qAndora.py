@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'qAndora.ui'
 #
-# Created: Thu Sep 25 13:40:30 2014
+# Created: Thu Sep 25 19:14:42 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -205,7 +205,7 @@ class Ui_qAndora(object):
         self.artistLabel.setGeometry(QtCore.QRect(10, 70, 261, 21))
         self.artistLabel.setObjectName("artistLabel")
         self.positionFrame = QtGui.QFrame(qAndora)
-        self.positionFrame.setGeometry(QtCore.QRect(230, 160, 151, 41))
+        self.positionFrame.setGeometry(QtCore.QRect(230, 20, 151, 41))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
         brush.setStyle(QtCore.Qt.SolidPattern)

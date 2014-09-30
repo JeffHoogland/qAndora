@@ -71,7 +71,7 @@ class MainWindow(QMainWindow, Ui_qAndora):
         self.timer = QTimer()
         self.timer.setSingleShot(False)
         self.timer.timeout.connect(self.timerTick)
-        self.timer.start(500)
+        self.timer.start(250)
         
         self.show()
         
