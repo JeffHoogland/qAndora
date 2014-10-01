@@ -7,7 +7,8 @@ TODO List:
 - Add/remove/edit stations
 - systray/dock
 - notifications
-- Configuration options (quality)
+- hot keys: http://i.imgur.com/ea9qQwN.png
+- Configuration options (quality/download)
 
 Ubuntu/Debian
   - Download and install .deb file -> https://github.com/JeffHoogland/qAndora/blob/master/Compiled-Packages/qandora.deb?raw=true
