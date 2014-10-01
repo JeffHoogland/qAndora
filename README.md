@@ -9,6 +9,7 @@ TODO List:
 - notifications
 - hot keys: http://i.imgur.com/ea9qQwN.png
 - Configuration options (quality/download)
+- Filter track types: http://i.imgur.com/iLpA6ha.png
 
 Ubuntu/Debian
   - Download and install .deb file -> https://github.com/JeffHoogland/qAndora/blob/master/Compiled-Packages/qandora.deb?raw=true
