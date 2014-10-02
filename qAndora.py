@@ -34,18 +34,25 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         home = os.path.expanduser("~")
         if os.path.exists("%s/.config/qAndora/preferences.cfg"%home):
             self.preferences = pickle.load( open( "%s/.config/qAndora/preferences.cfg"%home, "rb" ) )
-            self.loginUser(self.preferences['username'], self.preferences['password'])
+            if self.preferences['username']:
+                self.loginUser(self.preferences['username'], self.preferences['password'])
+            else:
+                self.loginWin.show()
         else:
-            self.preferences = {    "username":"",
+            self.defaultPreferences()
+            self.loginWin.show()
+            
+        self.radioPlayer.setVolume( self.preferences['volume'] )
+        self.volumeSlider.setValue( self.preferences['volume'] )
+        
+    def defaultPreferences( self ):
+        self.preferences = {    "username":"",
                                     "password":"",
                                     "quality":"medium",
                                     "notifications":"Yes",
                                     "station":None,
                                     "volume":75}
-            self.loginWin.show()
-            
-        self.radioPlayer.setVolume( self.preferences['volume'] )
-        self.volumeSlider.setValue( self.preferences['volume'] )
+        self.savePreferences()
             
     def savePreferences( self ):
         home = os.path.expanduser("~")
@@ -177,6 +184,19 @@ class PreferencesWindow(QDialog, Ui_qPreferences):
     def __init__(self, parent=None):
         super(PreferencesWindow, self).__init__(parent)
         self.setupUi(self)
+        self.assignButtons()
+        
+        self.rent = parent
+        
+    def assignButtons( self ):
+        self.logoutButton.clicked.connect(self.logoutPressed)
+    
+    def logoutPressed( self ):
+        self.rent.hide()
+        self.hide()
+        self.rent.radioPlayer.pauseSong()
+        self.rent.defaultPreferences()
+        self.rent.loginWin.show()
 
 class LoginWindow(QDialog, Ui_qLogin):
     def __init__(self, parent=None):
