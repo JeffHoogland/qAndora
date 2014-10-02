@@ -4,53 +4,68 @@ import os
 from PySide.QtGui import *
 from PySide.QtCore import *
 
-from ui_qAndora import Ui_qAndora
+from ui_qAndora import Ui_MainWindow
 from ui_qLogin import Ui_qLogin
+from ui_qPreferences import Ui_qPreferences
 
 from playerVLC import volcanoPlayer
 import tempfile
 import urllib
 import webbrowser
 import datetime
+import cPickle as pickle
 
 tempdir = tempfile.gettempdir()
 
 #print "Current tmp directory is %s"%tempdir
 
-class MainWindow(QMainWindow, Ui_qAndora):
+class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
         self.assignWidgets()
         
         self.radioPlayer = volcanoPlayer()
-        self.radioPlayer.setVolume( 75 )
         
         self.loginWin = LoginWindow( self )
+        self.preferencesWin = PreferencesWindow( self )
         
-        #Read login information
+        #Read in stored preferences
         home = os.path.expanduser("~")
-        if os.path.exists("%s/.config/qAndora/userinfo"%home):
-            f = open('%s/.config/qAndora/userinfo'%home, 'r')
-            lines = f.readlines()
-            self.loginUser(lines[0].rstrip("\n"), lines[1].rstrip("\n"))
+        if os.path.exists("%s/.config/qAndora/preferences.cfg"%home):
+            self.preferences = pickle.load( open( "%s/.config/qAndora/preferences.cfg"%home, "rb" ) )
+            self.loginUser(self.preferences['username'], self.preferences['password'])
         else:
+            self.preferences = {    "username":"",
+                                    "password":"",
+                                    "quality":"medium",
+                                    "notifications":"Yes",
+                                    "station":None,
+                                    "volume":75}
             self.loginWin.show()
+            
+        self.radioPlayer.setVolume( self.preferences['volume'] )
+        self.volumeSlider.setValue( self.preferences['volume'] )
+            
+    def savePreferences( self ):
+        home = os.path.expanduser("~")
+        if not os.path.exists("%s/.config/qAndora"%home):
+            os.makedirs("%s/.config/qAndora"%home)
+        pickle.dump( self.preferences, open( "%s/.config/qAndora/preferences.cfg"%home, "wb" ))
     
     def loginUser( self, userName, userPassword ):
+        self.preferences['username'] = userName
+        self.preferences['password'] = userPassword
+        self.savePreferences()
+        
         self.radioPlayer.auth( userName, userPassword )
         
-        lines = []
-        
         #Get last used station
-        home = os.path.expanduser("~")
-        if os.path.exists("%s/.config/qAndora/stationinfo"%home):
-            f = open('%s/.config/qAndora/stationinfo'%home, 'r')
-            lines = f.readlines()
-            #print "Last station: %s"%lines[0]
-            self.radioPlayer.setStation(self.radioPlayer.getStationFromName(lines[0].rstrip("\n")))
+        if self.preferences['station']:
+            self.radioPlayer.setStation(self.radioPlayer.getStationFromName(self.preferences['station']))
         else:
             self.radioPlayer.setStation(self.radioPlayer.getStations()[0])
+            self.preferences['station'] = self.radioPlayer.getStations()[0]['stationName']
         
         self.radioPlayer.setChangeCallBack( self.songChangeQ )
         self.radioPlayer.addSongs()
@@ -61,8 +76,7 @@ class MainWindow(QMainWindow, Ui_qAndora):
             self.stationBox.addItem(station['stationName'])
             stationlist.append(station['stationName'])
         
-        if len(lines):
-            self.stationBox.setCurrentIndex(stationlist.index(lines[0].rstrip("\n")))
+        self.stationBox.setCurrentIndex(stationlist.index(self.preferences['station']))
         
         #Hook to read when the box changes
         self.stationBox.activated[str].connect(self.stationChange)
@@ -93,14 +107,8 @@ class MainWindow(QMainWindow, Ui_qAndora):
     def stationChange( self, newStation ):
         self.radioPlayer.setStation(self.radioPlayer.getStationFromName(newStation))
         
-        home = os.path.expanduser("~")
-        if not os.path.exists("%s/.config/qAndora"%home):
-            os.makedirs("%s/.config/qAndora"%home)
-        if os.path.exists("%s/.config/qAndora/stationinfo"%home):
-            os.remove('%s/.config/qAndora/stationinfo'%home)
-        f = open('%s/.config/qAndora/stationinfo'%home, 'w')
-        f.write('%s\n'%newStation)
-        f.close()
+        self.preferences['station'] = newStation
+        self.savePreferences()
         self.radioPlayer.pauseSong()
         self.radioPlayer.clearSongs()
         self.radioPlayer.addSongs()
@@ -110,12 +118,14 @@ class MainWindow(QMainWindow, Ui_qAndora):
         self.skipButton.clicked.connect(self.skipPressed)
         self.loveButton.clicked.connect(self.lovePressed)
         self.banButton.clicked.connect(self.banPressed)
+        self.settingsButton.clicked.connect(self.settingsPressed)
         self.volumeSlider.valueChanged.connect(self.volumeChange)
         
     def volumeChange( self, val ):
         #print("New audio value is %s"%val)
-        
+        self.preferences['volume'] = val
         self.radioPlayer.setVolume( val )
+        self.savePreferences()
         
     def songChangeQ( self ):
         invoke_in_main_thread(self.songChange)
@@ -133,17 +143,13 @@ class MainWindow(QMainWindow, Ui_qAndora):
             self.loveButton.setIcon(QIcon("images/favorite.png"))
             self.loveButton.setToolTip(QApplication.translate("qAndora", "Mark Favorite", None, QApplication.UnicodeUTF8))
             
-        '''try:
-            os.remove(os.path.join(tempdir, 'albumart.png'))
-        except:
-            pass'''
         urllib.urlretrieve(str(info['thumbnail']), os.path.join(tempdir, 'albumart.jpg'))
         
         albumart = QPixmap(os.path.join(tempdir, 'albumart.jpg'))
-        #print os.path.join(tempdir, 'albumart.jpg')
-        #print albumart.isNull()
         self.albumImage.setPixmap(albumart)
-        #print self.albumImage.pixmap()
+        
+    def settingsPressed( self ):
+        self.preferencesWin.show()
         
     def playPausePressed( self ):
         if self.radioPlayer.playing:
@@ -166,7 +172,12 @@ class MainWindow(QMainWindow, Ui_qAndora):
     def banPressed( self ):
         self.radioPlayer.banSong()
         self.radioPlayer.skipSong()
-        
+
+class PreferencesWindow(QDialog, Ui_qPreferences):
+    def __init__(self, parent=None):
+        super(PreferencesWindow, self).__init__(parent)
+        self.setupUi(self)
+
 class LoginWindow(QDialog, Ui_qLogin):
     def __init__(self, parent=None):
         super(LoginWindow, self).__init__(parent)
@@ -180,13 +191,6 @@ class LoginWindow(QDialog, Ui_qLogin):
         self.accountButton.clicked.connect(self.accountPressed)
         
     def loginPressed( self ):
-        home = os.path.expanduser("~")
-        if not os.path.exists("%s/.config/qAndora"%home):
-            os.makedirs("%s/.config/qAndora"%home)
-        f = open('%s/.config/qAndora/userinfo'%home, 'w')
-        f.write('%s\n'%self.nameEdit.text())
-        f.write('%s\n'%self.passwordEdit.text())
-        f.close()
         self.hide()
         self.rent.loginUser( self.nameEdit.text(), self.passwordEdit.text() )
         
