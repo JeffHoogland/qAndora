@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'qAndora.ui'
 #
-# Created: Thu Oct  2 21:51:03 2014
+# Created: Thu Oct  2 23:04:10 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -52,13 +52,16 @@ class Ui_MainWindow(object):
         self.titleLabel = QtGui.QLabel(self.infoFrame)
         self.titleLabel.setGeometry(QtCore.QRect(10, 10, 261, 21))
         self.titleLabel.setWordWrap(True)
+        self.titleLabel.setOpenExternalLinks(True)
         self.titleLabel.setObjectName("titleLabel")
         self.albumLabel = QtGui.QLabel(self.infoFrame)
         self.albumLabel.setGeometry(QtCore.QRect(10, 40, 261, 21))
         self.albumLabel.setWordWrap(True)
+        self.albumLabel.setOpenExternalLinks(True)
         self.albumLabel.setObjectName("albumLabel")
         self.artistLabel = QtGui.QLabel(self.infoFrame)
         self.artistLabel.setGeometry(QtCore.QRect(10, 70, 261, 21))
+        self.artistLabel.setOpenExternalLinks(True)
         self.artistLabel.setObjectName("artistLabel")
         self.positionFrame = QtGui.QFrame(self.centralwidget)
         self.positionFrame.setGeometry(QtCore.QRect(240, 20, 151, 41))

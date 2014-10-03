@@ -147,6 +147,9 @@
      <property name="wordWrap">
       <bool>true</bool>
      </property>
+     <property name="openExternalLinks">
+      <bool>true</bool>
+     </property>
     </widget>
     <widget class="QLabel" name="albumLabel">
      <property name="geometry">
@@ -163,6 +166,9 @@
      <property name="wordWrap">
       <bool>true</bool>
      </property>
+     <property name="openExternalLinks">
+      <bool>true</bool>
+     </property>
     </widget>
     <widget class="QLabel" name="artistLabel">
      <property name="geometry">
@@ -175,6 +181,9 @@
      </property>
      <property name="text">
       <string>Artist</string>
+     </property>
+     <property name="openExternalLinks">
+      <bool>true</bool>
      </property>
     </widget>
    </widget>
