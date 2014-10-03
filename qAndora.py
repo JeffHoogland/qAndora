@@ -18,12 +18,12 @@ import cPickle as pickle
 #See if system supports these notifications
 try:
     from gi.repository import Notify
+    Notify.init ("Song Changed")
     giLoaded = True
 except:
     giLoaded = False
 
 tempdir = tempfile.gettempdir()
-Notify.init ("Song Changed")
 
 #print "Current tmp directory is %s"%tempdir
 
