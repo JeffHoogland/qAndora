@@ -1,8 +1,6 @@
 A simple, cross-platform tool for playing Pandora.com radio with a QT GUI and a VLC backend
 
-TODO List:
-- Add/remove/edit stations
-- hot keys: http://i.imgur.com/ea9qQwN.png
+Install instructions:
 
 Ubuntu/Debian
   - Download and install .deb file -> https://github.com/JeffHoogland/qAndora/blob/master/Compiled-Packages/qandora.deb?raw=true
@@ -18,3 +16,8 @@ Other OS
   - Install PySide, VLC, and GIT
   - Clone sources: git clone https://github.com/JeffHoogland/qAndora.git
   - Run qAndora.py: python qAndora.py
+
+TODO List:
+- Add/remove/edit stations
+- Add validation that the pandora login works instead of assuming it does
+- hot keys: http://i.imgur.com/ea9qQwN.png
