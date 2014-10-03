@@ -37,23 +37,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         
         self.loginWin = LoginWindow( self )
         
-        #Read in stored preferences
-        home = os.path.expanduser("~")
-        if os.path.exists("%s/.config/qAndora/preferences.cfg"%home):
-            self.preferences = pickle.load( open( "%s/.config/qAndora/preferences.cfg"%home, "rb" ) )
-            if self.preferences['username']:
-                self.loginUser(self.preferences['username'], self.preferences['password'])
-            else:
-                self.loginWin.show()
-        else:
-            self.defaultPreferences()
-            self.loginWin.show()
-            
-        self.preferencesWin = PreferencesWindow( self )
-        self.radioPlayer.setVolume( self.preferences['volume'] )
-        self.volumeSlider.setValue( self.preferences['volume'] )
-        
-        #build our systray
+        #build our systray icon
         icon = QIcon("images/qAndora.png")
         menu = QMenu()
         self.playPauseAction = menu.addAction("Pause")
@@ -77,9 +61,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.tray.setIcon(icon)
         self.tray.setContextMenu(menu)
         self.tray.activated.connect(self.trayClicked)
-        self.tray.show()
         
-        self.isVisible = True
+        #Read in stored preferences
+        home = os.path.expanduser("~")
+        if os.path.exists("%s/.config/qAndora/preferences.cfg"%home):
+            self.preferences = pickle.load( open( "%s/.config/qAndora/preferences.cfg"%home, "rb" ) )
+            if self.preferences['username']:
+                self.loginUser(self.preferences['username'], self.preferences['password'])
+            else:
+                self.loginWin.show()
+        else:
+            self.defaultPreferences()
+            self.loginWin.show()
+            
+        self.preferencesWin = PreferencesWindow( self )
+        self.radioPlayer.setVolume( self.preferences['volume'] )
+        self.volumeSlider.setValue( self.preferences['volume'] )
         
     def trayClicked( self, reason ):
         if reason == self.tray.Trigger:
@@ -96,7 +93,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                     "quality":"Medium",
                                     "notifications":"Yes",
                                     "station":None,
-                                    "volume":75}
+                                    "volume":75,
+                                    "skiplive":False,
+                                    "skipremix":False,
+                                    "skipedit":False,
+                                    "banskips":False}
         self.savePreferences()
             
     def savePreferences( self ):
@@ -140,6 +141,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.timer.start(250)
         
         self.show()
+        self.tray.show()
+        self.isVisible = True
         
     def timerTick( self ):
         pos = self.radioPlayer.player.get_time() / 1000.0
@@ -202,9 +205,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.playPauseAction.setText("Pause")
         self.playPauseAction.setIcon(QIcon("images/pause.png"))
         
-        urllib.urlretrieve(str(info['thumbnail']), os.path.join(tempdir, 'albumart.jpg'))
+        try:
+            urllib.urlretrieve(str(info['thumbnail']), os.path.join(tempdir, 'albumart.jpg'))
+            albumart = QPixmap(os.path.join(tempdir, 'albumart.jpg'))
+        except:
+            albumart = QPixmap('images/albumart.jpg')
         
-        albumart = QPixmap(os.path.join(tempdir, 'albumart.jpg'))
         self.albumImage.setPixmap(albumart)
         
         if giLoaded:
@@ -250,7 +256,7 @@ class PreferencesWindow(QDialog, Ui_qPreferences):
         self.setupUi(self)
         
         self.rent = parent
-        self.assignButtons()
+        self.assignCallbacks()
         self.populateDrops()
         
     def populateDrops( self ):
@@ -277,8 +283,56 @@ class PreferencesWindow(QDialog, Ui_qPreferences):
         self.rent.preferences['notifications'] = s
         self.rent.savePreferences()
         
-    def assignButtons( self ):
+    def assignCallbacks( self ):
         self.logoutButton.clicked.connect(self.logoutPressed)
+        self.liveCheck.stateChanged.connect(self.liveCheckChanged)
+        self.liveCheck.setChecked(self.rent.preferences['skiplive'])
+        self.rent.radioPlayer.setAutoSkip( "live", self.rent.preferences['skiplive'] )
+        self.remixCheck.stateChanged.connect(self.remixCheckChanged)
+        self.remixCheck.setChecked(self.rent.preferences['skipremix'])
+        self.rent.radioPlayer.setAutoSkip( "remix", self.rent.preferences['skipremix'] )
+        self.editCheck.stateChanged.connect(self.editCheckChanged)
+        self.editCheck.setChecked(self.rent.preferences['skipedit'])
+        self.rent.radioPlayer.setAutoSkip( "edit", self.rent.preferences['skipedit'] )
+        self.rateCheck.stateChanged.connect(self.rateCheckChanged)
+        self.rateCheck.setChecked(self.rent.preferences['banskips'])
+        self.rent.radioPlayer.setAutoSkip( "ban", self.rent.preferences['banskips'] )
+        
+    def liveCheckChanged( self, state ):
+        if state == Qt.Checked:
+            self.rent.radioPlayer.setAutoSkip( "live", True )
+            self.rent.preferences['skiplive'] = True
+        else:
+            self.rent.radioPlayer.setAutoSkip( "live", False )
+            self.rent.preferences['skiplive'] = False
+        self.rent.savePreferences()
+            
+    def remixCheckChanged( self, state ):
+        if state == Qt.Checked:
+            self.rent.radioPlayer.setAutoSkip( "remix", True )
+            self.rent.preferences['skipremix'] = True
+        else:
+            self.rent.radioPlayer.setAutoSkip( "remix", False )
+            self.rent.preferences['skipremix'] = False
+        self.rent.savePreferences()
+            
+    def editCheckChanged( self, state ):
+        if state == Qt.Checked:
+            self.rent.radioPlayer.setAutoSkip( "edit", True )
+            self.rent.preferences['skipedit'] = True
+        else:
+            self.rent.radioPlayer.setAutoSkip( "edit", False )
+            self.rent.preferences['skipedit'] = False
+        self.rent.savePreferences()
+            
+    def rateCheckChanged( self, state ):
+        if state == Qt.Checked:
+            self.rent.radioPlayer.setAutoSkip( "ban", True )
+            self.rent.preferences['banskips'] = True
+        else:
+            self.rent.radioPlayer.setAutoSkip( "ban", False )
+            self.rent.preferences['banskips'] = False
+        self.rent.savePreferences()
     
     def logoutPressed( self ):
         self.rent.hide()
@@ -291,11 +345,11 @@ class LoginWindow(QDialog, Ui_qLogin):
     def __init__(self, parent=None):
         super(LoginWindow, self).__init__(parent)
         self.setupUi(self)
-        self.assignButtons()
+        self.assignCallbacks()
         
         self.rent = parent
         
-    def assignButtons( self ):
+    def assignCallbacks( self ):
         self.loginButton.clicked.connect(self.loginPressed)
         self.accountButton.clicked.connect(self.accountPressed)
         

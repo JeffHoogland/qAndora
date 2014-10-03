@@ -2,17 +2,10 @@ import vlc
 import pandora
 import webbrowser
 import urllib
+import re
 
 Download = False
 DownloadPath = "/media/sda5/Music/pandora/"
-
-def openBrowser(url):
-    print "Opening %s"%url
-    webbrowser.open(url)
-    try:
-        os.wait() # workaround for http://bugs.python.org/issue5993
-    except:
-        pass
 
 class volcanoPlayer(object):
     def __init__( self ):
@@ -20,7 +13,7 @@ class volcanoPlayer(object):
         self.curStation = ""
         self.curSong = -1
         self.playing = False
-        self.skip = False
+        self.skip = {'live':False, 'remix':False, 'edit':False}
         self.die = False
         self.settings = {"username":"", "password":""}
         self.skinName = "Default"
@@ -105,12 +98,6 @@ class volcanoPlayer(object):
     def renameStation( self, station, name ):
         pandora.Station(self.pandora, station).rename(name)
 
-    def showSong( self ):
-        openBrowser(self.songinfo[self.curSong]['object'].songDetailURL)
-
-    def showAlbum( self ):
-        openBrowser(self.songinfo[self.curSong]['object'].albumDetailURL)
-
     def banSong( self ):
         info = self.songinfo[self.curSong]
         info['object'].rate('ban')
@@ -151,7 +138,28 @@ class volcanoPlayer(object):
     def setAudioFormat( self, fmt ):
         self.pandora.set_audio_format("%sQuality"%fmt.lower())
 
-    def nextSong( self , event=False ):
+    def nextSong( self ):
+        self.curSong += 1
+
+        if self.curSong >= len(self.songinfo)-1:
+            self.addSongs()
+        self.songCount += 1
+        if self.songCount >= 15:
+            self.songCount = 0
+            self.auth(self.settings['username'], self.settings['password'])
+            
+        info = self.songinfo[self.curSong]
+        
+        if (re.search('[*mix*]', info['title']) or re.search('(*mix*)', info['title'])) and self.skip['remix']:
+            self.nextSong()
+        elif (re.search('[*live*]', info['title']) or re.search('(*live*)', info['title'])) and self.skip['live']:
+            self.nextSong()
+        elif (re.search('[*edit*]', info['title']) or re.search('(*edit*)', info['title'])) and self.skip['edit']:
+            self.nextSong()
+        else:
+            self.playNextSong()
+            
+    def playNextSong( self ):
         if self.player.is_playing():
             self.player.stop()
         self.player = vlc.MediaPlayer()
@@ -159,22 +167,11 @@ class volcanoPlayer(object):
         self.player.audio_set_delay( 2500 )
         self.event_manager = self.player.event_manager()
         self.event_manager.event_attach(vlc.EventType.MediaPlayerEndReached,      self.nextSong)
-        self.curSong += 1
         info = self.songinfo[self.curSong]
         self.displaysongs.append(info)
         self.song = info['title']
-        #print(info['url'])
         self.player.set_media(vlc.Media(info['url']))
         self.playing = True
         self.player.play()
         self.songChangeCallBack()
-        #print("Playing: %s"%info['title'])
-        #print(self.player.is_playing())
-        #self.curSong += 1
-        if self.curSong >= len(self.songinfo)-1:
-            self.addSongs()
-        self.songCount += 1
-        if self.songCount >= 15:
-            self.songCount = 0
-            self.auth(self.settings['username'], self.settings['password'])
 

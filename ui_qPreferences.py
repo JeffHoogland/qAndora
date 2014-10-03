@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'qPreferences.ui'
 #
-# Created: Thu Oct  2 23:08:17 2014
+# Created: Fri Oct  3 10:26:01 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -92,6 +92,7 @@ class Ui_qPreferences(object):
         self.filterTab.setObjectName("filterTab")
         self.liveCheck = QtGui.QCheckBox(self.filterTab)
         self.liveCheck.setGeometry(QtCore.QRect(20, 10, 151, 26))
+        self.liveCheck.setChecked(False)
         self.liveCheck.setObjectName("liveCheck")
         self.remixCheck = QtGui.QCheckBox(self.filterTab)
         self.remixCheck.setGeometry(QtCore.QRect(20, 40, 171, 26))

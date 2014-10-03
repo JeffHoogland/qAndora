@@ -302,6 +302,9 @@
      <property name="text">
       <string>Filter live songs</string>
      </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
     </widget>
     <widget class="QCheckBox" name="remixCheck">
      <property name="geometry">
