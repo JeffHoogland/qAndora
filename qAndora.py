@@ -16,12 +16,15 @@ import datetime
 import cPickle as pickle
 
 #See if system supports these notifications
-try:
+'''try:
     from gi.repository import Notify
     Notify.init ("Song Changed")
     giLoaded = True
 except:
-    giLoaded = False
+    giLoaded = False'''
+    
+import pynotify
+pynotify.init("Song Changed")
 
 tempdir = tempfile.gettempdir()
 
@@ -207,9 +210,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         
         try:
             urllib.urlretrieve(str(info['thumbnail']), os.path.join(tempdir, 'albumart.jpg'))
-            albumart = QPixmap(os.path.join(tempdir, 'albumart.jpg'))
+            albumartpath = os.path.join(tempdir, 'albumart.jpg')
         except:
-            albumart = QPixmap('images/albumart.png')
+            albumartpath = 'images/albumart.png'
+        
+        albumart = QPixmap(albumartpath)
         
         self.albumImage.setPixmap(albumart)
         
@@ -219,12 +224,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         newItem.setIcon(albumart)
         self.historyList.insertItem(0, newItem)
         
-        if self.preferences['notifications'] == "Yes":
+        '''if self.preferences['notifications'] == "Yes":
             if giLoaded:
-                songNoti=Notify.Notification.new ("Song Changed","%s by %s"%(info['title'], info['artist']))
+                songNoti=Notify.Notification.new ("Song Changed","%s by %s"%(info['title'], info['artist']),albumartpath)
                 songNoti.show ()
             else:
-                self.tray.showMessage("Song Changed", "%s by %s"%(info['title'], info['artist']))
+                self.tray.showMessage("Song Changed", "%s by %s"%(info['title'], info['artist']))'''
+                
+        notice = pynotify.Notification("Song Changed","%s by %s"%(info['title'], info['artist']))
+        notice.show()
         
         self.tray.setToolTip("%s by %s"%(info['title'], info['artist']))
         
