@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'qPreferences.ui'
 #
-# Created: Thu Oct  2 19:28:01 2014
+# Created: Thu Oct  2 21:51:03 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,9 +12,9 @@ from PySide import QtCore, QtGui
 class Ui_qPreferences(object):
     def setupUi(self, qPreferences):
         qPreferences.setObjectName("qPreferences")
-        qPreferences.resize(400, 243)
+        qPreferences.resize(400, 236)
         self.prefWidget = QtGui.QTabWidget(qPreferences)
-        self.prefWidget.setGeometry(QtCore.QRect(10, 10, 381, 231))
+        self.prefWidget.setGeometry(QtCore.QRect(10, 10, 381, 221))
         self.prefWidget.setObjectName("prefWidget")
         self.aboutTab = QtGui.QWidget()
         self.aboutTab.setObjectName("aboutTab")
@@ -89,10 +89,26 @@ class Ui_qPreferences(object):
         self.prefWidget.addTab(self.keyTab, "")
         self.filterTab = QtGui.QWidget()
         self.filterTab.setObjectName("filterTab")
+        self.liveCheck = QtGui.QCheckBox(self.filterTab)
+        self.liveCheck.setGeometry(QtCore.QRect(20, 10, 151, 26))
+        self.liveCheck.setObjectName("liveCheck")
+        self.remixCheck = QtGui.QCheckBox(self.filterTab)
+        self.remixCheck.setGeometry(QtCore.QRect(20, 40, 171, 26))
+        self.remixCheck.setObjectName("remixCheck")
+        self.editCheck = QtGui.QCheckBox(self.filterTab)
+        self.editCheck.setGeometry(QtCore.QRect(190, 10, 171, 26))
+        self.editCheck.setObjectName("editCheck")
+        self.label = QtGui.QLabel(self.filterTab)
+        self.label.setGeometry(QtCore.QRect(20, 70, 341, 91))
+        self.label.setWordWrap(True)
+        self.label.setObjectName("label")
+        self.rateCheck = QtGui.QCheckBox(self.filterTab)
+        self.rateCheck.setGeometry(QtCore.QRect(190, 40, 181, 26))
+        self.rateCheck.setObjectName("rateCheck")
         self.prefWidget.addTab(self.filterTab, "")
 
         self.retranslateUi(qPreferences)
-        self.prefWidget.setCurrentIndex(2)
+        self.prefWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(qPreferences)
 
     def retranslateUi(self, qPreferences):
@@ -113,5 +129,10 @@ class Ui_qPreferences(object):
         self.vuButton.setText(QtGui.QApplication.translate("qPreferences", "...", None, QtGui.QApplication.UnicodeUTF8))
         self.vdButton.setText(QtGui.QApplication.translate("qPreferences", "...", None, QtGui.QApplication.UnicodeUTF8))
         self.prefWidget.setTabText(self.prefWidget.indexOf(self.keyTab), QtGui.QApplication.translate("qPreferences", "Hotkeys", None, QtGui.QApplication.UnicodeUTF8))
+        self.liveCheck.setText(QtGui.QApplication.translate("qPreferences", "Filter live songs", None, QtGui.QApplication.UnicodeUTF8))
+        self.remixCheck.setText(QtGui.QApplication.translate("qPreferences", "Filter remix songs", None, QtGui.QApplication.UnicodeUTF8))
+        self.editCheck.setText(QtGui.QApplication.translate("qPreferences", "Filter edit songs", None, QtGui.QApplication.UnicodeUTF8))
+        self.label.setText(QtGui.QApplication.translate("qPreferences", "<html><head/><body><p>Remix are songs that have &quot;mix&quot; in () or []</p><p>Live are songs that have &quot;live&quot; in () or []</p><p>Edit are songs that contain &quot;edit&quot; in () or []</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.rateCheck.setText(QtGui.QApplication.translate("qPreferences", "Ban Filtered Songs", None, QtGui.QApplication.UnicodeUTF8))
         self.prefWidget.setTabText(self.prefWidget.indexOf(self.filterTab), QtGui.QApplication.translate("qPreferences", "Filters", None, QtGui.QApplication.UnicodeUTF8))
 

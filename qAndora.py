@@ -45,6 +45,43 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.radioPlayer.setVolume( self.preferences['volume'] )
         self.volumeSlider.setValue( self.preferences['volume'] )
         
+        #build our systray
+        icon = QIcon("images/qAndora.png")
+        menu = QMenu()
+        self.playPauseAction = menu.addAction("Pause")
+        self.playPauseAction.setIcon(QIcon("images/pause.png"))
+        self.playPauseAction.triggered.connect(self.playPausePressed)
+        skipTrackAction = menu.addAction("Skip Track")
+        skipTrackAction.triggered.connect(self.skipPressed)
+        skipTrackAction.setIcon(QIcon("images/skip.png"))
+        self.loveAction = menu.addAction("Favorite Track")
+        self.loveAction.triggered.connect(self.lovePressed)
+        self.loveAction.setIcon(QIcon("images/favorite.png"))
+        banAction = menu.addAction("Ban Track")
+        banAction.triggered.connect(self.banPressed)
+        banAction.setIcon(QIcon("images/ban.png"))
+        
+        exitAction = menu.addAction("Exit")
+        exitAction.triggered.connect(sys.exit)
+        exitAction.setIcon(QIcon("images/exit.png"))
+        
+        self.tray = QSystemTrayIcon()
+        self.tray.setIcon(icon)
+        self.tray.setContextMenu(menu)
+        self.tray.activated.connect(self.trayClicked)
+        self.tray.show()
+        
+        self.isVisible = True
+        
+    def trayClicked( self, reason ):
+        if reason == self.tray.Trigger:
+            if self.isVisible:
+                self.hide()
+                self.isVisible = False
+            else:
+                self.show()
+                self.isVisible = True
+        
     def defaultPreferences( self ):
         self.preferences = {    "username":"",
                                     "password":"",
@@ -145,15 +182,25 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.artistLabel.setText("<b>Artist:</b> %s"%info['artist'])
         if info['rating'] == "love":
             self.loveButton.setIcon(QIcon("images/love.png"))
+            self.loveAction.setIcon(QIcon("images/love.png"))
             self.loveButton.setToolTip(QApplication.translate("qAndora", "Favorited", None, QApplication.UnicodeUTF8))
         else:
             self.loveButton.setIcon(QIcon("images/favorite.png"))
+            self.loveAction.setIcon(QIcon("images/favorite.png"))
             self.loveButton.setToolTip(QApplication.translate("qAndora", "Mark Favorite", None, QApplication.UnicodeUTF8))
             
+        self.playPauseButton.setIcon(QIcon("images/pause.png"))
+        self.playPauseButton.setToolTip(QApplication.translate("qAndora", "Pause", None, QApplication.UnicodeUTF8))
+        self.playPauseAction.setText("Pause")
+        self.playPauseAction.setIcon(QIcon("images/pause.png"))
+        
         urllib.urlretrieve(str(info['thumbnail']), os.path.join(tempdir, 'albumart.jpg'))
         
         albumart = QPixmap(os.path.join(tempdir, 'albumart.jpg'))
         self.albumImage.setPixmap(albumart)
+        
+        self.tray.showMessage("Song Changed", "%s by %s"%(info['title'], info['artist']))
+        self.tray.setToolTip("%s by %s"%(info['title'], info['artist']))
         
     def settingsPressed( self ):
         self.preferencesWin.show()
@@ -163,10 +210,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.radioPlayer.pauseSong()
             self.playPauseButton.setIcon(QIcon("images/play.png"))
             self.playPauseButton.setToolTip(QApplication.translate("qAndora", "Play", None, QApplication.UnicodeUTF8))
+            self.playPauseAction.setText("Play")
+            self.playPauseAction.setIcon(QIcon("images/play.png"))
         else:
             self.radioPlayer.playSong()
             self.playPauseButton.setIcon(QIcon("images/pause.png"))
             self.playPauseButton.setToolTip(QApplication.translate("qAndora", "Pause", None, QApplication.UnicodeUTF8))
+            self.playPauseAction.setText("Pause")
+            self.playPauseAction.setIcon(QIcon("images/pause.png"))
     
     def skipPressed( self ):
         self.radioPlayer.skipSong()

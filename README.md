@@ -3,10 +3,7 @@ A simple, cross-platform tool for playing Pandora.com radio with a QT GUI and a 
 TODO List:
 - History of songs played
 - Add/remove/edit stations
-- systray/dock
-- notifications
 - hot keys: http://i.imgur.com/ea9qQwN.png
-- Configuration options (quality/download)
 - Filter track types: http://i.imgur.com/iLpA6ha.png
 
 Ubuntu/Debian
