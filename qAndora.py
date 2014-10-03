@@ -213,11 +213,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         
         self.albumImage.setPixmap(albumart)
         
-        if giLoaded:
-            songNoti=Notify.Notification.new ("Song Changed","%s by %s"%(info['title'], info['artist']))
-            songNoti.show ()
-        else:
-            self.tray.showMessage("Song Changed", "%s by %s"%(info['title'], info['artist']))
+        newItem = QListWidgetItem()
+        newItem.setText(info['title'])
+        newItem.setToolTip("By: %s"%info['artist'])
+        newItem.setIcon(albumart)
+        self.historyList.insertItem(0, newItem)
+        
+        if self.preferences['notifications'] == "Yes":
+            if giLoaded:
+                songNoti=Notify.Notification.new ("Song Changed","%s by %s"%(info['title'], info['artist']))
+                songNoti.show ()
+            else:
+                self.tray.showMessage("Song Changed", "%s by %s"%(info['title'], info['artist']))
         
         self.tray.setToolTip("%s by %s"%(info['title'], info['artist']))
         

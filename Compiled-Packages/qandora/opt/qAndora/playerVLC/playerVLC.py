@@ -13,7 +13,7 @@ class volcanoPlayer(object):
         self.curStation = ""
         self.curSong = -1
         self.playing = False
-        self.skip = {'live':False, 'remix':False, 'edit':False}
+        self.skip = {'live':False, 'remix':False, 'edit':False, 'ban':False}
         self.die = False
         self.settings = {"username":"", "password":""}
         self.skinName = "Default"
@@ -24,6 +24,9 @@ class volcanoPlayer(object):
         self.songChangeCallBack = None
         self.curVolume = 75
         self.player = vlc.MediaPlayer()
+        
+    def setAutoSkip( self, sType, sBool ):
+        self.skip[sType] = sBool
         
     def setChangeCallBack( self, callback ):
         self.songChangeCallBack = callback
@@ -49,7 +52,7 @@ class volcanoPlayer(object):
         self.player.pause()
 
     def skipSong( self ):
-        self.nextSong("skip")
+        self.nextSong()
 
     def setStation( self, station ):
         self.curStation = pandora.Station(self.pandora, station)
@@ -138,7 +141,7 @@ class volcanoPlayer(object):
     def setAudioFormat( self, fmt ):
         self.pandora.set_audio_format("%sQuality"%fmt.lower())
 
-    def nextSong( self ):
+    def nextSong( self, event=False ):
         self.curSong += 1
 
         if self.curSong >= len(self.songinfo)-1:
@@ -149,12 +152,18 @@ class volcanoPlayer(object):
             self.auth(self.settings['username'], self.settings['password'])
             
         info = self.songinfo[self.curSong]
-        
-        if (re.search('[*mix*]', info['title']) or re.search('(*mix*)', info['title'])) and self.skip['remix']:
+        #print info['title']
+        if (re.search('\[.*mix.*\]', info['title'].lower()) or re.search('\(.*mix.*\)', info['title'].lower())) and self.skip['remix']:
+            if self.skip['ban']:
+                self.banSong()
             self.nextSong()
-        elif (re.search('[*live*]', info['title']) or re.search('(*live*)', info['title'])) and self.skip['live']:
+        elif (re.search('\[.*live.*\]', info['title'].lower()) or re.search('\(.*live.*\)', info['title'].lower())) and self.skip['live']:
+            if self.skip['ban']:
+                self.banSong()
             self.nextSong()
-        elif (re.search('[*edit*]', info['title']) or re.search('(*edit*)', info['title'])) and self.skip['edit']:
+        elif (re.search('\[.*edit.*\]', info['title'].lower()) or re.search('\(.*edit.*\)', info['title'].lower())) and self.skip['edit']:
+            if self.skip['ban']:
+                self.banSong()
             self.nextSong()
         else:
             self.playNextSong()

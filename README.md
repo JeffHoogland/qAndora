@@ -1,10 +1,8 @@
 A simple, cross-platform tool for playing Pandora.com radio with a QT GUI and a VLC backend
 
 TODO List:
-- History of songs played
 - Add/remove/edit stations
 - hot keys: http://i.imgur.com/ea9qQwN.png
-- Filter track types: http://i.imgur.com/iLpA6ha.png
 
 Ubuntu/Debian
   - Download and install .deb file -> https://github.com/JeffHoogland/qAndora/blob/master/Compiled-Packages/qandora.deb?raw=true

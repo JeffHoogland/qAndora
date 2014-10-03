@@ -14,6 +14,9 @@
    <string>qAndora - Preferences</string>
   </property>
   <widget class="QTabWidget" name="prefWidget">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -177,7 +180,86 @@
      </widget>
     </widget>
    </widget>
+   <widget class="QWidget" name="filterTab">
+    <attribute name="title">
+     <string>Filters</string>
+    </attribute>
+    <widget class="QCheckBox" name="liveCheck">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>10</y>
+       <width>151</width>
+       <height>26</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Filter live songs</string>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="remixCheck">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>40</y>
+       <width>171</width>
+       <height>26</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Filter remix songs</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="editCheck">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>10</y>
+       <width>171</width>
+       <height>26</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Filter edit songs</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>70</y>
+       <width>341</width>
+       <height>91</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remix are songs that have &amp;quot;mix&amp;quot; in () or []&lt;/p&gt;&lt;p&gt;Live are songs that have &amp;quot;live&amp;quot; in () or []&lt;/p&gt;&lt;p&gt;Edit are songs that contain &amp;quot;edit&amp;quot; in () or []&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="rateCheck">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>40</y>
+       <width>181</width>
+       <height>26</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Ban Filtered Songs</string>
+     </property>
+    </widget>
+   </widget>
    <widget class="QWidget" name="keyTab">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <attribute name="title">
      <string>Hotkeys</string>
     </attribute>
@@ -283,82 +365,6 @@
      </property>
      <property name="text">
       <string>...</string>
-     </property>
-    </widget>
-   </widget>
-   <widget class="QWidget" name="filterTab">
-    <attribute name="title">
-     <string>Filters</string>
-    </attribute>
-    <widget class="QCheckBox" name="liveCheck">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>10</y>
-       <width>151</width>
-       <height>26</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Filter live songs</string>
-     </property>
-     <property name="checked">
-      <bool>false</bool>
-     </property>
-    </widget>
-    <widget class="QCheckBox" name="remixCheck">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>40</y>
-       <width>171</width>
-       <height>26</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Filter remix songs</string>
-     </property>
-    </widget>
-    <widget class="QCheckBox" name="editCheck">
-     <property name="geometry">
-      <rect>
-       <x>190</x>
-       <y>10</y>
-       <width>171</width>
-       <height>26</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Filter edit songs</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>70</y>
-       <width>341</width>
-       <height>91</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remix are songs that have &amp;quot;mix&amp;quot; in () or []&lt;/p&gt;&lt;p&gt;Live are songs that have &amp;quot;live&amp;quot; in () or []&lt;/p&gt;&lt;p&gt;Edit are songs that contain &amp;quot;edit&amp;quot; in () or []&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QCheckBox" name="rateCheck">
-     <property name="geometry">
-      <rect>
-       <x>190</x>
-       <y>40</y>
-       <width>181</width>
-       <height>26</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Ban Filtered Songs</string>
      </property>
     </widget>
    </widget>
