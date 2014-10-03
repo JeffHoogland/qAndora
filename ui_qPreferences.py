@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'qPreferences.ui'
 #
-# Created: Thu Oct  2 23:04:10 2014
+# Created: Thu Oct  2 23:08:17 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -114,7 +114,7 @@ class Ui_qPreferences(object):
 
     def retranslateUi(self, qPreferences):
         qPreferences.setWindowTitle(QtGui.QApplication.translate("qPreferences", "qAndora - Preferences", None, QtGui.QApplication.UnicodeUTF8))
-        self.aboutLabel.setText(QtGui.QApplication.translate("qPreferences", "<html><head/><body><p>qAndora is a cross platform, open source, <a href=\"www.pandora.com\"><span style=\" text-decoration: underline; color:#0057ae;\">Pandora Internet Radio</span></a> client written in <a href=\"python.org\"><span style=\" text-decoration: underline; color:#0057ae;\">Python</span></a> using <a href=\"http://qt-project.org/\"><span style=\" text-decoration: underline; color:#0057ae;\">Qt</span></a> and <a href=\"http://www.videolan.org/\"><span style=\" text-decoration: underline; color:#0057ae;\">VLC</span></a> by <a href=\"http://www.jeffhoogland.com/\"><span style=\" text-decoration: underline; color:#0057ae;\">Jeff Hoogland</span></a>.<br/><br/><a href=\"https://github.com/JeffHoogland/qAndora\"><span style=\" text-decoration: underline; color:#0057ae;\">qAndora source on GitHub</span></a></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.aboutLabel.setText(QtGui.QApplication.translate("qPreferences", "<html><head/><body><p>qAndora is a cross platform, open source, <a href=\"www.pandora.com\"><span style=\" text-decoration: underline; color:#0057ae;\">Pandora Internet Radio</span></a> client written in <a href=\"https://www.python.org/\"><span style=\" text-decoration: underline; color:#0057ae;\">Python</span></a> using <a href=\"http://qt-project.org/\"><span style=\" text-decoration: underline; color:#0057ae;\">Qt</span></a> and <a href=\"http://www.videolan.org/\"><span style=\" text-decoration: underline; color:#0057ae;\">VLC</span></a> by <a href=\"http://www.jeffhoogland.com/\"><span style=\" text-decoration: underline; color:#0057ae;\">Jeff Hoogland</span></a>.<br/><br/><a href=\"https://github.com/JeffHoogland/qAndora\"><span style=\" text-decoration: underline; color:#0057ae;\">qAndora source on GitHub</span></a></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.prefWidget.setTabText(self.prefWidget.indexOf(self.aboutTab), QtGui.QApplication.translate("qPreferences", "About", None, QtGui.QApplication.UnicodeUTF8))
         self.userLabel.setText(QtGui.QApplication.translate("qPreferences", "<b>Change User:", None, QtGui.QApplication.UnicodeUTF8))
         self.logoutButton.setText(QtGui.QApplication.translate("qPreferences", "Logout", None, QtGui.QApplication.UnicodeUTF8))
