@@ -209,7 +209,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             urllib.urlretrieve(str(info['thumbnail']), os.path.join(tempdir, 'albumart.jpg'))
             albumart = QPixmap(os.path.join(tempdir, 'albumart.jpg'))
         except:
-            albumart = QPixmap('images/albumart.jpg')
+            albumart = QPixmap('images/albumart.png')
         
         self.albumImage.setPixmap(albumart)
         
