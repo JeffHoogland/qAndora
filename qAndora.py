@@ -14,8 +14,10 @@ import urllib
 import webbrowser
 import datetime
 import cPickle as pickle
+from gi.repository import Notify
 
 tempdir = tempfile.gettempdir()
+Notify.init ("Song Changed")
 
 #print "Current tmp directory is %s"%tempdir
 
@@ -199,7 +201,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         albumart = QPixmap(os.path.join(tempdir, 'albumart.jpg'))
         self.albumImage.setPixmap(albumart)
         
-        self.tray.showMessage("Song Changed", "%s by %s"%(info['title'], info['artist']))
+        #Qt Message near tray
+        #self.tray.showMessage("Song Changed", "%s by %s"%(info['title'], info['artist']))
+        #System Notification
+        songNoti=Notify.Notification.new ("Song Changed","%s by %s"%(info['title'], info['artist']))
+        songNoti.show ()
+        
         self.tray.setToolTip("%s by %s"%(info['title'], info['artist']))
         
     def settingsPressed( self ):
