@@ -28,7 +28,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.radioPlayer = volcanoPlayer()
         
         self.loginWin = LoginWindow( self )
-        self.preferencesWin = PreferencesWindow( self )
         
         #Read in stored preferences
         home = os.path.expanduser("~")
@@ -42,13 +41,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.defaultPreferences()
             self.loginWin.show()
             
+        self.preferencesWin = PreferencesWindow( self )
         self.radioPlayer.setVolume( self.preferences['volume'] )
         self.volumeSlider.setValue( self.preferences['volume'] )
         
     def defaultPreferences( self ):
         self.preferences = {    "username":"",
                                     "password":"",
-                                    "quality":"medium",
+                                    "quality":"Medium",
                                     "notifications":"Yes",
                                     "station":None,
                                     "volume":75}
@@ -184,9 +184,34 @@ class PreferencesWindow(QDialog, Ui_qPreferences):
     def __init__(self, parent=None):
         super(PreferencesWindow, self).__init__(parent)
         self.setupUi(self)
-        self.assignButtons()
         
         self.rent = parent
+        self.assignButtons()
+        self.populateDrops()
+        
+    def populateDrops( self ):
+        qualities = ['High', 'Medium', 'Low']
+        for q in qualities:
+            self.qualityBox.addItem(q)
+            
+        self.qualityBox.setCurrentIndex(qualities.index(self.rent.preferences['quality']))
+        self.qualityBox.activated[str].connect(self.qualityChange)
+            
+        choices = ['Yes', 'No']
+        for s in choices:
+            self.notificationBox.addItem(s)
+            
+        self.notificationBox.setCurrentIndex(choices.index(self.rent.preferences['notifications']))
+        self.notificationBox.activated[str].connect(self.notificationChange)
+        
+    def qualityChange( self, q ):
+        self.rent.preferences['quality'] = q
+        self.rent.radioPlayer.setAudioFormat(q)
+        self.rent.savePreferences()
+        
+    def notificationChange( self, s ):
+        self.rent.preferences['notifications'] = s
+        self.rent.savePreferences()
         
     def assignButtons( self ):
         self.logoutButton.clicked.connect(self.logoutPressed)

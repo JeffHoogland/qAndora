@@ -147,6 +147,9 @@ class volcanoPlayer(object):
     def check_download( self, url, title ):
         if Download:
             urllib.urlretrieve(str(url), '%s%s.mp3'%(DownloadPath, title))
+            
+    def setAudioFormat( self, fmt ):
+        self.pandora.set_audio_format("%sQuality"%fmt.lower())
 
     def nextSong( self , event=False ):
         if self.player.is_playing():
