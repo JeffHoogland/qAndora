@@ -16,15 +16,12 @@ import datetime
 import cPickle as pickle
 
 #See if system supports these notifications
-'''try:
-    from gi.repository import Notify
-    Notify.init ("Song Changed")
-    giLoaded = True
+try:
+    import pynotify
+    pynotify.init("Song Changed")
+    notiLoaded = True
 except:
-    giLoaded = False'''
-    
-import pynotify
-pynotify.init("Song Changed")
+    notiLoaded = False
 
 tempdir = tempfile.gettempdir()
 
@@ -224,15 +221,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         newItem.setIcon(albumart)
         self.historyList.insertItem(0, newItem)
         
-        '''if self.preferences['notifications'] == "Yes":
-            if giLoaded:
-                songNoti=Notify.Notification.new ("Song Changed","%s by %s"%(info['title'], info['artist']),albumartpath)
+        if self.preferences['notifications'] == "Yes":
+            if notiLoaded:
+                songNoti=pynotify.Notification("Song Changed","%s by %s"%(info['title'], info['artist']))
                 songNoti.show ()
             else:
-                self.tray.showMessage("Song Changed", "%s by %s"%(info['title'], info['artist']))'''
-                
-        notice = pynotify.Notification("Song Changed","%s by %s"%(info['title'], info['artist']))
-        notice.show()
+                self.tray.showMessage("Song Changed", "%s by %s"%(info['title'], info['artist']))
         
         self.tray.setToolTip("%s by %s"%(info['title'], info['artist']))
         
