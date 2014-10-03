@@ -75,8 +75,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.loginWin.show()
             
         self.preferencesWin = PreferencesWindow( self )
-        self.radioPlayer.setVolume( self.preferences['volume'] )
-        self.volumeSlider.setValue( self.preferences['volume'] )
         
     def trayClicked( self, reason ):
         if reason == self.tray.Trigger:
@@ -111,6 +109,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.preferences['password'] = userPassword
         self.savePreferences()
         
+        self.radioPlayer.setVolume( self.preferences['volume'] )
+        self.volumeSlider.setValue( self.preferences['volume'] )
         self.radioPlayer.auth( userName, userPassword )
         
         #Get last used station
