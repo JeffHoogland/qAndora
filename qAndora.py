@@ -14,7 +14,13 @@ import urllib
 import webbrowser
 import datetime
 import cPickle as pickle
-from gi.repository import Notify
+
+#See if system supports these notifications
+try:
+    from gi.repository import Notify
+    giLoaded = True
+except:
+    giLoaded = False
 
 tempdir = tempfile.gettempdir()
 Notify.init ("Song Changed")
@@ -201,11 +207,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         albumart = QPixmap(os.path.join(tempdir, 'albumart.jpg'))
         self.albumImage.setPixmap(albumart)
         
-        #Qt Message near tray
-        #self.tray.showMessage("Song Changed", "%s by %s"%(info['title'], info['artist']))
-        #System Notification
-        songNoti=Notify.Notification.new ("Song Changed","%s by %s"%(info['title'], info['artist']))
-        songNoti.show ()
+        if giLoaded:
+            songNoti=Notify.Notification.new ("Song Changed","%s by %s"%(info['title'], info['artist']))
+            songNoti.show ()
+        else:
+            self.tray.showMessage("Song Changed", "%s by %s"%(info['title'], info['artist']))
         
         self.tray.setToolTip("%s by %s"%(info['title'], info['artist']))
         
