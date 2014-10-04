@@ -24,6 +24,7 @@ class volcanoPlayer(object):
         self.songChangeCallBack = None
         self.curVolume = 75
         self.player = vlc.MediaPlayer()
+        self.player.audio_set_delay( 2500 )
         
     def setAutoSkip( self, sType, sBool ):
         self.skip[sType] = sBool
@@ -166,21 +167,18 @@ class volcanoPlayer(object):
                 self.banSong()
             self.nextSong()
         else:
-            self.playNextSong()
-            
-    def playNextSong( self ):
-        if self.player.is_playing():
-            self.player.stop()
-        self.player = vlc.MediaPlayer()
-        self.player.audio_set_volume( self.curVolume )
-        self.player.audio_set_delay( 2500 )
-        self.event_manager = self.player.event_manager()
-        self.event_manager.event_attach(vlc.EventType.MediaPlayerEndReached,      self.nextSong)
-        info = self.songinfo[self.curSong]
-        self.displaysongs.append(info)
-        self.song = info['title']
-        self.player.set_media(vlc.Media(info['url']))
-        self.playing = True
-        self.player.play()
-        self.songChangeCallBack()
+            if self.player.is_playing():
+                self.player.stop()
+            self.player = vlc.MediaPlayer()
+            self.player.audio_set_volume( self.curVolume )
+            self.event_manager = self.player.event_manager()
+            self.event_manager.event_attach(vlc.EventType.MediaPlayerEndReached,      self.nextSong)
+            info = self.songinfo[self.curSong]
+            self.displaysongs.append(info)
+            self.song = info['title']
+            self.player.set_media(vlc.Media(info['url']))
+            self.player.audio_set_delay( 2500 )
+            self.playing = True
+            self.player.play()
+            self.songChangeCallBack()
 

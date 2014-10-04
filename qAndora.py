@@ -159,6 +159,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         t = "<b>%s  /  %s</b>" % (pos, dur)
         self.positionLabel.setText(t)
         
+        #print self.radioPlayer.player.audio_get_delay()
+        
     def stationChange( self, newStation ):
         self.radioPlayer.setStation(self.radioPlayer.getStationFromName(newStation))
         

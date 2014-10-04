@@ -172,14 +172,14 @@ class volcanoPlayer(object):
         if self.player.is_playing():
             self.player.stop()
         self.player = vlc.MediaPlayer()
-        self.player.audio_set_volume( self.curVolume )
-        self.player.audio_set_delay( 2500 )
         self.event_manager = self.player.event_manager()
         self.event_manager.event_attach(vlc.EventType.MediaPlayerEndReached,      self.nextSong)
         info = self.songinfo[self.curSong]
         self.displaysongs.append(info)
         self.song = info['title']
         self.player.set_media(vlc.Media(info['url']))
+        self.player.audio_set_volume( self.curVolume )
+        self.player.audio_set_delay( 3000 )
         self.playing = True
         self.player.play()
         self.songChangeCallBack()
