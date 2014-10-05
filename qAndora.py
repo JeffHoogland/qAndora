@@ -175,6 +175,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.skipButton.clicked.connect(self.skipPressed)
         self.loveButton.clicked.connect(self.lovePressed)
         self.banButton.clicked.connect(self.banPressed)
+        self.tiredButton.clicked.connect(self.tiredPressed)
         self.settingsButton.clicked.connect(self.settingsPressed)
         self.volumeSlider.valueChanged.connect(self.volumeChange)
         
@@ -250,6 +251,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.playPauseAction.setIcon(QIcon("images/pause.png"))
     
     def skipPressed( self ):
+        self.radioPlayer.skipSong()
+    
+    def tiredPressed( self ):
+        self.radioPlayer.tiredSong()
         self.radioPlayer.skipSong()
     
     def lovePressed( self ):

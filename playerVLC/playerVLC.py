@@ -105,6 +105,10 @@ class volcanoPlayer(object):
     def banSong( self ):
         info = self.songinfo[self.curSong]
         info['object'].rate('ban')
+        
+    def tiredSong( self ):
+        info = self.songinfo[self.curSong]
+        info['object'].set_tired()
 
     def loveSong( self ):
         info = self.songinfo[self.curSong]
