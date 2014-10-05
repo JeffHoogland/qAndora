@@ -3,9 +3,10 @@ import pandora
 import webbrowser
 import urllib
 import re
+import tempfile
+import os
 
-Download = False
-DownloadPath = "/media/sda5/Music/pandora/"
+CachePath = tempfile.gettempdir()
 
 class volcanoPlayer(object):
     def __init__( self ):
@@ -24,7 +25,6 @@ class volcanoPlayer(object):
         self.songChangeCallBack = None
         self.curVolume = 75
         self.player = vlc.MediaPlayer()
-        self.player.audio_set_delay( 2500 )
         
     def setAutoSkip( self, sType, sBool ):
         self.skip[sType] = sBool
@@ -126,18 +126,37 @@ class volcanoPlayer(object):
         	 "thumbnail"	:	song.artRadio, \
              "url"      : str(song.audioUrl), \
              "rating"   : song.rating, \
-             "object"   : song
+             "object"   : song, \
+             "caching"  : False, \
+             "localpath"     : False
         	}
-            self.songinfo.append(info)
+            
+            #Apply Filters
+            if (re.search('\[.*mix.*\]', info['title'].lower()) or re.search('\(.*mix.*\)', info['title'].lower())) and self.skip['remix']:
+                if self.skip['ban']:
+                    info['object'].rate('ban')
+            elif (re.search('\[.*live.*\]', info['title'].lower()) or re.search('\(.*live.*\)', info['title'].lower())) and self.skip['live']:
+                if self.skip['ban']:
+                    info['object'].rate('ban')
+            elif (re.search('\[.*edit.*\]', info['title'].lower()) or re.search('\(.*edit.*\)', info['title'].lower())) and self.skip['edit']:
+                if self.skip['ban']:
+                    info['object'].rate('ban')
+            else:
+                #If it isn't filtered out, add it to play list.
+                self.songinfo.append(info)
         if not self.song:
             self.startPlaying()
+            
+    def cacheSong( self, songNumber ):
+        info = self.songinfo[songNumber]
+        if not info["caching"]:
+            print "Caching song %s"%info['title']
+            info["caching"] = True
+            urllib.urlretrieve(str(info['url']), os.path.join(CachePath, "%s.mp3"%info['title']))
+            info["localpath"] = os.path.join(CachePath, "%s.mp3"%info['title'])
 
     def startPlaying( self ):
         self.nextSong()
-
-    def check_download( self, url, title ):
-        if Download:
-            urllib.urlretrieve(str(url), '%s%s.mp3'%(DownloadPath, title))
             
     def setAudioFormat( self, fmt ):
         self.pandora.set_audio_format("%sQuality"%fmt.lower())
@@ -145,40 +164,32 @@ class volcanoPlayer(object):
     def nextSong( self, event=False ):
         self.curSong += 1
 
+        info = self.songinfo[self.curSong]
+        if self.player.is_playing():
+            self.player.stop()
+        self.player = vlc.MediaPlayer()
+        self.player.audio_set_volume( self.curVolume )
+        self.event_manager = self.player.event_manager()
+        self.event_manager.event_attach(vlc.EventType.MediaPlayerEndReached,      self.nextSong)
+        info = self.songinfo[self.curSong]
+        self.displaysongs.append(info)
+        self.song = info['title']
+        if info['localpath']:
+            print "Playing song from cache"
+            self.player.set_media(vlc.Media(info['localpath']))
+        else:
+            print "Playing song live from URL"
+            self.player.set_media(vlc.Media(info['url']))
+        self.playing = True
+        self.player.play()
+        self.songChangeCallBack()
+        self.player.audio_set_delay( 2500 )
+        print self.player.audio_get_delay()
+        
         if self.curSong >= len(self.songinfo)-1:
             self.addSongs()
         self.songCount += 1
         if self.songCount >= 15:
             self.songCount = 0
             self.auth(self.settings['username'], self.settings['password'])
-            
-        info = self.songinfo[self.curSong]
-        #print info['title']
-        if (re.search('\[.*mix.*\]', info['title'].lower()) or re.search('\(.*mix.*\)', info['title'].lower())) and self.skip['remix']:
-            if self.skip['ban']:
-                self.banSong()
-            self.nextSong()
-        elif (re.search('\[.*live.*\]', info['title'].lower()) or re.search('\(.*live.*\)', info['title'].lower())) and self.skip['live']:
-            if self.skip['ban']:
-                self.banSong()
-            self.nextSong()
-        elif (re.search('\[.*edit.*\]', info['title'].lower()) or re.search('\(.*edit.*\)', info['title'].lower())) and self.skip['edit']:
-            if self.skip['ban']:
-                self.banSong()
-            self.nextSong()
-        else:
-            if self.player.is_playing():
-                self.player.stop()
-            self.player = vlc.MediaPlayer()
-            self.player.audio_set_volume( self.curVolume )
-            self.event_manager = self.player.event_manager()
-            self.event_manager.event_attach(vlc.EventType.MediaPlayerEndReached,      self.nextSong)
-            info = self.songinfo[self.curSong]
-            self.displaysongs.append(info)
-            self.song = info['title']
-            self.player.set_media(vlc.Media(info['url']))
-            self.player.audio_set_delay( 2500 )
-            self.playing = True
-            self.player.play()
-            self.songChangeCallBack()
 
