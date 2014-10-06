@@ -33,6 +33,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.assignWidgets()
         
+        self.stationBox.setEditable(True)
+        self.stationBox.lineEdit().setAlignment(Qt.AlignCenter)
+        self.stationBox.lineEdit().setReadOnly(True)
+        
         self.radioPlayer = volcanoPlayer()
         
         self.loginWin = LoginWindow( self )
@@ -219,6 +223,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.albumImage.setPixmap(albumart)
         
         newItem = QListWidgetItem()
+        #newItem.setTextAlignment(Qt.AlignRight)
         newItem.setText(info['title'])
         newItem.setToolTip("By: %s"%info['artist'])
         newItem.setIcon(albumart)

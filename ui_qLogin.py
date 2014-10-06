@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'qLogin.ui'
 #
-# Created: Sun Oct  5 19:04:41 2014
+# Created: Sun Oct  5 19:54:18 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!

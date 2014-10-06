@@ -27,7 +27,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>qAndora/images/qAndora.png</normaloff>qAndora/images/qAndora.png</iconset>
+    <normaloff>images/qAndora.png</normaloff>images/qAndora.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QSlider" name="volumeSlider">
@@ -650,7 +650,7 @@
       <string>Track Position</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignCenter</set>
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
     </widget>
    </widget>
