@@ -1177,6 +1177,9 @@
       <height>51</height>
      </rect>
     </property>
+    <property name="toolTip">
+     <string>Preferences</string>
+    </property>
     <property name="text">
      <string/>
     </property>
@@ -1201,7 +1204,7 @@
      </rect>
     </property>
     <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
+     <enum>QFrame::NoFrame</enum>
     </property>
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
