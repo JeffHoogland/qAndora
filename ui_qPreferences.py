@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'qPreferences.ui'
 #
-# Created: Sun Oct  5 19:54:18 2014
+# Created: Sun Oct  5 23:05:16 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -82,34 +82,6 @@ class Ui_qPreferences(object):
         self.rateCheck.setGeometry(QtCore.QRect(190, 40, 181, 26))
         self.rateCheck.setObjectName("rateCheck")
         self.prefWidget.addTab(self.filterTab, "")
-        self.keyTab = QtGui.QWidget()
-        self.keyTab.setEnabled(False)
-        self.keyTab.setObjectName("keyTab")
-        self.ppLabel = QtGui.QLabel(self.keyTab)
-        self.ppLabel.setGeometry(QtCore.QRect(10, 10, 91, 21))
-        self.ppLabel.setObjectName("ppLabel")
-        self.skipLabel = QtGui.QLabel(self.keyTab)
-        self.skipLabel.setGeometry(QtCore.QRect(10, 40, 81, 21))
-        self.skipLabel.setObjectName("skipLabel")
-        self.vuLabel = QtGui.QLabel(self.keyTab)
-        self.vuLabel.setGeometry(QtCore.QRect(10, 70, 91, 21))
-        self.vuLabel.setObjectName("vuLabel")
-        self.vdLabel = QtGui.QLabel(self.keyTab)
-        self.vdLabel.setGeometry(QtCore.QRect(10, 100, 111, 21))
-        self.vdLabel.setObjectName("vdLabel")
-        self.ppButton = QtGui.QToolButton(self.keyTab)
-        self.ppButton.setGeometry(QtCore.QRect(160, 10, 111, 29))
-        self.ppButton.setObjectName("ppButton")
-        self.skipButton = QtGui.QToolButton(self.keyTab)
-        self.skipButton.setGeometry(QtCore.QRect(160, 40, 111, 29))
-        self.skipButton.setObjectName("skipButton")
-        self.vuButton = QtGui.QToolButton(self.keyTab)
-        self.vuButton.setGeometry(QtCore.QRect(160, 70, 111, 29))
-        self.vuButton.setObjectName("vuButton")
-        self.vdButton = QtGui.QToolButton(self.keyTab)
-        self.vdButton.setGeometry(QtCore.QRect(160, 100, 111, 29))
-        self.vdButton.setObjectName("vdButton")
-        self.prefWidget.addTab(self.keyTab, "")
 
         self.retranslateUi(qPreferences)
         self.prefWidget.setCurrentIndex(0)
@@ -130,13 +102,4 @@ class Ui_qPreferences(object):
         self.label.setText(QtGui.QApplication.translate("qPreferences", "<html><head/><body><p>Remix are songs that have &quot;mix&quot; in () or []</p><p>Live are songs that have &quot;live&quot; in () or []</p><p>Edit are songs that contain &quot;edit&quot; in () or []</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.rateCheck.setText(QtGui.QApplication.translate("qPreferences", "Ban Filtered Songs", None, QtGui.QApplication.UnicodeUTF8))
         self.prefWidget.setTabText(self.prefWidget.indexOf(self.filterTab), QtGui.QApplication.translate("qPreferences", "Filters", None, QtGui.QApplication.UnicodeUTF8))
-        self.ppLabel.setText(QtGui.QApplication.translate("qPreferences", "Play/Pause", None, QtGui.QApplication.UnicodeUTF8))
-        self.skipLabel.setText(QtGui.QApplication.translate("qPreferences", "Skip Track", None, QtGui.QApplication.UnicodeUTF8))
-        self.vuLabel.setText(QtGui.QApplication.translate("qPreferences", "Volume Up", None, QtGui.QApplication.UnicodeUTF8))
-        self.vdLabel.setText(QtGui.QApplication.translate("qPreferences", "Volume Down", None, QtGui.QApplication.UnicodeUTF8))
-        self.ppButton.setText(QtGui.QApplication.translate("qPreferences", "...", None, QtGui.QApplication.UnicodeUTF8))
-        self.skipButton.setText(QtGui.QApplication.translate("qPreferences", "...", None, QtGui.QApplication.UnicodeUTF8))
-        self.vuButton.setText(QtGui.QApplication.translate("qPreferences", "...", None, QtGui.QApplication.UnicodeUTF8))
-        self.vdButton.setText(QtGui.QApplication.translate("qPreferences", "...", None, QtGui.QApplication.UnicodeUTF8))
-        self.prefWidget.setTabText(self.prefWidget.indexOf(self.keyTab), QtGui.QApplication.translate("qPreferences", "Hotkeys", None, QtGui.QApplication.UnicodeUTF8))
 
