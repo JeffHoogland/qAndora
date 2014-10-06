@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'qPreferences.ui'
 #
-# Created: Sun Oct  5 16:47:43 2014
+# Created: Sun Oct  5 19:04:42 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!

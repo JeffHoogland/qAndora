@@ -63,7 +63,7 @@
     </property>
     <property name="icon">
      <iconset>
-      <normaloff>qAndora/images/skip.png</normaloff>qAndora/images/skip.png</iconset>
+      <normaloff>images/skip.png</normaloff>images/skip.png</iconset>
     </property>
     <property name="iconSize">
      <size>
@@ -89,7 +89,7 @@
     </property>
     <property name="icon">
      <iconset>
-      <normaloff>qAndora/images/tired.png</normaloff>qAndora/images/tired.png</iconset>
+      <normaloff>images/tired.png</normaloff>images/tired.png</iconset>
     </property>
     <property name="iconSize">
      <size>
@@ -135,7 +135,7 @@
     </property>
     <property name="icon">
      <iconset>
-      <normaloff>qAndora/images/ban.png</normaloff>qAndora/images/ban.png</iconset>
+      <normaloff>images/ban.png</normaloff>images/ban.png</iconset>
     </property>
     <property name="iconSize">
      <size>
@@ -148,7 +148,7 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>200</y>
+      <y>190</y>
       <width>400</width>
       <height>91</height>
      </rect>
@@ -208,7 +208,7 @@
       <rect>
        <x>10</x>
        <y>70</y>
-       <width>290</width>
+       <width>271</width>
        <height>20</height>
       </rect>
      </property>
@@ -222,9 +222,9 @@
     <widget class="QLabel" name="positionLabel">
      <property name="geometry">
       <rect>
-       <x>310</x>
+       <x>280</x>
        <y>70</y>
-       <width>90</width>
+       <width>111</width>
        <height>20</height>
       </rect>
      </property>
@@ -671,7 +671,7 @@
     </property>
     <property name="icon">
      <iconset>
-      <normaloff>qAndora/images/pause.png</normaloff>qAndora/images/pause.png</iconset>
+      <normaloff>images/pause.png</normaloff>images/pause.png</iconset>
     </property>
     <property name="iconSize">
      <size>
@@ -694,7 +694,7 @@
     </property>
     <property name="icon">
      <iconset>
-      <normaloff>qAndora/images/settings.png</normaloff>qAndora/images/settings.png</iconset>
+      <normaloff>images/settings.png</normaloff>images/settings.png</iconset>
     </property>
     <property name="iconSize">
      <size>
@@ -720,7 +720,7 @@
     </property>
     <property name="icon">
      <iconset>
-      <normaloff>qAndora/images/favorite.png</normaloff>qAndora/images/favorite.png</iconset>
+      <normaloff>images/favorite.png</normaloff>images/favorite.png</iconset>
     </property>
     <property name="iconSize">
      <size>
@@ -734,7 +734,7 @@
      <rect>
       <x>0</x>
       <y>40</y>
-      <width>156</width>
+      <width>161</width>
       <height>156</height>
      </rect>
     </property>
