@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'qAndora.ui'
 #
-# Created: Mon Oct  6 00:20:06 2014
+# Created: Mon Oct  6 00:22:39 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -321,7 +321,8 @@ class Ui_MainWindow(object):
         self.historyTab = QtGui.QWidget()
         self.historyTab.setObjectName("historyTab")
         self.historyList = QtGui.QListWidget(self.historyTab)
-        self.historyList.setGeometry(QtCore.QRect(0, 0, 271, 191))
+        self.historyList.setGeometry(QtCore.QRect(0, 0, 285, 225))
+        self.historyList.setMinimumSize(QtCore.QSize(285, 225))
         self.historyList.setObjectName("historyList")
         self.mainWidget.addTab(self.historyTab, "")
         self.infoFrame = QtGui.QFrame(self.centralwidget)

@@ -955,9 +955,15 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>271</width>
-        <height>191</height>
+        <width>285</width>
+        <height>225</height>
        </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>285</width>
+        <height>225</height>
+       </size>
       </property>
      </widget>
     </widget>
