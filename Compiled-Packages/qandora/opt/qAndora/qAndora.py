@@ -27,11 +27,21 @@ tempdir = tempfile.gettempdir()
 
 #print "Current tmp directory is %s"%tempdir
 
+APP_ID = 'qAndora'
+
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
         self.assignWidgets()
+        #Local keybinds for just when app is focused
+        self.assignShortcuts()
+        #Global Keybinds - work on this
+        #self.enableKeyBinds()
+        
+        self.stationBox.setEditable(True)
+        self.stationBox.lineEdit().setAlignment(Qt.AlignCenter)
+        self.stationBox.lineEdit().setReadOnly(True)
         
         self.radioPlayer = volcanoPlayer()
         
@@ -52,6 +62,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         banAction = menu.addAction("Ban Track")
         banAction.triggered.connect(self.banPressed)
         banAction.setIcon(QIcon("images/ban.png"))
+        tiredAction = menu.addAction("Tired Track")
+        tiredAction.triggered.connect(self.tiredPressed)
+        tiredAction.setIcon(QIcon("images/tired.png"))
         
         exitAction = menu.addAction("Exit")
         exitAction.triggered.connect(sys.exit)
@@ -159,6 +172,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         t = "<b>%s  /  %s</b>" % (pos, dur)
         self.positionLabel.setText(t)
         
+        #print self.radioPlayer.player.audio_get_delay()
+        
     def stationChange( self, newStation ):
         self.radioPlayer.setStation(self.radioPlayer.getStationFromName(newStation))
         
@@ -173,8 +188,26 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.skipButton.clicked.connect(self.skipPressed)
         self.loveButton.clicked.connect(self.lovePressed)
         self.banButton.clicked.connect(self.banPressed)
+        self.tiredButton.clicked.connect(self.tiredPressed)
         self.settingsButton.clicked.connect(self.settingsPressed)
         self.volumeSlider.valueChanged.connect(self.volumeChange)
+        
+    def assignShortcuts( self ):
+        self.playPauseShortcut = QShortcut(QKeySequence(Qt.Key_Space), self)
+        self.playPauseShortcut.setContext(Qt.ApplicationShortcut)
+        self.playPauseShortcut.activated.connect(self.playPausePressed)
+        
+        self.pauseShortcut = QShortcut(QKeySequence(Qt.Key_MediaPause), self)
+        self.pauseShortcut.setContext(Qt.ApplicationShortcut)
+        self.pauseShortcut.activated.connect(self.playPausePressed)
+        
+        self.playShortcut = QShortcut(QKeySequence(Qt.Key_MediaPlay), self)
+        self.playShortcut.setContext(Qt.ApplicationShortcut)
+        self.playShortcut.activated.connect(self.playPausePressed)
+        
+        self.nextShortcut = QShortcut(QKeySequence(Qt.Key_MediaNext), self)
+        self.nextShortcut.setContext(Qt.ApplicationShortcut)
+        self.nextShortcut.activated.connect(self.skipPressed)
         
     def volumeChange( self, val ):
         #print("New audio value is %s"%val)
@@ -216,6 +249,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.albumImage.setPixmap(albumart)
         
         newItem = QListWidgetItem()
+        #newItem.setTextAlignment(Qt.AlignRight)
         newItem.setText(info['title'])
         newItem.setToolTip("By: %s"%info['artist'])
         newItem.setIcon(albumart)
@@ -250,6 +284,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def skipPressed( self ):
         self.radioPlayer.skipSong()
     
+    def tiredPressed( self ):
+        self.radioPlayer.tiredSong()
+        self.radioPlayer.skipSong()
+    
     def lovePressed( self ):
         self.radioPlayer.loveSong()
         self.loveButton.setIcon(QIcon("images/love.png"))
@@ -258,6 +296,34 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def banPressed( self ):
         self.radioPlayer.banSong()
         self.radioPlayer.skipSong()
+
+    def kbevent(self, event):
+        if event.KeyID == 179 or event.Key == 'Media_Play_Pause':
+            self.playPausePressed()
+        if event.KeyID == 176 or event.Key == 'Media_Next_Track':
+            self.skipPressed()
+        return True
+
+    def bindWin32(self):
+        try:
+            import pyHook
+        except ImportError:
+            print('Please install PyHook: http://www.lfd.uci.edu/~gohlke/pythonlibs/#pyhook')
+            return False
+        self.hookman = pyHook.HookManager()
+        self.hookman.KeyDown = self.kbevent
+        self.hookman.HookKeyboard()
+        return True
+        
+    def enableKeyBinds(self):
+        if sys.platform == 'win32':
+            loaded = self.bindWin32()
+        elif sys.platform == 'darwin':
+            print "Key bindings not supported on OSX loading focused keys instead."
+            self.assignShortcuts()
+        else:
+            print "Key bindings not supported on Linux loading focused keys instead."
+            self.assignShortcuts()
 
 class PreferencesWindow(QDialog, Ui_qPreferences):
     def __init__(self, parent=None):
