@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'qAndora.ui'
 #
-# Created: Mon Oct  6 00:22:39 2014
+# Created: Mon Oct  6 11:03:13 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,16 +12,16 @@ from PySide import QtCore, QtGui
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(325, 475)
-        MainWindow.setMinimumSize(QtCore.QSize(325, 475))
-        MainWindow.setMaximumSize(QtCore.QSize(325, 475))
+        MainWindow.resize(323, 483)
+        MainWindow.setMinimumSize(QtCore.QSize(323, 483))
+        MainWindow.setMaximumSize(QtCore.QSize(323, 483))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("images/qAndora.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.mainWidget = QtGui.QTabWidget(self.centralwidget)
-        self.mainWidget.setGeometry(QtCore.QRect(0, 0, 321, 231))
+        self.mainWidget.setGeometry(QtCore.QRect(0, 0, 321, 211))
         self.mainWidget.setTabPosition(QtGui.QTabWidget.East)
         self.mainWidget.setObjectName("mainWidget")
         self.currentTab = QtGui.QWidget()
@@ -326,24 +326,24 @@ class Ui_MainWindow(object):
         self.historyList.setObjectName("historyList")
         self.mainWidget.addTab(self.historyTab, "")
         self.infoFrame = QtGui.QFrame(self.centralwidget)
-        self.infoFrame.setGeometry(QtCore.QRect(0, 220, 321, 91))
-        self.infoFrame.setFrameShape(QtGui.QFrame.NoFrame)
+        self.infoFrame.setGeometry(QtCore.QRect(0, 220, 321, 81))
+        self.infoFrame.setFrameShape(QtGui.QFrame.Panel)
         self.infoFrame.setFrameShadow(QtGui.QFrame.Plain)
         self.infoFrame.setObjectName("infoFrame")
         self.titleLabel = QtGui.QLabel(self.infoFrame)
-        self.titleLabel.setGeometry(QtCore.QRect(10, 10, 301, 20))
+        self.titleLabel.setGeometry(QtCore.QRect(10, 0, 301, 20))
         self.titleLabel.setWordWrap(True)
         self.titleLabel.setIndent(-1)
         self.titleLabel.setOpenExternalLinks(True)
         self.titleLabel.setObjectName("titleLabel")
         self.albumLabel = QtGui.QLabel(self.infoFrame)
-        self.albumLabel.setGeometry(QtCore.QRect(10, 40, 301, 20))
+        self.albumLabel.setGeometry(QtCore.QRect(10, 30, 301, 20))
         self.albumLabel.setWordWrap(True)
         self.albumLabel.setIndent(-1)
         self.albumLabel.setOpenExternalLinks(True)
         self.albumLabel.setObjectName("albumLabel")
         self.artistLabel = QtGui.QLabel(self.infoFrame)
-        self.artistLabel.setGeometry(QtCore.QRect(10, 70, 271, 20))
+        self.artistLabel.setGeometry(QtCore.QRect(10, 60, 271, 20))
         self.artistLabel.setOpenExternalLinks(True)
         self.artistLabel.setObjectName("artistLabel")
         self.loveButton = QtGui.QPushButton(self.centralwidget)
@@ -395,9 +395,9 @@ class Ui_MainWindow(object):
         self.settingsButton.setIconSize(QtCore.QSize(24, 24))
         self.settingsButton.setObjectName("settingsButton")
         self.lowerFrame = QtGui.QFrame(self.centralwidget)
-        self.lowerFrame.setGeometry(QtCore.QRect(0, 360, 321, 111))
-        self.lowerFrame.setFrameShape(QtGui.QFrame.NoFrame)
-        self.lowerFrame.setFrameShadow(QtGui.QFrame.Raised)
+        self.lowerFrame.setGeometry(QtCore.QRect(0, 370, 321, 111))
+        self.lowerFrame.setFrameShape(QtGui.QFrame.Panel)
+        self.lowerFrame.setFrameShadow(QtGui.QFrame.Plain)
         self.lowerFrame.setObjectName("lowerFrame")
         self.volumeSlider = QtGui.QSlider(self.lowerFrame)
         self.volumeSlider.setGeometry(QtCore.QRect(10, 20, 301, 41))
