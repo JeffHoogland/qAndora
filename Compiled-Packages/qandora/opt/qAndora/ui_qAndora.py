@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'qAndora.ui'
 #
-# Created: Mon Oct  6 11:03:13 2014
+# Created: Mon Oct  6 11:10:37 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -327,8 +327,8 @@ class Ui_MainWindow(object):
         self.mainWidget.addTab(self.historyTab, "")
         self.infoFrame = QtGui.QFrame(self.centralwidget)
         self.infoFrame.setGeometry(QtCore.QRect(0, 220, 321, 81))
-        self.infoFrame.setFrameShape(QtGui.QFrame.Panel)
-        self.infoFrame.setFrameShadow(QtGui.QFrame.Plain)
+        self.infoFrame.setFrameShape(QtGui.QFrame.StyledPanel)
+        self.infoFrame.setFrameShadow(QtGui.QFrame.Raised)
         self.infoFrame.setObjectName("infoFrame")
         self.titleLabel = QtGui.QLabel(self.infoFrame)
         self.titleLabel.setGeometry(QtCore.QRect(10, 0, 301, 20))
@@ -396,8 +396,8 @@ class Ui_MainWindow(object):
         self.settingsButton.setObjectName("settingsButton")
         self.lowerFrame = QtGui.QFrame(self.centralwidget)
         self.lowerFrame.setGeometry(QtCore.QRect(0, 370, 321, 111))
-        self.lowerFrame.setFrameShape(QtGui.QFrame.Panel)
-        self.lowerFrame.setFrameShadow(QtGui.QFrame.Plain)
+        self.lowerFrame.setFrameShape(QtGui.QFrame.StyledPanel)
+        self.lowerFrame.setFrameShadow(QtGui.QFrame.Raised)
         self.lowerFrame.setObjectName("lowerFrame")
         self.volumeSlider = QtGui.QSlider(self.lowerFrame)
         self.volumeSlider.setGeometry(QtCore.QRect(10, 20, 301, 41))
