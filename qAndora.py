@@ -35,9 +35,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.assignWidgets()
         #Local keybinds for just when app is focused
-        #self.assignShortcuts()
-        #Global Keybinds
-        self.enableKeyBinds()
+        self.assignShortcuts()
+        #Global Keybinds - work on this
+        #self.enableKeyBinds()
         
         self.stationBox.setEditable(True)
         self.stationBox.lineEdit().setAlignment(Qt.AlignCenter)
