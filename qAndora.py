@@ -35,9 +35,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.assignWidgets()
         #Local keybinds for just when app is focused
-        self.assignShortcuts()
+        #self.assignShortcuts()
         #Global Keybinds - work on this
-        #self.enableKeyBinds()
+        self.enableKeyBinds()
         
         self.stationBox.setEditable(True)
         self.stationBox.lineEdit().setAlignment(Qt.AlignCenter)
@@ -308,7 +308,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         try:
             import pyHook
         except ImportError:
-            print('Please install PyHook: http://www.lfd.uci.edu/~gohlke/pythonlibs/#pyhook')
+            print('Please install PyHook: http://sourceforge.net/projects/pyhook/ using local bindings for now')
+			self.assignShortcuts()
             return False
         self.hookman = pyHook.HookManager()
         self.hookman.KeyDown = self.kbevent

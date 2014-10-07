@@ -1,0 +1,2 @@
+[03dece44] main input error: ES_OUT_SET_(GROUP_)PCR  is called too late (jitter of 5721 ms ignored)
+[03dece44] main input error: ES_OUT_RESET_PCR called

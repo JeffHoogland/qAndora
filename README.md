@@ -11,6 +11,7 @@ Windows
   - Download zip file -> https://github.com/JeffHoogland/qAndora/blob/master/Compiled-Packages/windows.zip?raw=true
   - Extract the contents
   - Run qAndora.exe
+  - Optional: For global multimedia key support install: http://sourceforge.net/projects/pyhook/
 
 Other OS
   - Install PySide, VLC, and GIT
