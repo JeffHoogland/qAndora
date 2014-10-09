@@ -158,10 +158,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.isVisible = True
         
     def timerTick( self ):
-        pos = self.radioPlayer.player.get_time() / 1000.0
-
-        pos = str(datetime.timedelta(seconds=int(pos)))
-        dur = str(datetime.timedelta(seconds=int(self.radioPlayer.player.get_length() / 1000.0)))
+        pos = str(datetime.timedelta(seconds=int(self.radioPlayer.getPosition())))
+        dur = str(datetime.timedelta(seconds=int(self.radioPlayer.getLength())))
         
         posh, posm, poss = pos.split(":")
         durh, durm, durs = dur.split(":")
@@ -172,7 +170,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         t = "<b>%s  /  %s</b>" % (pos, dur)
         self.positionLabel.setText(t)
         
-        #print self.radioPlayer.player.audio_get_delay()
+        if pos == dur and pos != "00:00":
+            self.radioPlayer.nextSong()
         
     def stationChange( self, newStation ):
         self.radioPlayer.setStation(self.radioPlayer.getStationFromName(newStation))

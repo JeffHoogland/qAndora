@@ -1,4 +1,7 @@
-import vlc
+import gobject, pygst
+pygst.require('0.10')
+import gst
+
 import pandora
 import webbrowser
 import urllib
@@ -24,19 +27,41 @@ class volcanoPlayer(object):
         self.songCount = 0
         self.songChangeCallBack = None
         self.curVolume = 75
-        self.player = vlc.MediaPlayer()
+        self.player = gst.element_factory_make('playbin', 'player')
+        
+        try:
+             # alsasink pulsesink osssink autoaudiosink
+             device = gst.parse_launch('alsasink')
+        except gobject.GError:
+            print 'Error: could not launch audio sink'
+        else:
+            self.player.set_property('audio-sink', device)
+            self.bus = self.player.get_bus()
+            self.bus.add_signal_watch()
+            self.bus.connect('message', self.on_message)
+             
+    def on_message(self, bus, message):
+         t = message.type
+         if t == gst.MESSAGE_EOS:
+             self.player.set_state(gst.STATE_NULL)
+             self.button.setText('Start')
+         elif t == gst.MESSAGE_ERROR:
+             self.player.set_state(gst.STATE_NULL)
+             err, debug = message.parse_error()
+             print 'Error: %s' % err, debug
+             self.button.setText('Start')
     
     def getPosition( self ):
-        #try:
-        return self.player.get_time() / 1000.0
-        #except:
-        #    return 0
+        try:
+            return self.player.query_position(gst.FORMAT_TIME)[0]/1000000000
+        except:
+            return 0
             
     def getLength( self ):
-        #try:
-        return self.player.get_length() / 1000.0
-        #except:
-        #    return 0
+        try:
+            return self.player.query_duration(gst.FORMAT_TIME)[0]/1000000000
+        except:
+            return 0
         
     def setAutoSkip( self, sType, sBool ):
         self.skip[sType] = sBool
@@ -53,16 +78,16 @@ class volcanoPlayer(object):
             pass
             
     def setVolume( self, newVol ):
-        self.player.audio_set_volume( newVol )
+        #self.player.audio_set_volume( newVol )
         self.curVolume = newVol
 
     def playSong( self ):
         self.playing = True
-        self.player.play()
+        self.player.set_state(gst.STATE_PLAYING)
 
     def pauseSong( self ):
         self.playing = False
-        self.player.pause()
+        self.player.set_state(gst.STATE_PAUSED)
 
     def skipSong( self ):
         self.nextSong()
@@ -168,18 +193,15 @@ class volcanoPlayer(object):
         self.pandora.set_audio_format("%sQuality"%fmt.lower())
 
     def nextSong( self, event=False ):
+        self.player.set_state(gst.STATE_NULL)
         self.curSong += 1
 
         info = self.songinfo[self.curSong]
-        if self.player.is_playing():
-            self.player.stop()
-        self.player = vlc.MediaPlayer()
-        self.player.audio_set_volume( self.curVolume )
         self.displaysongs.append(info)
         self.song = info['title']
-        self.player.set_media(vlc.Media(info['url']))
+        self.player.set_property('uri', info['url'])
         self.playing = True
-        self.player.play()
+        self.player.set_state(gst.STATE_PLAYING)
         self.songChangeCallBack()
         
         if self.curSong >= len(self.songinfo)-1:
