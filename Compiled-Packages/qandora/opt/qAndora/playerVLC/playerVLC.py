@@ -25,6 +25,18 @@ class volcanoPlayer(object):
         self.songChangeCallBack = None
         self.curVolume = 75
         self.player = vlc.MediaPlayer()
+    
+    def getPosition( self ):
+        #try:
+        return self.player.get_time() / 1000.0
+        #except:
+        #    return 0
+            
+    def getLength( self ):
+        #try:
+        return self.player.get_length() / 1000.0
+        #except:
+        #    return 0
         
     def setAutoSkip( self, sType, sBool ):
         self.skip[sType] = sBool
@@ -130,9 +142,7 @@ class volcanoPlayer(object):
         	 "thumbnail"	:	song.artRadio, \
              "url"      : str(song.audioUrl), \
              "rating"   : song.rating, \
-             "object"   : song, \
-             "caching"  : False, \
-             "localpath"     : False
+             "object"   : song
         	}
             
             #Apply Filters
@@ -150,14 +160,6 @@ class volcanoPlayer(object):
                 self.songinfo.append(info)
         if not self.song:
             self.startPlaying()
-            
-    def cacheSong( self, songNumber ):
-        info = self.songinfo[songNumber]
-        if not info["caching"]:
-            print "Caching song %s"%info['title']
-            info["caching"] = True
-            urllib.urlretrieve(str(info['url']), os.path.join(CachePath, "%s.mp3"%info['title']))
-            info["localpath"] = os.path.join(CachePath, "%s.mp3"%info['title'])
 
     def startPlaying( self ):
         self.nextSong()
@@ -173,22 +175,12 @@ class volcanoPlayer(object):
             self.player.stop()
         self.player = vlc.MediaPlayer()
         self.player.audio_set_volume( self.curVolume )
-        self.event_manager = self.player.event_manager()
-        self.event_manager.event_attach(vlc.EventType.MediaPlayerEndReached,      self.nextSong)
-        info = self.songinfo[self.curSong]
         self.displaysongs.append(info)
         self.song = info['title']
-        if info['localpath']:
-            print "Playing song from cache"
-            self.player.set_media(vlc.Media(info['localpath']))
-        else:
-            print "Playing song live from URL"
-            self.player.set_media(vlc.Media(info['url']))
+        self.player.set_media(vlc.Media(info['url']))
         self.playing = True
         self.player.play()
         self.songChangeCallBack()
-        self.player.audio_set_delay( 2500 )
-        print self.player.audio_get_delay()
         
         if self.curSong >= len(self.songinfo)-1:
             self.addSongs()

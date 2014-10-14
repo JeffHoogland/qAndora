@@ -6,6 +6,7 @@ rm -rf Compiled-Packages/qandora/opt/qAndora/*
 
 #Move over new files
 cp qAndora.py Compiled-Packages/qandora/opt/qAndora/
+cp pyxhook.py Compiled-Packages/qandora/opt/qAndora/
 cp ui_*.py Compiled-Packages/qandora/opt/qAndora/
 cp -a images Compiled-Packages/qandora/opt/qAndora/
 cp -a playerVLC Compiled-Packages/qandora/opt/qAndora/

@@ -35,9 +35,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.assignWidgets()
         #Local keybinds for just when app is focused
-        self.assignShortcuts()
+        #self.assignShortcuts()
         #Global Keybinds - work on this
-        #self.enableKeyBinds()
+        self.enableKeyBinds()
         
         self.stationBox.setEditable(True)
         self.stationBox.lineEdit().setAlignment(Qt.AlignCenter)
@@ -158,10 +158,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.isVisible = True
         
     def timerTick( self ):
-        pos = self.radioPlayer.player.get_time() / 1000.0
-
-        pos = str(datetime.timedelta(seconds=int(pos)))
-        dur = str(datetime.timedelta(seconds=int(self.radioPlayer.player.get_length() / 1000.0)))
+        pos = str(datetime.timedelta(seconds=int(self.radioPlayer.getPosition())))
+        dur = str(datetime.timedelta(seconds=int(self.radioPlayer.getLength())))
         
         posh, posm, poss = pos.split(":")
         durh, durm, durs = dur.split(":")
@@ -172,7 +170,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         t = "<b>%s  /  %s</b>" % (pos, dur)
         self.positionLabel.setText(t)
         
-        #print self.radioPlayer.player.audio_get_delay()
+        if pos == dur and pos != "00:00":
+            self.radioPlayer.nextSong()
         
     def stationChange( self, newStation ):
         self.radioPlayer.setStation(self.radioPlayer.getStationFromName(newStation))
@@ -196,18 +195,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.playPauseShortcut = QShortcut(QKeySequence(Qt.Key_Space), self)
         self.playPauseShortcut.setContext(Qt.ApplicationShortcut)
         self.playPauseShortcut.activated.connect(self.playPausePressed)
-        
-        self.pauseShortcut = QShortcut(QKeySequence(Qt.Key_MediaPause), self)
-        self.pauseShortcut.setContext(Qt.ApplicationShortcut)
-        self.pauseShortcut.activated.connect(self.playPausePressed)
-        
-        self.playShortcut = QShortcut(QKeySequence(Qt.Key_MediaPlay), self)
-        self.playShortcut.setContext(Qt.ApplicationShortcut)
-        self.playShortcut.activated.connect(self.playPausePressed)
-        
-        self.nextShortcut = QShortcut(QKeySequence(Qt.Key_MediaNext), self)
-        self.nextShortcut.setContext(Qt.ApplicationShortcut)
-        self.nextShortcut.activated.connect(self.skipPressed)
         
     def volumeChange( self, val ):
         #print("New audio value is %s"%val)
@@ -297,33 +284,55 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.radioPlayer.banSong()
         self.radioPlayer.skipSong()
 
-    def kbevent(self, event):
+    def winKBevent(self, event):
         if event.KeyID == 179 or event.Key == 'Media_Play_Pause':
-            self.playPausePressed()
+            invoke_in_main_thread(self.playPausePressed)
         if event.KeyID == 176 or event.Key == 'Media_Next_Track':
-            self.skipPressed()
+            invoke_in_main_thread(self.skipPressed)
+        return True
+        
+    def linuxKBevent(self, event):
+        if event.Key == "[269025044]":
+            invoke_in_main_thread(self.playPausePressed)
+        
         return True
 
     def bindWin32(self):
         try:
             import pyHook
         except ImportError:
-            print('Please install PyHook: http://www.lfd.uci.edu/~gohlke/pythonlibs/#pyhook')
+            print('Please install PyHook: http://sourceforge.net/projects/pyhook/ using local bindings for now')
+            self.assignShortcuts()
             return False
         self.hookman = pyHook.HookManager()
-        self.hookman.KeyDown = self.kbevent
+        self.hookman.KeyDown = self.winKBevent
         self.hookman.HookKeyboard()
+        return True
+        
+    def bindLinux(self):
+        try:
+            import pyxhook
+        except ImportError:
+            print('Failed to import pyxhook.')
+            self.assignShortcuts()
+            return False
+        self.hookman = pyxhook.HookManager()
+        self.hookman.KeyDown = self.linuxKBevent
+        self.hookman.HookKeyboard()
+        self.hookman.start()
         return True
         
     def enableKeyBinds(self):
         if sys.platform == 'win32':
+            self.assignShortcuts()
             loaded = self.bindWin32()
         elif sys.platform == 'darwin':
             print "Key bindings not supported on OSX loading focused keys instead."
             self.assignShortcuts()
         else:
-            print "Key bindings not supported on Linux loading focused keys instead."
+            #print "Key bindings not supported on Linux loading focused keys instead."
             self.assignShortcuts()
+            loaded = self.bindLinux()
 
 class PreferencesWindow(QDialog, Ui_qPreferences):
     def __init__(self, parent=None):
@@ -469,5 +478,7 @@ def invoke_in_main_thread(func, *args):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     mainWin = MainWindow()
-    #mainWin.show()
-    sys.exit( app.exec_() )
+    ret = app.exec_()
+    if os.name == 'posix':
+        mainWin.hookman.cancel()
+    sys.exit( ret )
