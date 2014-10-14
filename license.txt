@@ -1,3 +1,6 @@
+This license applies to all files in this repository that do not have 
+another license otherwise indicated.
+
 Copyright (c) 2014, Jeff Hoogland
 All rights reserved.
 
