@@ -184,6 +184,7 @@ class volcanoPlayer(object):
         self.song = info['title']
         self.player.set_property('uri', info['url'])
         self.playing = True
+        self.setVolume( self.curVolume )
         self.player.set_state(gst.STATE_PLAYING)
         self.songChangeCallBack()
         
