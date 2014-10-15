@@ -8,7 +8,7 @@ from ui_qAndora import Ui_MainWindow
 from ui_qLogin import Ui_qLogin
 from ui_qPreferences import Ui_qPreferences
 
-from playerVLC import volcanoPlayer
+from playerGst import volcanoPlayer
 import tempfile
 import urllib
 import webbrowser
@@ -66,9 +66,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         tiredAction.triggered.connect(self.tiredPressed)
         tiredAction.setIcon(QIcon("images/tired.png"))
         
-        exitAction = menu.addAction("Exit")
-        exitAction.triggered.connect(sys.exit)
-        exitAction.setIcon(QIcon("images/exit.png"))
+        #exitAction = menu.addAction("Exit")
+        #exitAction.triggered.connect(self.exitPressed)
+        #exitAction.setIcon(QIcon("images/exit.png"))
         
         self.tray = QSystemTrayIcon()
         self.tray.setIcon(icon)

@@ -27,29 +27,8 @@ class volcanoPlayer(object):
         self.songCount = 0
         self.songChangeCallBack = None
         self.curVolume = 75
+        self.buffer_percent = 100
         self.player = gst.element_factory_make('playbin', 'player')
-        
-        try:
-             # alsasink pulsesink osssink autoaudiosink
-             device = gst.parse_launch('alsasink')
-        except gobject.GError:
-            print 'Error: could not launch audio sink'
-        else:
-            self.player.set_property('audio-sink', device)
-            self.bus = self.player.get_bus()
-            self.bus.add_signal_watch()
-            self.bus.connect('message', self.on_message)
-             
-    def on_message(self, bus, message):
-         t = message.type
-         if t == gst.MESSAGE_EOS:
-             self.player.set_state(gst.STATE_NULL)
-             self.button.setText('Start')
-         elif t == gst.MESSAGE_ERROR:
-             self.player.set_state(gst.STATE_NULL)
-             err, debug = message.parse_error()
-             print 'Error: %s' % err, debug
-             self.button.setText('Start')
     
     def getPosition( self ):
         try:
@@ -79,6 +58,7 @@ class volcanoPlayer(object):
             
     def setVolume( self, newVol ):
         #self.player.audio_set_volume( newVol )
+        self.player.set_property("volume", float(newVol*.01))
         self.curVolume = newVol
 
     def playSong( self ):
