@@ -28,8 +28,11 @@ class volcanoPlayer(object):
         self.songChangeCallBack = None
         self.curVolume = 75
         self.buffer_percent = 100
-        self.player = gst.element_factory_make('playbin', 'player')
-    
+        #self.player = gst.element_factory_make('playbin', 'player')
+        
+        self.player = gst.element_factory_make("playbin2", "player")
+        self.player.props.flags |= (1 << 7) # enable progressive download (GST_PLAY_FLAG_DOWNLOAD)
+        
     def getPosition( self ):
         try:
             return self.player.query_position(gst.FORMAT_TIME)[0]/1000000000
