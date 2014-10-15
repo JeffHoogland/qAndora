@@ -22,4 +22,4 @@ TODO List:
 - Add/remove/edit stations
 - Add validation that the pandora login works instead of assuming it does
 - hot keys: http://i.imgur.com/ea9qQwN.png
-- GStreamer Support
+- Add preference option to change between VLC and Gst backends
