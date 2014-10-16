@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'qAndora-mobile.ui'
 #
-# Created: Wed Oct 15 23:35:05 2014
+# Created: Wed Oct 15 23:37:08 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -27,8 +27,8 @@ class Ui_MainWindow(object):
         self.currentTab = QtGui.QWidget()
         self.currentTab.setObjectName("currentTab")
         self.albumImage = QtGui.QLabel(self.currentTab)
-        self.albumImage.setGeometry(QtCore.QRect(0, 0, 280, 200))
-        self.albumImage.setMinimumSize(QtCore.QSize(280, 200))
+        self.albumImage.setGeometry(QtCore.QRect(0, 0, 290, 200))
+        self.albumImage.setMinimumSize(QtCore.QSize(290, 200))
         self.albumImage.setMaximumSize(QtCore.QSize(0, 0))
         self.albumImage.setScaledContents(True)
         self.albumImage.setObjectName("albumImage")
