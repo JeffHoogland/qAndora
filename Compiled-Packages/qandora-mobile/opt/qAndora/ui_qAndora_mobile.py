@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'qAndora-mobile.ui'
 #
-# Created: Thu Oct 16 10:17:45 2014
+# Created: Thu Oct 16 10:43:54 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -21,7 +21,11 @@ class Ui_MainWindow(object):
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.mainWidget = QtGui.QTabWidget(self.centralwidget)
-        self.mainWidget.setGeometry(QtCore.QRect(440, 10, 321, 211))
+        self.mainWidget.setGeometry(QtCore.QRect(440, 10, 361, 211))
+        font = QtGui.QFont()
+        font.setPointSize(18)
+        self.mainWidget.setFont(font)
+        self.mainWidget.setStyleSheet("QTabBar::tab { height: 100px; width: 75px; }")
         self.mainWidget.setTabPosition(QtGui.QTabWidget.East)
         self.mainWidget.setObjectName("mainWidget")
         self.currentTab = QtGui.QWidget()
@@ -33,7 +37,7 @@ class Ui_MainWindow(object):
         self.albumImage.setScaledContents(True)
         self.albumImage.setObjectName("albumImage")
         self.positionFrame = QtGui.QFrame(self.currentTab)
-        self.positionFrame.setGeometry(QtCore.QRect(70, 150, 151, 41))
+        self.positionFrame.setGeometry(QtCore.QRect(60, 130, 171, 61))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -176,7 +180,7 @@ class Ui_MainWindow(object):
         self.positionFrame.setFrameShadow(QtGui.QFrame.Raised)
         self.positionFrame.setObjectName("positionFrame")
         self.positionLabel = QtGui.QLabel(self.positionFrame)
-        self.positionLabel.setGeometry(QtCore.QRect(0, 0, 151, 41))
+        self.positionLabel.setGeometry(QtCore.QRect(15, 10, 141, 41))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -329,7 +333,7 @@ class Ui_MainWindow(object):
         self.historyList.setObjectName("historyList")
         self.mainWidget.addTab(self.historyTab, "")
         self.infoFrame = QtGui.QFrame(self.centralwidget)
-        self.infoFrame.setGeometry(QtCore.QRect(360, 230, 421, 131))
+        self.infoFrame.setGeometry(QtCore.QRect(360, 230, 431, 131))
         self.infoFrame.setFrameShape(QtGui.QFrame.StyledPanel)
         self.infoFrame.setFrameShadow(QtGui.QFrame.Raised)
         self.infoFrame.setObjectName("infoFrame")
