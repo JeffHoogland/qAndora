@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'qAndora-mobile.ui'
 #
-# Created: Thu Oct 16 10:48:05 2014
+# Created: Thu Oct 16 10:51:18 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -37,7 +37,7 @@ class Ui_MainWindow(object):
         self.albumImage.setScaledContents(True)
         self.albumImage.setObjectName("albumImage")
         self.positionFrame = QtGui.QFrame(self.currentTab)
-        self.positionFrame.setGeometry(QtCore.QRect(70, 130, 171, 61))
+        self.positionFrame.setGeometry(QtCore.QRect(60, 130, 181, 61))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -180,7 +180,7 @@ class Ui_MainWindow(object):
         self.positionFrame.setFrameShadow(QtGui.QFrame.Raised)
         self.positionFrame.setObjectName("positionFrame")
         self.positionLabel = QtGui.QLabel(self.positionFrame)
-        self.positionLabel.setGeometry(QtCore.QRect(15, 10, 141, 41))
+        self.positionLabel.setGeometry(QtCore.QRect(15, 10, 151, 41))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
         brush.setStyle(QtCore.Qt.SolidPattern)

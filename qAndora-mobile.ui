@@ -88,9 +88,9 @@
      <widget class="QFrame" name="positionFrame">
       <property name="geometry">
        <rect>
-        <x>70</x>
+        <x>60</x>
         <y>130</y>
-        <width>171</width>
+        <width>181</width>
         <height>61</height>
        </rect>
       </property>
@@ -523,7 +523,7 @@
         <rect>
          <x>15</x>
          <y>10</y>
-         <width>141</width>
+         <width>151</width>
          <height>41</height>
         </rect>
        </property>
