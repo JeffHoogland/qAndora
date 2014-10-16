@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'qAndora-mobile.ui'
 #
-# Created: Thu Oct 16 10:51:18 2014
+# Created: Thu Oct 16 11:52:22 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -354,7 +354,7 @@ class Ui_MainWindow(object):
         self.artistLabel.setOpenExternalLinks(True)
         self.artistLabel.setObjectName("artistLabel")
         self.loveButton = QtGui.QPushButton(self.centralwidget)
-        self.loveButton.setGeometry(QtCore.QRect(150, 120, 125, 100))
+        self.loveButton.setGeometry(QtCore.QRect(10, 120, 125, 100))
         self.loveButton.setText("")
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap("images/favorite.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -362,7 +362,7 @@ class Ui_MainWindow(object):
         self.loveButton.setIconSize(QtCore.QSize(75, 75))
         self.loveButton.setObjectName("loveButton")
         self.tiredButton = QtGui.QPushButton(self.centralwidget)
-        self.tiredButton.setGeometry(QtCore.QRect(290, 10, 125, 100))
+        self.tiredButton.setGeometry(QtCore.QRect(150, 120, 125, 100))
         self.tiredButton.setText("")
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap("images/tired.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -370,7 +370,7 @@ class Ui_MainWindow(object):
         self.tiredButton.setIconSize(QtCore.QSize(75, 75))
         self.tiredButton.setObjectName("tiredButton")
         self.banButton = QtGui.QPushButton(self.centralwidget)
-        self.banButton.setGeometry(QtCore.QRect(150, 10, 125, 100))
+        self.banButton.setGeometry(QtCore.QRect(290, 120, 125, 100))
         self.banButton.setText("")
         icon3 = QtGui.QIcon()
         icon3.addPixmap(QtGui.QPixmap("images/ban.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -386,7 +386,7 @@ class Ui_MainWindow(object):
         self.playPauseButton.setIconSize(QtCore.QSize(75, 75))
         self.playPauseButton.setObjectName("playPauseButton")
         self.skipButton = QtGui.QPushButton(self.centralwidget)
-        self.skipButton.setGeometry(QtCore.QRect(10, 120, 125, 100))
+        self.skipButton.setGeometry(QtCore.QRect(150, 10, 125, 100))
         self.skipButton.setText("")
         icon5 = QtGui.QIcon()
         icon5.addPixmap(QtGui.QPixmap("images/skip.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -394,7 +394,7 @@ class Ui_MainWindow(object):
         self.skipButton.setIconSize(QtCore.QSize(75, 75))
         self.skipButton.setObjectName("skipButton")
         self.settingsButton = QtGui.QPushButton(self.centralwidget)
-        self.settingsButton.setGeometry(QtCore.QRect(290, 120, 125, 100))
+        self.settingsButton.setGeometry(QtCore.QRect(290, 10, 125, 100))
         self.settingsButton.setText("")
         icon6 = QtGui.QIcon()
         icon6.addPixmap(QtGui.QPixmap("images/settings.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
