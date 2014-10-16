@@ -1,0 +1,11 @@
+[Desktop Entry]
+Hidden=false
+Exec=qAndora
+Type=Application
+Categories=Audio;
+NoDisplay=false
+StartupNotify=true
+Comment=A Qt front end for Pandora.com Internet Radio
+Terminal=false
+Icon=qAndora.png
+Name=qAndora
