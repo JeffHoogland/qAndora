@@ -10,6 +10,7 @@ cp pyxhook.py Compiled-Packages/qandora/opt/qAndora/
 cp ui_*.py Compiled-Packages/qandora/opt/qAndora/
 cp -a images Compiled-Packages/qandora/opt/qAndora/
 cp -a playerVLC Compiled-Packages/qandora/opt/qAndora/
+cp -a playerGst Compiled-Packages/qandora/opt/qAndora/
 
 #Build new deb
 cd Compiled-Packages/
