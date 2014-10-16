@@ -8,7 +8,7 @@ from PySide.QtCore import *
 if not "arm" in platform.machine():
     from ui_qAndora import Ui_MainWindow
 else:
-    from ui_qAndora-mobile import Ui_MainWindow
+    from ui_qAndora_mobile import Ui_MainWindow
 
 from ui_qLogin import Ui_qLogin
 from ui_qPreferences import Ui_qPreferences
