@@ -43,7 +43,7 @@
      <enum>QTabWidget::East</enum>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="currentTab">
      <attribute name="title">
@@ -54,14 +54,14 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>290</width>
-        <height>225</height>
+        <width>280</width>
+        <height>200</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
-        <width>290</width>
-        <height>225</height>
+        <width>280</width>
+        <height>200</height>
        </size>
       </property>
       <property name="maximumSize">
@@ -80,8 +80,8 @@
      <widget class="QFrame" name="positionFrame">
       <property name="geometry">
        <rect>
-        <x>80</x>
-        <y>170</y>
+        <x>70</x>
+        <y>150</y>
         <width>151</width>
         <height>41</height>
        </rect>
@@ -967,6 +967,11 @@
         <width>285</width>
         <height>200</height>
        </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>20</pointsize>
+       </font>
       </property>
      </widget>
     </widget>
