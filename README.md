@@ -13,6 +13,11 @@ Windows
   - Run qAndora.exe
   - Optional: For global multimedia key support install: http://sourceforge.net/projects/pyhook/
 
+Nokia N9/Harmattan
+  - Download and install .deb file for python-gst0.10 -> http://mirror.lxer.com/harmattan/url/http/mirror.thecust.net/harmattan-dev.nokia.com/pool/harmattan/free/g/gst0.10-python/python-gst0.10_0.10.21-1maemo2+0m6_armel.deb
+  - Download and install .deb file for qAndora -> https://github.com/JeffHoogland/qAndora/blob/master/Compiled-Packages/qandora-mobile.deb?raw=true
+  - Launch qAndora from home screen
+
 Other OS
   - Install PySide, VLC, and GIT
   - Clone sources: git clone https://github.com/JeffHoogland/qAndora.git
