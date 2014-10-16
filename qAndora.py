@@ -1,10 +1,15 @@
 import sys
 import os
+import platform
 
 from PySide.QtGui import *
 from PySide.QtCore import *
 
-from ui_qAndora import Ui_MainWindow
+if not "arm" in platform.machine():
+    from ui_qAndora import Ui_MainWindow
+else:
+    from ui_qAndora-mobile import Ui_MainWindow
+
 from ui_qLogin import Ui_qLogin
 from ui_qPreferences import Ui_qPreferences
 
@@ -332,7 +337,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             #print "Key bindings not supported on Linux loading focused keys instead."
             self.assignShortcuts()
-            loaded = self.bindLinux()
+            if not "arm" in platform.machine():
+                loaded = self.bindLinux()
 
 class PreferencesWindow(QDialog, Ui_qPreferences):
     def __init__(self, parent=None):
