@@ -1,14 +1,19 @@
 import sys
 import os
+import platform
 
 from PySide.QtGui import *
 from PySide.QtCore import *
 
-from ui_qAndora import Ui_MainWindow
+if not "arm" in platform.machine():
+    from ui_qAndora import Ui_MainWindow
+else:
+    from ui_qAndora_mobile import Ui_MainWindow
+
 from ui_qLogin import Ui_qLogin
 from ui_qPreferences import Ui_qPreferences
 
-from playerVLC import volcanoPlayer
+from playerGst import volcanoPlayer
 import tempfile
 import urllib
 import webbrowser
@@ -22,6 +27,11 @@ try:
     notiLoaded = True
 except:
     notiLoaded = False
+
+if "arm" in platform.machine():
+    fontsize = "18"
+else:
+    fontsize = "14"
 
 tempdir = tempfile.gettempdir()
 
@@ -66,9 +76,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         tiredAction.triggered.connect(self.tiredPressed)
         tiredAction.setIcon(QIcon("images/tired.png"))
         
-        exitAction = menu.addAction("Exit")
-        exitAction.triggered.connect(sys.exit)
-        exitAction.setIcon(QIcon("images/exit.png"))
+        #exitAction = menu.addAction("Exit")
+        #exitAction.triggered.connect(self.exitPressed)
+        #exitAction.setIcon(QIcon("images/exit.png"))
         
         self.tray = QSystemTrayIcon()
         self.tray.setIcon(icon)
@@ -167,7 +177,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         pos = "%s:%s"%(posm, poss)
         dur = "%s:%s"%(durm, durs)
         
-        t = "<b>%s  /  %s</b>" % (pos, dur)
+        t = '<span style=" font-size:%spt;"><b>%s  /  %s</b></span>' % (fontsize, pos, dur)
         self.positionLabel.setText(t)
         
         if pos == dur and pos != "00:00":
@@ -208,9 +218,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def songChange( self ):
         #print "Song changed"
         info = self.radioPlayer.songinfo[self.radioPlayer.curSong]
-        self.titleLabel.setText('<b>Song:</b> <a href="%s">%s</a>'%(info['object'].songDetailURL, info['title']))
-        self.albumLabel.setText('<b>Album:</b> <a href="%s">%s</a>'%(info['object'].albumDetailURL, info['album']))
-        self.artistLabel.setText("<b>Artist:</b> %s"%info['artist'])
+
+        self.titleLabel.setText('<span style=" font-size:%spt;"><b>Song:</b> <a href="%s">%s</a></span>'%(fontsize, info['object'].songDetailURL, info['title']))
+        self.albumLabel.setText('<span style=" font-size:%spt;"><b>Album:</b> <a href="%s">%s</a></span>'%(fontsize, info['object'].albumDetailURL, info['album']))
+        self.artistLabel.setText('<span style=" font-size:%spt;"><b>Artist:</b> %s</span>'%(fontsize, info['artist']))
         if info['rating'] == "love":
             self.loveButton.setIcon(QIcon("images/love.png"))
             self.loveAction.setIcon(QIcon("images/love.png"))
@@ -332,7 +343,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             #print "Key bindings not supported on Linux loading focused keys instead."
             self.assignShortcuts()
-            loaded = self.bindLinux()
+            if not "arm" in platform.machine():
+                loaded = self.bindLinux()
 
 class PreferencesWindow(QDialog, Ui_qPreferences):
     def __init__(self, parent=None):
@@ -479,6 +491,6 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     mainWin = MainWindow()
     ret = app.exec_()
-    if os.name == 'posix':
+    if os.name == 'posix' and "arm" not in platform.machine():
         mainWin.hookman.cancel()
     sys.exit( ret )

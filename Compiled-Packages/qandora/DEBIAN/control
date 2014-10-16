@@ -1,9 +1,9 @@
 Package: qandora
-Version: 0.3
+Version: 0.4
 Section: main
 Priority: optional
 Architecture: all
-Depends: python-pyside, vlc
+Depends: python-pyside, vlc | python-gst0.10
 Maintainer: Jeff Hoogland
 Description: qAndora - Pandora.com Player
  A Qt front end for Pandora.com Internet Radio.
