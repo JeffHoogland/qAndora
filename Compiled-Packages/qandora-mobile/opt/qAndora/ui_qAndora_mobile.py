@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'qAndora-mobile.ui'
 #
-# Created: Wed Oct 15 23:51:10 2014
+# Created: Thu Oct 16 10:17:45 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -176,7 +176,7 @@ class Ui_MainWindow(object):
         self.positionFrame.setFrameShadow(QtGui.QFrame.Raised)
         self.positionFrame.setObjectName("positionFrame")
         self.positionLabel = QtGui.QLabel(self.positionFrame)
-        self.positionLabel.setGeometry(QtCore.QRect(10, 10, 131, 21))
+        self.positionLabel.setGeometry(QtCore.QRect(0, 0, 151, 41))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -410,13 +410,16 @@ class Ui_MainWindow(object):
         self.volumeSlider.setObjectName("volumeSlider")
         self.stationBox = QtGui.QComboBox(self.lowerFrame)
         self.stationBox.setGeometry(QtCore.QRect(10, 90, 301, 31))
+        font = QtGui.QFont()
+        font.setPointSize(18)
+        self.stationBox.setFont(font)
         self.stationBox.setObjectName("stationBox")
         self.volumeLabel = QtGui.QLabel(self.lowerFrame)
-        self.volumeLabel.setGeometry(QtCore.QRect(10, 10, 77, 21))
+        self.volumeLabel.setGeometry(QtCore.QRect(10, 10, 101, 31))
         self.volumeLabel.setTextFormat(QtCore.Qt.AutoText)
         self.volumeLabel.setObjectName("volumeLabel")
         self.stationLabel = QtGui.QLabel(self.lowerFrame)
-        self.stationLabel.setGeometry(QtCore.QRect(10, 70, 77, 21))
+        self.stationLabel.setGeometry(QtCore.QRect(10, 60, 101, 31))
         self.stationLabel.setObjectName("stationLabel")
         MainWindow.setCentralWidget(self.centralwidget)
 
@@ -440,6 +443,6 @@ class Ui_MainWindow(object):
         self.skipButton.setToolTip(QtGui.QApplication.translate("MainWindow", "Skip Song", None, QtGui.QApplication.UnicodeUTF8))
         self.settingsButton.setToolTip(QtGui.QApplication.translate("MainWindow", "Preferences", None, QtGui.QApplication.UnicodeUTF8))
         self.volumeSlider.setToolTip(QtGui.QApplication.translate("MainWindow", "Adjust Volume", None, QtGui.QApplication.UnicodeUTF8))
-        self.volumeLabel.setText(QtGui.QApplication.translate("MainWindow", "<b>Volume:</b>", None, QtGui.QApplication.UnicodeUTF8))
-        self.stationLabel.setText(QtGui.QApplication.translate("MainWindow", "<b>Station:</b>", None, QtGui.QApplication.UnicodeUTF8))
+        self.volumeLabel.setText(QtGui.QApplication.translate("MainWindow", "<html><head/><body><p><span style=\" font-size:18pt; font-weight:600;\">Volume:</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.stationLabel.setText(QtGui.QApplication.translate("MainWindow", "<html><head/><body><p><span style=\" font-size:18pt; font-weight:600;\">Station:</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
 
