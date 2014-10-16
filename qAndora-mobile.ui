@@ -6,19 +6,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>850</width>
     <height>370</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>800</width>
+    <width>850</width>
     <height>360</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>800</width>
+    <width>850</width>
     <height>450</height>
    </size>
   </property>
@@ -35,7 +35,7 @@
      <rect>
       <x>440</x>
       <y>10</y>
-      <width>361</width>
+      <width>401</width>
       <height>211</height>
      </rect>
     </property>
@@ -45,7 +45,7 @@
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">QTabBar::tab { height: 100px; width: 75px; }</string>
+     <string notr="true">QTabBar::tab { height: 100px; width: 90px; }</string>
     </property>
     <property name="tabPosition">
      <enum>QTabWidget::East</enum>
@@ -62,13 +62,13 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>290</width>
+        <width>300</width>
         <height>200</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
-        <width>290</width>
+        <width>300</width>
         <height>200</height>
        </size>
       </property>
@@ -88,7 +88,7 @@
      <widget class="QFrame" name="positionFrame">
       <property name="geometry">
        <rect>
-        <x>60</x>
+        <x>70</x>
         <y>130</y>
         <width>171</width>
         <height>61</height>
@@ -963,7 +963,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>290</width>
+        <width>311</width>
         <height>211</height>
        </rect>
       </property>
@@ -986,7 +986,7 @@
      <rect>
       <x>360</x>
       <y>230</y>
-      <width>431</width>
+      <width>481</width>
       <height>131</height>
      </rect>
     </property>
@@ -1001,7 +1001,7 @@
       <rect>
        <x>10</x>
        <y>10</y>
-       <width>401</width>
+       <width>461</width>
        <height>31</height>
       </rect>
      </property>
@@ -1023,7 +1023,7 @@
       <rect>
        <x>10</x>
        <y>49</y>
-       <width>401</width>
+       <width>461</width>
        <height>31</height>
       </rect>
      </property>
@@ -1045,7 +1045,7 @@
       <rect>
        <x>10</x>
        <y>89</y>
-       <width>401</width>
+       <width>461</width>
        <height>31</height>
       </rect>
      </property>
