@@ -7,13 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>450</height>
+    <height>390</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>800</width>
-    <height>450</height>
+    <height>390</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -35,8 +35,8 @@
      <rect>
       <x>440</x>
       <y>10</y>
-      <width>351</width>
-      <height>291</height>
+      <width>341</width>
+      <height>231</height>
      </rect>
     </property>
     <property name="tabPosition">
@@ -54,13 +54,13 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>285</width>
+        <width>300</width>
         <height>225</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
-        <width>285</width>
+        <width>300</width>
         <height>225</height>
        </size>
       </property>
@@ -80,8 +80,8 @@
      <widget class="QFrame" name="positionFrame">
       <property name="geometry">
        <rect>
-        <x>90</x>
-        <y>230</y>
+        <x>80</x>
+        <y>170</y>
         <width>151</width>
         <height>41</height>
        </rect>
@@ -958,7 +958,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>285</width>
+        <width>311</width>
         <height>225</height>
        </rect>
       </property>
@@ -975,7 +975,7 @@
     <property name="geometry">
      <rect>
       <x>360</x>
-      <y>310</y>
+      <y>250</y>
       <width>421</width>
       <height>131</height>
      </rect>
@@ -1051,9 +1051,9 @@
     <property name="geometry">
      <rect>
       <x>150</x>
-      <y>170</y>
+      <y>130</y>
       <width>125</width>
-      <height>125</height>
+      <height>100</height>
      </rect>
     </property>
     <property name="toolTip">
@@ -1079,7 +1079,7 @@
       <x>290</x>
       <y>20</y>
       <width>125</width>
-      <height>125</height>
+      <height>100</height>
      </rect>
     </property>
     <property name="toolTip">
@@ -1105,7 +1105,7 @@
       <x>150</x>
       <y>20</y>
       <width>125</width>
-      <height>125</height>
+      <height>100</height>
      </rect>
     </property>
     <property name="toolTip">
@@ -1131,7 +1131,7 @@
       <x>10</x>
       <y>20</y>
       <width>125</width>
-      <height>125</height>
+      <height>100</height>
      </rect>
     </property>
     <property name="toolTip">
@@ -1155,9 +1155,9 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>170</y>
+      <y>130</y>
       <width>125</width>
-      <height>125</height>
+      <height>100</height>
      </rect>
     </property>
     <property name="toolTip">
@@ -1181,9 +1181,9 @@
     <property name="geometry">
      <rect>
       <x>290</x>
-      <y>170</y>
+      <y>130</y>
       <width>125</width>
-      <height>125</height>
+      <height>100</height>
      </rect>
     </property>
     <property name="toolTip">
@@ -1207,7 +1207,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>310</y>
+      <y>250</y>
       <width>331</width>
       <height>131</height>
      </rect>

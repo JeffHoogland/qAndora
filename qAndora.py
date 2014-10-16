@@ -485,6 +485,6 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     mainWin = MainWindow()
     ret = app.exec_()
-    if os.name == 'posix':
+    if os.name == 'posix' and "arm" not in platform.machine():
         mainWin.hookman.cancel()
     sys.exit( ret )
