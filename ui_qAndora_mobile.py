@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'qAndora-mobile.ui'
 #
-# Created: Wed Oct 15 23:37:08 2014
+# Created: Wed Oct 15 23:51:10 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -321,7 +321,7 @@ class Ui_MainWindow(object):
         self.historyTab = QtGui.QWidget()
         self.historyTab.setObjectName("historyTab")
         self.historyList = QtGui.QListWidget(self.historyTab)
-        self.historyList.setGeometry(QtCore.QRect(0, 0, 290, 215))
+        self.historyList.setGeometry(QtCore.QRect(0, 0, 290, 211))
         self.historyList.setMinimumSize(QtCore.QSize(285, 200))
         font = QtGui.QFont()
         font.setPointSize(20)
