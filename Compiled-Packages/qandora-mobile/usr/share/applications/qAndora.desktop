@@ -7,5 +7,5 @@ NoDisplay=false
 StartupNotify=true
 Comment=A Qt front end for Pandora.com Internet Radio
 Terminal=false
-Icon=qAndora.png
+Icon=/usr/share/icons/qAndora.png
 Name=qAndora
