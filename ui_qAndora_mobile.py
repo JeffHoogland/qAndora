@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'qAndora-mobile.ui'
 #
-# Created: Wed Oct 15 23:24:06 2014
+# Created: Wed Oct 15 23:30:04 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,8 +12,8 @@ from PySide import QtCore, QtGui
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(800, 390)
-        MainWindow.setMinimumSize(QtCore.QSize(800, 390))
+        MainWindow.resize(800, 370)
+        MainWindow.setMinimumSize(QtCore.QSize(800, 360))
         MainWindow.setMaximumSize(QtCore.QSize(800, 450))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("images/qAndora.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -21,14 +21,14 @@ class Ui_MainWindow(object):
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.mainWidget = QtGui.QTabWidget(self.centralwidget)
-        self.mainWidget.setGeometry(QtCore.QRect(440, 10, 341, 231))
+        self.mainWidget.setGeometry(QtCore.QRect(440, 10, 321, 211))
         self.mainWidget.setTabPosition(QtGui.QTabWidget.East)
         self.mainWidget.setObjectName("mainWidget")
         self.currentTab = QtGui.QWidget()
         self.currentTab.setObjectName("currentTab")
         self.albumImage = QtGui.QLabel(self.currentTab)
-        self.albumImage.setGeometry(QtCore.QRect(0, 0, 300, 225))
-        self.albumImage.setMinimumSize(QtCore.QSize(300, 225))
+        self.albumImage.setGeometry(QtCore.QRect(0, 0, 290, 225))
+        self.albumImage.setMinimumSize(QtCore.QSize(290, 225))
         self.albumImage.setMaximumSize(QtCore.QSize(0, 0))
         self.albumImage.setScaledContents(True)
         self.albumImage.setObjectName("albumImage")
@@ -321,12 +321,12 @@ class Ui_MainWindow(object):
         self.historyTab = QtGui.QWidget()
         self.historyTab.setObjectName("historyTab")
         self.historyList = QtGui.QListWidget(self.historyTab)
-        self.historyList.setGeometry(QtCore.QRect(0, 0, 311, 225))
-        self.historyList.setMinimumSize(QtCore.QSize(285, 225))
+        self.historyList.setGeometry(QtCore.QRect(0, 0, 290, 215))
+        self.historyList.setMinimumSize(QtCore.QSize(285, 200))
         self.historyList.setObjectName("historyList")
         self.mainWidget.addTab(self.historyTab, "")
         self.infoFrame = QtGui.QFrame(self.centralwidget)
-        self.infoFrame.setGeometry(QtCore.QRect(360, 250, 421, 131))
+        self.infoFrame.setGeometry(QtCore.QRect(360, 230, 421, 131))
         self.infoFrame.setFrameShape(QtGui.QFrame.StyledPanel)
         self.infoFrame.setFrameShadow(QtGui.QFrame.Raised)
         self.infoFrame.setObjectName("infoFrame")
@@ -347,7 +347,7 @@ class Ui_MainWindow(object):
         self.artistLabel.setOpenExternalLinks(True)
         self.artistLabel.setObjectName("artistLabel")
         self.loveButton = QtGui.QPushButton(self.centralwidget)
-        self.loveButton.setGeometry(QtCore.QRect(150, 130, 125, 100))
+        self.loveButton.setGeometry(QtCore.QRect(150, 120, 125, 100))
         self.loveButton.setText("")
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap("images/favorite.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -355,7 +355,7 @@ class Ui_MainWindow(object):
         self.loveButton.setIconSize(QtCore.QSize(75, 75))
         self.loveButton.setObjectName("loveButton")
         self.tiredButton = QtGui.QPushButton(self.centralwidget)
-        self.tiredButton.setGeometry(QtCore.QRect(290, 20, 125, 100))
+        self.tiredButton.setGeometry(QtCore.QRect(290, 10, 125, 100))
         self.tiredButton.setText("")
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap("images/tired.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -363,7 +363,7 @@ class Ui_MainWindow(object):
         self.tiredButton.setIconSize(QtCore.QSize(75, 75))
         self.tiredButton.setObjectName("tiredButton")
         self.banButton = QtGui.QPushButton(self.centralwidget)
-        self.banButton.setGeometry(QtCore.QRect(150, 20, 125, 100))
+        self.banButton.setGeometry(QtCore.QRect(150, 10, 125, 100))
         self.banButton.setText("")
         icon3 = QtGui.QIcon()
         icon3.addPixmap(QtGui.QPixmap("images/ban.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -371,7 +371,7 @@ class Ui_MainWindow(object):
         self.banButton.setIconSize(QtCore.QSize(75, 75))
         self.banButton.setObjectName("banButton")
         self.playPauseButton = QtGui.QPushButton(self.centralwidget)
-        self.playPauseButton.setGeometry(QtCore.QRect(10, 20, 125, 100))
+        self.playPauseButton.setGeometry(QtCore.QRect(10, 10, 125, 100))
         self.playPauseButton.setText("")
         icon4 = QtGui.QIcon()
         icon4.addPixmap(QtGui.QPixmap("images/pause.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -379,7 +379,7 @@ class Ui_MainWindow(object):
         self.playPauseButton.setIconSize(QtCore.QSize(75, 75))
         self.playPauseButton.setObjectName("playPauseButton")
         self.skipButton = QtGui.QPushButton(self.centralwidget)
-        self.skipButton.setGeometry(QtCore.QRect(10, 130, 125, 100))
+        self.skipButton.setGeometry(QtCore.QRect(10, 120, 125, 100))
         self.skipButton.setText("")
         icon5 = QtGui.QIcon()
         icon5.addPixmap(QtGui.QPixmap("images/skip.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -387,7 +387,7 @@ class Ui_MainWindow(object):
         self.skipButton.setIconSize(QtCore.QSize(75, 75))
         self.skipButton.setObjectName("skipButton")
         self.settingsButton = QtGui.QPushButton(self.centralwidget)
-        self.settingsButton.setGeometry(QtCore.QRect(290, 130, 125, 100))
+        self.settingsButton.setGeometry(QtCore.QRect(290, 120, 125, 100))
         self.settingsButton.setText("")
         icon6 = QtGui.QIcon()
         icon6.addPixmap(QtGui.QPixmap("images/settings.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -395,7 +395,7 @@ class Ui_MainWindow(object):
         self.settingsButton.setIconSize(QtCore.QSize(75, 75))
         self.settingsButton.setObjectName("settingsButton")
         self.lowerFrame = QtGui.QFrame(self.centralwidget)
-        self.lowerFrame.setGeometry(QtCore.QRect(10, 250, 331, 131))
+        self.lowerFrame.setGeometry(QtCore.QRect(10, 230, 331, 131))
         self.lowerFrame.setFrameShape(QtGui.QFrame.StyledPanel)
         self.lowerFrame.setFrameShadow(QtGui.QFrame.Raised)
         self.lowerFrame.setObjectName("lowerFrame")
@@ -418,7 +418,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
-        self.mainWidget.setCurrentIndex(0)
+        self.mainWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):

@@ -7,13 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>390</height>
+    <height>370</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>800</width>
-    <height>390</height>
+    <height>360</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -35,15 +35,15 @@
      <rect>
       <x>440</x>
       <y>10</y>
-      <width>341</width>
-      <height>231</height>
+      <width>321</width>
+      <height>211</height>
      </rect>
     </property>
     <property name="tabPosition">
      <enum>QTabWidget::East</enum>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="currentTab">
      <attribute name="title">
@@ -54,13 +54,13 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>300</width>
+        <width>290</width>
         <height>225</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
-        <width>300</width>
+        <width>290</width>
         <height>225</height>
        </size>
       </property>
@@ -958,14 +958,14 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>311</width>
-        <height>225</height>
+        <width>290</width>
+        <height>215</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>285</width>
-        <height>225</height>
+        <height>200</height>
        </size>
       </property>
      </widget>
@@ -975,7 +975,7 @@
     <property name="geometry">
      <rect>
       <x>360</x>
-      <y>250</y>
+      <y>230</y>
       <width>421</width>
       <height>131</height>
      </rect>
@@ -1051,7 +1051,7 @@
     <property name="geometry">
      <rect>
       <x>150</x>
-      <y>130</y>
+      <y>120</y>
       <width>125</width>
       <height>100</height>
      </rect>
@@ -1077,7 +1077,7 @@
     <property name="geometry">
      <rect>
       <x>290</x>
-      <y>20</y>
+      <y>10</y>
       <width>125</width>
       <height>100</height>
      </rect>
@@ -1103,7 +1103,7 @@
     <property name="geometry">
      <rect>
       <x>150</x>
-      <y>20</y>
+      <y>10</y>
       <width>125</width>
       <height>100</height>
      </rect>
@@ -1129,7 +1129,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>20</y>
+      <y>10</y>
       <width>125</width>
       <height>100</height>
      </rect>
@@ -1155,7 +1155,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>130</y>
+      <y>120</y>
       <width>125</width>
       <height>100</height>
      </rect>
@@ -1181,7 +1181,7 @@
     <property name="geometry">
      <rect>
       <x>290</x>
-      <y>130</y>
+      <y>120</y>
       <width>125</width>
       <height>100</height>
      </rect>
@@ -1207,7 +1207,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>250</y>
+      <y>230</y>
       <width>331</width>
       <height>131</height>
      </rect>

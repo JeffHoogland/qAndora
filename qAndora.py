@@ -213,9 +213,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def songChange( self ):
         #print "Song changed"
         info = self.radioPlayer.songinfo[self.radioPlayer.curSong]
-        self.titleLabel.setText('<b>Song:</b> <a href="%s">%s</a>'%(info['object'].songDetailURL, info['title']))
-        self.albumLabel.setText('<b>Album:</b> <a href="%s">%s</a>'%(info['object'].albumDetailURL, info['album']))
-        self.artistLabel.setText("<b>Artist:</b> %s"%info['artist'])
+        if "arm" in platform.machine():
+            fontsize = "18"
+        else:
+            fontsize = "12"
+        self.titleLabel.setText('<span style=" font-size:%spt;"><b>Song:</b> <a href="%s">%s</a></span>'%(fontsize, info['object'].songDetailURL, info['title']))
+        self.albumLabel.setText('<span style=" font-size:%spt;"><b>Album:</b> <a href="%s">%s</a></span>'%(fontsize, info['object'].albumDetailURL, info['album']))
+        self.artistLabel.setText('<span style=" font-size:%spt;"><b>Artist:</b> %s</span>'%(fontsize, info['artist']))
         if info['rating'] == "love":
             self.loveButton.setIcon(QIcon("images/love.png"))
             self.loveAction.setIcon(QIcon("images/love.png"))
