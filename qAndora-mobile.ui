@@ -6,20 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>675</width>
-    <height>305</height>
+    <width>800</width>
+    <height>450</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>323</width>
-    <height>305</height>
+    <width>800</width>
+    <height>450</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>675</width>
-    <height>305</height>
+    <width>800</width>
+    <height>450</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -33,10 +33,10 @@
    <widget class="QTabWidget" name="mainWidget">
     <property name="geometry">
      <rect>
-      <x>350</x>
-      <y>0</y>
-      <width>321</width>
-      <height>211</height>
+      <x>440</x>
+      <y>10</y>
+      <width>351</width>
+      <height>291</height>
      </rect>
     </property>
     <property name="tabPosition">
@@ -80,8 +80,8 @@
      <widget class="QFrame" name="positionFrame">
       <property name="geometry">
        <rect>
-        <x>70</x>
-        <y>160</y>
+        <x>90</x>
+        <y>230</y>
         <width>151</width>
         <height>41</height>
        </rect>
@@ -945,6 +945,9 @@
        </property>
       </widget>
      </widget>
+     <zorder>albumImage</zorder>
+     <zorder>positionFrame</zorder>
+     <zorder>tiredButton</zorder>
     </widget>
     <widget class="QWidget" name="historyTab">
      <attribute name="title">
@@ -971,10 +974,10 @@
    <widget class="QFrame" name="infoFrame">
     <property name="geometry">
      <rect>
-      <x>340</x>
-      <y>220</y>
-      <width>321</width>
-      <height>81</height>
+      <x>360</x>
+      <y>310</y>
+      <width>421</width>
+      <height>131</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -987,13 +990,13 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>0</y>
-       <width>301</width>
-       <height>20</height>
+       <y>10</y>
+       <width>401</width>
+       <height>31</height>
       </rect>
      </property>
      <property name="text">
-      <string>Title</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;Title&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -1009,13 +1012,13 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>30</y>
-       <width>301</width>
-       <height>20</height>
+       <y>49</y>
+       <width>401</width>
+       <height>31</height>
       </rect>
      </property>
      <property name="text">
-      <string>Album</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;Album&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -1031,13 +1034,13 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>60</y>
-       <width>271</width>
-       <height>20</height>
+       <y>89</y>
+       <width>401</width>
+       <height>31</height>
       </rect>
      </property>
      <property name="text">
-      <string>Artist</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;Artist&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="openExternalLinks">
       <bool>true</bool>
@@ -1047,10 +1050,10 @@
    <widget class="QPushButton" name="loveButton">
     <property name="geometry">
      <rect>
-      <x>120</x>
-      <y>100</y>
-      <width>91</width>
-      <height>81</height>
+      <x>150</x>
+      <y>170</y>
+      <width>125</width>
+      <height>125</height>
      </rect>
     </property>
     <property name="toolTip">
@@ -1065,18 +1068,18 @@
     </property>
     <property name="iconSize">
      <size>
-      <width>50</width>
-      <height>50</height>
+      <width>75</width>
+      <height>75</height>
      </size>
     </property>
    </widget>
    <widget class="QPushButton" name="tiredButton">
     <property name="geometry">
      <rect>
-      <x>220</x>
-      <y>10</y>
-      <width>91</width>
-      <height>81</height>
+      <x>290</x>
+      <y>20</y>
+      <width>125</width>
+      <height>125</height>
      </rect>
     </property>
     <property name="toolTip">
@@ -1091,18 +1094,18 @@
     </property>
     <property name="iconSize">
      <size>
-      <width>50</width>
-      <height>50</height>
+      <width>75</width>
+      <height>75</height>
      </size>
     </property>
    </widget>
    <widget class="QPushButton" name="banButton">
     <property name="geometry">
      <rect>
-      <x>120</x>
-      <y>10</y>
-      <width>91</width>
-      <height>81</height>
+      <x>150</x>
+      <y>20</y>
+      <width>125</width>
+      <height>125</height>
      </rect>
     </property>
     <property name="toolTip">
@@ -1117,18 +1120,18 @@
     </property>
     <property name="iconSize">
      <size>
-      <width>50</width>
-      <height>50</height>
+      <width>75</width>
+      <height>75</height>
      </size>
     </property>
    </widget>
    <widget class="QPushButton" name="playPauseButton">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>10</y>
-      <width>91</width>
-      <height>81</height>
+      <x>10</x>
+      <y>20</y>
+      <width>125</width>
+      <height>125</height>
      </rect>
     </property>
     <property name="toolTip">
@@ -1143,18 +1146,18 @@
     </property>
     <property name="iconSize">
      <size>
-      <width>50</width>
-      <height>50</height>
+      <width>75</width>
+      <height>75</height>
      </size>
     </property>
    </widget>
    <widget class="QPushButton" name="skipButton">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>100</y>
-      <width>91</width>
-      <height>81</height>
+      <x>10</x>
+      <y>170</y>
+      <width>125</width>
+      <height>125</height>
      </rect>
     </property>
     <property name="toolTip">
@@ -1169,18 +1172,18 @@
     </property>
     <property name="iconSize">
      <size>
-      <width>50</width>
-      <height>50</height>
+      <width>75</width>
+      <height>75</height>
      </size>
     </property>
    </widget>
    <widget class="QPushButton" name="settingsButton">
     <property name="geometry">
      <rect>
-      <x>220</x>
-      <y>100</y>
-      <width>91</width>
-      <height>81</height>
+      <x>290</x>
+      <y>170</y>
+      <width>125</width>
+      <height>125</height>
      </rect>
     </property>
     <property name="toolTip">
@@ -1195,8 +1198,8 @@
     </property>
     <property name="iconSize">
      <size>
-      <width>50</width>
-      <height>50</height>
+      <width>75</width>
+      <height>75</height>
      </size>
     </property>
    </widget>
@@ -1204,9 +1207,9 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>190</y>
-      <width>321</width>
-      <height>111</height>
+      <y>310</y>
+      <width>331</width>
+      <height>131</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -1219,7 +1222,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>20</y>
+       <y>30</y>
        <width>301</width>
        <height>41</height>
       </rect>
@@ -1241,7 +1244,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>70</y>
+       <y>90</y>
        <width>301</width>
        <height>31</height>
       </rect>
@@ -1267,7 +1270,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>50</y>
+       <y>70</y>
        <width>77</width>
        <height>21</height>
       </rect>
