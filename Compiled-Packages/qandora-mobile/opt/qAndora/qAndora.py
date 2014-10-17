@@ -49,9 +49,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         #Global Keybinds - work on this
         self.enableKeyBinds()
         
-        self.stationBox.setEditable(True)
-        self.stationBox.lineEdit().setAlignment(Qt.AlignCenter)
-        self.stationBox.lineEdit().setReadOnly(True)
+        #Centers station text, but makes it ugly at the same time
+        #self.stationBox.setEditable(True)
+        #self.stationBox.lineEdit().setAlignment(Qt.AlignCenter)
+        #self.stationBox.lineEdit().setReadOnly(True)
         
         self.radioPlayer = volcanoPlayer()
         
