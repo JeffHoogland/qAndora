@@ -1,11 +1,11 @@
 [Desktop Entry]
 Hidden=false
-Exec=python /home/user/MyDocs/qandora-n900/qAndora.py
+Exec=sh /home/user/MyDocs/qandora-n900/qAndora
 Type=Application
 Categories=Audio;
 NoDisplay=false
 StartupNotify=true
 Comment=A Qt front end for Pandora.com Internet Radio
 Terminal=false
-Icon=/home/user/MyDocs/qandora-n900/images/qAndora.png
+Icon=/opt/usr/share/icons/qAndora.png
 Name=qAndora
