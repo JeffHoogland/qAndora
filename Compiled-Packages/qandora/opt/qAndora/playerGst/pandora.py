@@ -113,21 +113,9 @@ class Pandora(object):
         if blowfish:
             data = pandora_encrypt(data)
 
-        try:
-            req = urllib2.Request(url, data, {'User-agent': USER_AGENT, 'Content-type': 'text/plain'})
-            response = self.opener.open(req, timeout=HTTP_TIMEOUT)
-            text = response.read()
-        except urllib2.HTTPError as e:
-            logging.error("HTTP error: %s", e)
-            raise PandoraNetError(str(e))
-        except urllib2.URLError as e:
-            logging.error("Network error: %s", e)
-            if e.reason[0] == 'timed out':
-                raise PandoraTimeout("Network error", submsg="Timeout")
-            else:
-                raise PandoraNetError("Network error", submsg=e.reason[1])
-
-        logging.debug(text)
+        req = urllib2.Request(url, data, {'User-agent': USER_AGENT, 'Content-type': 'text/plain'})
+        response = self.opener.open(req)
+        text = response.read()
 
         tree = json.loads(text)
 
