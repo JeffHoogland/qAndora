@@ -18,7 +18,7 @@
 #import blowfish
 from blowfish import Blowfish
 import pandora_keys
-import json
+import simplejson as json
 import logging
 import time
 import urllib
