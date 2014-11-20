@@ -1,5 +1,7 @@
 A simple, cross-platform tool for playing Pandora.com radio with a QT GUI and a VLC backend
 
+![alt text](https://raw.githubusercontent.com/JeffHoogland/qAndora/master/screenshots/qAndora-main.png "qAndora Internet Radio") 
+
 By: [Jeff Hoogland](http://www.jeffhoogland.com/)
 
 Install instructions:
