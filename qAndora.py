@@ -188,7 +188,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         t = '<span style=" font-size:%spt;"><b>%s  /  %s</b></span>' % (fontsize, pos, dur)
         self.positionLabel.setText(t)
         
-        if (pos == dur or pos == durminus1 ) and pos != "00:00":
+        if ( pos == dur or pos == durminus1 ) and pos != "00:00":
             self.radioPlayer.nextSong()
         
     def stationChange( self, newStation ):
