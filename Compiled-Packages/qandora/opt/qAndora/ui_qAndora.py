@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'UI-Layouts/qAndora.ui'
 #
-# Created: Thu Dec 18 15:07:39 2014
+# Created: Thu Jan  8 11:48:29 2015
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,8 +12,8 @@ from PySide import QtCore, QtGui
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(323, 520)
-        MainWindow.setMinimumSize(QtCore.QSize(323, 520))
+        MainWindow.resize(360, 520)
+        MainWindow.setMinimumSize(QtCore.QSize(360, 520))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("images/qAndora.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)

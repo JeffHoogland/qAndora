@@ -44,9 +44,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
         self.assignWidgets()
-        #Local keybinds for just when app is focused
-        #self.assignShortcuts()
-        #Global Keybinds - work on this
+        #Global Keybinds
         self.enableKeyBinds()
         
         #Centers station text, but makes it ugly at the same time
@@ -77,9 +75,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         tiredAction.triggered.connect(self.tiredPressed)
         tiredAction.setIcon(QIcon("images/tired.png"))
         
-        #exitAction = menu.addAction("Exit")
-        #exitAction.triggered.connect(self.exitPressed)
-        #exitAction.setIcon(QIcon("images/exit.png"))
+        exitAction = menu.addAction("Exit")
+        exitAction.triggered.connect(self.exitPressed)
+        exitAction.setIcon(QIcon("images/exit.png"))
         
         self.tray = QSystemTrayIcon()
         self.tray.setIcon(icon)
@@ -99,6 +97,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.loginWin.show()
             
         self.preferencesWin = PreferencesWindow( self )
+    
+    def exitPressed( self ):
+        self.close()
         
     def trayClicked( self, reason ):
         if reason == self.tray.Trigger:
@@ -108,6 +109,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             else:
                 self.show()
                 self.isVisible = True
+    
+    def assignShortcuts( self ):
+        self.playPauseShortcut = QShortcut(QKeySequence(Qt.Key_Space), self)
+        self.playPauseShortcut.setContext(Qt.ApplicationShortcut)
+        self.playPauseShortcut.activated.connect(self.playPausePressed)
         
     def defaultPreferences( self ):
         self.preferences = {    "username":"",
@@ -177,11 +183,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         
         pos = "%s:%s"%(posm, poss)
         dur = "%s:%s"%(durm, durs)
+        durminus1 = "%s:%s"%(durm, int(durs)-1)
         
         t = '<span style=" font-size:%spt;"><b>%s  /  %s</b></span>' % (fontsize, pos, dur)
         self.positionLabel.setText(t)
         
-        if pos == dur and pos != "00:00":
+        if (pos == dur or pos == durminus1 ) and pos != "00:00":
             self.radioPlayer.nextSong()
         
     def stationChange( self, newStation ):
@@ -201,11 +208,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.tiredButton.clicked.connect(self.tiredPressed)
         self.settingsButton.clicked.connect(self.settingsPressed)
         self.volumeSlider.valueChanged.connect(self.volumeChange)
-        
-    def assignShortcuts( self ):
-        self.playPauseShortcut = QShortcut(QKeySequence(Qt.Key_Space), self)
-        self.playPauseShortcut.setContext(Qt.ApplicationShortcut)
-        self.playPauseShortcut.activated.connect(self.playPausePressed)
         
     def volumeChange( self, val ):
         #print("New audio value is %s"%val)
