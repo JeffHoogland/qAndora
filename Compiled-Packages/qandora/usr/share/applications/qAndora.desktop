@@ -2,7 +2,7 @@
 Hidden=false
 Exec=qAndora
 Type=Application
-Categories=Audio;
+Categories=Audio;AudioVideo;Player;Qt;
 NoDisplay=false
 StartupNotify=true
 Comment=A Qt front end for Pandora.com Internet Radio
