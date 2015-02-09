@@ -1,41 +1,31 @@
 import sys
 import os
 import platform
-
 from PySide.QtGui import *
 from PySide.QtCore import *
-
 if not "arm" in platform.machine():
     from ui_qAndora import Ui_MainWindow
 else:
     from ui_qAndora_mobile import Ui_MainWindow
 
-from ui_qLogin import Ui_qLogin
 from ui_qPreferences import Ui_qPreferences
-
-from playerGst import volcanoPlayer
+from ui_qError import Ui_qError
+from playerVLC import volcanoPlayer
 import tempfile
 import urllib
 import webbrowser
 import datetime
 import cPickle as pickle
-
-#See if system supports these notifications
+import time
+        
 try:
     import pynotify
     pynotify.init("Song Changed")
     notiLoaded = True
 except:
     notiLoaded = False
-
-if "arm" in platform.machine():
-    fontsize = "18"
-else:
-    fontsize = "14"
-
+    
 tempdir = tempfile.gettempdir()
-
-#print "Current tmp directory is %s"%tempdir
 
 APP_ID = 'qAndora'
 
@@ -43,74 +33,105 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
-        self.assignWidgets()
-        #Global Keybinds
-        self.enableKeyBinds()
-        
-        #Centers station text, but makes it ugly at the same time
-        #self.stationBox.setEditable(True)
-        #self.stationBox.lineEdit().setAlignment(Qt.AlignCenter)
-        #self.stationBox.lineEdit().setReadOnly(True)
-        
+        icon = QIcon()
+        icon.addPixmap(QPixmap("images/qAndora.png"), QIcon.Normal, QIcon.Off)
+        self.setWindowIcon(icon)
+        self.isVisible = True
+        self.muted = None
+        self.notGotSongDuration = True
+        self.albumart = None
         self.radioPlayer = volcanoPlayer()
+        self.menu = QMenu()
+        self.ErrorWin = ErrorWindow(self)
+        self.assignWidgets()
+        self.sysTrayIcon()
+        ourUser = self.readPreferences()
+        self.preferencesWin = PreferencesWindow(self)
+        if ourUser == "new user":
+            self.preferencesWin.show()
+        else:
+            self.show()
+            self.tray.show()
+
+    def closeEvent(self, event):
+        event.ignore()
+        self.hide()
+        self.viewToggle.setText("Show qAndora")
+        self.isVisible = False
         
-        self.loginWin = LoginWindow( self )
+    def viewTogglePressed(self):
+        if self.isVisible:
+            self.viewToggle.setText("Show qAndora")
+            self.hide()
+        else:
+            self.viewToggle.setText("Hide qAndora")
+            self.show()
         
-        #build our systray icon
+        self.isVisible = not self.isVisible
+    
+    def sysTrayIcon(self):
         icon = QIcon("images/qAndora.png")
-        menu = QMenu()
-        self.playPauseAction = menu.addAction("Pause")
-        self.playPauseAction.setIcon(QIcon("images/pause.png"))
-        self.playPauseAction.triggered.connect(self.playPausePressed)
-        skipTrackAction = menu.addAction("Skip Track")
-        skipTrackAction.triggered.connect(self.skipPressed)
-        skipTrackAction.setIcon(QIcon("images/skip.png"))
-        self.loveAction = menu.addAction("Favorite Track")
-        self.loveAction.triggered.connect(self.lovePressed)
-        self.loveAction.setIcon(QIcon("images/favorite.png"))
-        banAction = menu.addAction("Ban Track")
-        banAction.triggered.connect(self.banPressed)
-        banAction.setIcon(QIcon("images/ban.png"))
-        tiredAction = menu.addAction("Tired Track")
-        tiredAction.triggered.connect(self.tiredPressed)
-        tiredAction.setIcon(QIcon("images/tired.png"))
         
-        exitAction = menu.addAction("Exit")
+        self.songHeader = self.menu.addAction("Song Title")
+        self.songHeader.setIcon(QIcon("images/albumart"))
+        self.songHeader.triggered.connect(self.infoPressed)
+        
+        self.viewToggle = self.menu.addAction("Hide qAndora")
+        self.viewToggle.triggered.connect(self.viewTogglePressed)
+        
+        self.playPauseAction = self.menu.addAction("Pause")
+        self.playPauseAction.setIcon(QIcon.fromTheme("media-playback-pause", QIcon("images/pause.png")))
+        self.playPauseAction.triggered.connect(self.playPausePressed)
+        
+        skipTrackAction = self.menu.addAction("Skip")
+        skipTrackAction.triggered.connect(self.skipPressed)
+        skipTrackAction.setIcon(QIcon.fromTheme("media-skip-forward", QIcon("images/skip.png")))
+
+        self.loveAction = self.menu.addAction("Love this Song")
+        self.loveAction.triggered.connect(self.lovePressed)
+        self.loveAction.setIcon(QIcon.fromTheme("favorites", QIcon("images/favorite.png")))
+        
+        banAction = self.menu.addAction("Ban this Song")
+        banAction.triggered.connect(self.banPressed)
+        banAction.setIcon(QIcon.fromTheme("edit-delete", QIcon("images/ban.png")))
+        
+        tiredAction = self.menu.addAction("Tired of this Song")
+        tiredAction.triggered.connect(self.tiredPressed)
+        tiredAction.setIcon(QIcon.fromTheme("edit-redo", QIcon("images/tired.png")))
+        
+        exitAction = self.menu.addAction("Quit")
         exitAction.triggered.connect(self.exitPressed)
-        exitAction.setIcon(QIcon("images/exit.png"))
+        exitAction.setIcon(QIcon.fromTheme("application-exit", QIcon("images/exit.png")))
         
         self.tray = QSystemTrayIcon()
         self.tray.setIcon(icon)
-        self.tray.setContextMenu(menu)
+        self.tray.setContextMenu(self.menu)
         self.tray.activated.connect(self.trayClicked)
         
-        #Read in stored preferences
-        home = os.path.expanduser("~")
-        if os.path.exists("%s/.config/qAndora/preferences.cfg"%home):
-            self.preferences = pickle.load( open( "%s/.config/qAndora/preferences.cfg"%home, "rb" ) )
-            if self.preferences['username']:
-                self.loginUser(self.preferences['username'], self.preferences['password'])
-            else:
-                self.loginWin.show()
-        else:
-            self.defaultPreferences()
-            self.loginWin.show()
-            
-        self.preferencesWin = PreferencesWindow( self )
-    
-    def exitPressed( self ):
-        self.close()
-        
-    def trayClicked( self, reason ):
+    def trayClicked(self, reason):
         if reason == self.tray.Trigger:
             if self.isVisible:
                 self.hide()
                 self.isVisible = False
             else:
+                invoke_in_main_thread(self.updateSongTimeText)
                 self.show()
                 self.isVisible = True
+                
+    def readPreferences(self):
+        home = os.path.expanduser("~")
+        if os.path.exists("%s/.config/qAndora/preferences.cfg"%home):
+            self.preferences = pickle.load( open( "%s/.config/qAndora/preferences.cfg"%home, "rb" ) )
+            if self.preferences['username']:
+                self.loginUser(self.preferences['username'], self.preferences['password'])
+                return "existing user"
+            else:
+                return "new user"
+        else:
+            self.defaultPreferences()
+            return "new user"
     
-    def assignShortcuts( self ):
+    def assignShortcuts(self):
         self.playPauseShortcut = QShortcut(QKeySequence(Qt.Key_Space), self)
         self.playPauseShortcut.setContext(Qt.ApplicationShortcut)
         self.playPauseShortcut.activated.connect(self.playPausePressed)
@@ -128,70 +149,82 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                     "banskips":False}
         self.savePreferences()
             
-    def savePreferences( self ):
+    def savePreferences(self):
         home = os.path.expanduser("~")
         if not os.path.exists("%s/.config/qAndora"%home):
             os.makedirs("%s/.config/qAndora"%home)
-        pickle.dump( self.preferences, open( "%s/.config/qAndora/preferences.cfg"%home, "wb" ))
+        pickle.dump(self.preferences, open( "%s/.config/qAndora/preferences.cfg"%home, "wb"))
     
-    def loginUser( self, userName, userPassword ):
+    def loginUser(self, userName, userPassword):
         self.preferences['username'] = userName
         self.preferences['password'] = userPassword
         self.savePreferences()
         
-        self.radioPlayer.setVolume( self.preferences['volume'] )
-        self.volumeSlider.setValue( self.preferences['volume'] )
-        self.radioPlayer.auth( userName, userPassword )
-        
-        #Get last used station
+        self.radioPlayer.setVolume(self.preferences['volume'])
+        self.volumeSlider.setValue(self.preferences['volume'])
+
+        try:
+            self.radioPlayer.auth(userName, userPassword)
+            self.getLastStation()
+            self.show()
+            self.tray.show()
+        except:
+            self.preferencesWin.show()
+            
+    def getLastStation(self):
         if self.preferences['station']:
             self.radioPlayer.setStation(self.radioPlayer.getStationFromName(self.preferences['station']))
         else:
             self.radioPlayer.setStation(self.radioPlayer.getStations()[0])
             self.preferences['station'] = self.radioPlayer.getStations()[0]['stationName']
         
-        self.radioPlayer.setChangeCallBack( self.songChangeQ )
-        self.radioPlayer.addSongs()
-        
+        try:
+            self.radioPlayer.addSongs()
+        except:
+            self.ErrorWin.show()
+            
         stations = self.radioPlayer.getStations()
         stationlist = []
+        #Clear existing stations in case we are relogging
+        self.stationBox.clear()
         for station in stations:
             self.stationBox.addItem(station['stationName'])
             stationlist.append(station['stationName'])
         
         self.stationBox.setCurrentIndex(stationlist.index(self.preferences['station']))
         
-        #Hook to read when the box changes
-        self.stationBox.activated[str].connect(self.stationChange)
-        
-        #Start a loop for updating current track time
+    def qTimer(self):        
         self.timer = QTimer()
         self.timer.setSingleShot(False)
-        self.timer.timeout.connect(self.timerTick)
-        self.timer.start(250)
+        self.timer.timeout.connect(self.updateSongTimeText)
+        self.timer.start(1000)
+                
+    def updateSongTimeText(self):
+        if self.isVisible:
+            self.getSongDuration()
+            self.getSongPostion()
+            time = '%s / %s' %(self.songPos, self.songDur)
+            self.positionLabel.setText(time)
+
+    def formatTime(self, timeInt):
+        timeInt = timeInt // 1000
+        s = timeInt % 60
+        timeInt //= 60
+        m = timeInt % 60
         
-        self.show()
-        self.tray.show()
-        self.isVisible = True
-        
-    def timerTick( self ):
-        pos = str(datetime.timedelta(seconds=int(self.radioPlayer.getPosition())))
-        dur = str(datetime.timedelta(seconds=int(self.radioPlayer.getLength())))
-        
-        posh, posm, poss = pos.split(":")
-        durh, durm, durs = dur.split(":")
-        
-        pos = "%s:%s"%(posm, poss)
-        dur = "%s:%s"%(durm, durs)
-        durminus1 = "%s:%s"%(durm, int(durs)-1)
-        
-        t = '<span style=" font-size:%spt;"><b>%s  /  %s</b></span>' % (fontsize, pos, dur)
-        self.positionLabel.setText(t)
-        
-        if ( pos == dur or pos == durminus1 ) and pos != "00:00":
-            self.radioPlayer.nextSong()
-        
-    def stationChange( self, newStation ):
+        return "%02i:%02i"%(m,s)        
+                    
+    def getSongDuration(self):
+        if self.notGotSongDuration is not None and self.radioPlayer.getLength() > 500:
+            #Only calculate the song duration once per song. "> 500" is so to make sure we don't get 00:00 as our duration in self.updateSongTimeText.
+            self.songDur = self.formatTime(int(self.radioPlayer.getLength()))
+            self.notGotSongDuration = None            
+            
+    def getSongPostion(self):    
+        self.songPos = self.formatTime((int(self.radioPlayer.getPosition())))
+
+    def stationChange(self, newStation):
+        self.notGotSongDuration = True
         self.radioPlayer.setStation(self.radioPlayer.getStationFromName(newStation))
         
         self.preferences['station'] = newStation
@@ -200,103 +233,162 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.radioPlayer.clearSongs()
         self.radioPlayer.addSongs()
         
-    def assignWidgets( self ):
+    def assignWidgets(self):
         self.playPauseButton.clicked.connect(self.playPausePressed)
         self.skipButton.clicked.connect(self.skipPressed)
+        self.skipButton.setIcon(QIcon.fromTheme("media-skip-forward", QIcon("images/skip.png")))
         self.loveButton.clicked.connect(self.lovePressed)
         self.banButton.clicked.connect(self.banPressed)
+        self.banButton.setIcon(QIcon.fromTheme("edit-delete", QIcon("images/ban.png")))
         self.tiredButton.clicked.connect(self.tiredPressed)
+        self.tiredButton.setIcon(QIcon.fromTheme("edit-redo", QIcon("images/tired.png")))
         self.settingsButton.clicked.connect(self.settingsPressed)
+        self.settingsButton.setIcon(QIcon.fromTheme("preferences-system", QIcon("images/settings.png")))
         self.volumeSlider.valueChanged.connect(self.volumeChange)
+        #All other UI's need extra buttons added.
+        self.muteButton.clicked.connect(self.mutePressed)
+        self.muteButton.setIcon(QIcon.fromTheme("audio-volume-high", QIcon("images/audio-volume.png")))
+        self.muteButton.setToolTip(QApplication.translate("qAndora", "Mute Volume", None, QApplication.UnicodeUTF8))
+        self.infoButton.clicked.connect(self.infoPressed)
+        self.infoButton.setIcon(QIcon.fromTheme("dialog-information", QIcon("images/about.png")))
         
-    def volumeChange( self, val ):
-        #print("New audio value is %s"%val)
+        #Moved this here from getLastStation to make them not double apply when you relog
+        self.radioPlayer.setChangeCallBack(self.songChangeQ)
+        self.stationBox.activated[str].connect(self.stationChange)
+
+    def volumeChange(self, val):
         self.preferences['volume'] = val
-        self.radioPlayer.setVolume( val )
+        self.radioPlayer.setVolume(val)
         self.savePreferences()
         
-    def songChangeQ( self ):
-        invoke_in_main_thread(self.songChange)
-    
-    def songChange( self ):
-        #print "Song changed"
-        info = self.radioPlayer.songinfo[self.radioPlayer.curSong]
-
-        self.titleLabel.setText('<span style=" font-size:%spt;"><b>Song:</b> <a href="%s">%s</a></span>'%(fontsize, info['object'].songDetailURL, info['title']))
-        self.albumLabel.setText('<span style=" font-size:%spt;"><b>Album:</b> <a href="%s">%s</a></span>'%(fontsize, info['object'].albumDetailURL, info['album']))
-        self.artistLabel.setText('<span style=" font-size:%spt;"><b>Artist:</b> %s</span>'%(fontsize, info['artist']))
-        if info['rating'] == "love":
-            self.loveButton.setIcon(QIcon("images/love.png"))
-            self.loveAction.setIcon(QIcon("images/love.png"))
-            self.loveButton.setToolTip(QApplication.translate("qAndora", "Favorited", None, QApplication.UnicodeUTF8))
+    def songChangeQ(self):
+        invoke_in_main_thread(self.qTimer)
+        invoke_in_main_thread(self.updateHistoryList)
+        invoke_in_main_thread(self.fetchAlbumArt)
+        invoke_in_main_thread(self.updateSongText)
+        invoke_in_main_thread(self.desktopNotifications)
+        invoke_in_main_thread(self.resetIcons)
+        
+    def updateSongText(self):       
+        self.titleLabel.setText("<b>%s</b>"%(self.info['title']))
+        self.albumLabel.setText("from <i>%s</i>"%(self.info['album']))
+        self.artistLabel.setText("by %s"%(self.info['artist']))
+        
+        self.windowTitle = ("qAndora - %s by %s"%(self.info['title'], self.info['artist']))
+        self.setWindowTitle(self.windowTitle)
+        
+        self.trayTitle = ("%s by %s"%(self.info['title'], self.info['artist']))
+        self.songHeader.setText(self.trayTitle)
+        
+    def resetIcons(self):            
+        if self.info['rating'] == "love":
+            self.loveButton.setIcon(QIcon.fromTheme("emblem-favorite", QIcon("images/love.png")))
+            self.loveAction.setIcon(QIcon.fromTheme("emblem-favorite", QIcon("images/love.png")))
+            self.loveButton.setToolTip(QApplication.translate("qAndora", "Song Loved", None, QApplication.UnicodeUTF8))
+            self.loveAction.setText("Song Loved")
         else:
-            self.loveButton.setIcon(QIcon("images/favorite.png"))
-            self.loveAction.setIcon(QIcon("images/favorite.png"))
-            self.loveButton.setToolTip(QApplication.translate("qAndora", "Mark Favorite", None, QApplication.UnicodeUTF8))
+            self.loveButton.setIcon(QIcon.fromTheme("favorites", QIcon("images/favorite.png")))
+            self.loveAction.setIcon(QIcon.fromTheme("favorites", QIcon("images/favorite.png")))
+            self.loveButton.setToolTip(QApplication.translate("qAndora", "Love this Song", None, QApplication.UnicodeUTF8))
+            self.loveAction.setText("Love this Song")
             
-        self.playPauseButton.setIcon(QIcon("images/pause.png"))
+        self.playPauseButton.setIcon(QIcon.fromTheme("media-playback-pause", QIcon("images/pause")))
         self.playPauseButton.setToolTip(QApplication.translate("qAndora", "Pause", None, QApplication.UnicodeUTF8))
         self.playPauseAction.setText("Pause")
-        self.playPauseAction.setIcon(QIcon("images/pause.png"))
+        self.playPauseAction.setIcon(QIcon.fromTheme("media-playback-pause", QIcon("images/pause")))
+        
+    def fetchAlbumArt(self):
+        self.notGotSongDuration = True
+        self.info = self.radioPlayer.songinfo[self.radioPlayer.curSong]
         
         try:
-            urllib.urlretrieve(str(info['thumbnail']), os.path.join(tempdir, 'albumart.jpg'))
-            albumartpath = os.path.join(tempdir, 'albumart.jpg')
+            self.uniqueFilename = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+            urllib.urlretrieve(str(self.info['thumbnail']), os.path.join(tempdir, self.uniqueFilename))
+            self.albumartpath = os.path.join(tempdir, self.uniqueFilename)
+            
         except:
-            albumartpath = 'images/albumart.png'
+            self.albumartpath = 'images/albumart.png'
+            
+        self.albumart = QPixmap(self.albumartpath) 
+        self.albumImage.setPixmap(self.albumart)
+        self.songHeader.setIcon(QIcon(self.albumartpath))
         
-        albumart = QPixmap(albumartpath)
-        
-        self.albumImage.setPixmap(albumart)
-        
-        newItem = QListWidgetItem()
-        #newItem.setTextAlignment(Qt.AlignRight)
-        newItem.setText(info['title'])
-        newItem.setToolTip("By: %s"%info['artist'])
-        newItem.setIcon(albumart)
-        self.historyList.insertItem(0, newItem)
-        
+    def desktopNotifications(self):       
         if self.preferences['notifications'] == "Yes":
             if notiLoaded:
-                songNoti=pynotify.Notification("Song Changed","%s by %s"%(info['title'], info['artist']))
-                songNoti.show ()
+	        if self.albumartpath == 'images/albumart.png': 
+                    songNoti=pynotify.Notification("%s"%(self.info['title']),"by %s\nfrom %s"%(self.info['artist'], self.info['album']))
+                    songNoti.show()
+                else:
+                    songNoti=pynotify.Notification("%s"%(self.info['title']),"by %s\nfrom %s"%(self.info['artist'], self.info['album']),self.albumartpath)
+                    songNoti.show()
             else:
-                self.tray.showMessage("Song Changed", "%s by %s"%(info['title'], info['artist']))
+                self.tray.showMessage("%s"%(self.info['title']),"by %s\nfrom %s"%(self.info['artist'], self.info['album']))
         
-        self.tray.setToolTip("%s by %s"%(info['title'], info['artist']))
+        self.tray.setToolTip("%s\nby %s\nfrom %s"%(self.info['title'], self.info['artist'], self.info['album']))
+
+    def updateHistoryList(self):
+        if self.albumart:
+            newItem = QListWidgetItem()
+            newItem.setText(("%s\nby %s\nfrom %s"%(self.info['title'], self.info['artist'], self.info['album'])))
+            newItem.setIcon(self.albumart)
+            self.historyList.insertItem(0, newItem)
         
-    def settingsPressed( self ):
+    def settingsPressed(self):
         self.preferencesWin.show()
         
-    def playPausePressed( self ):
+    def playPausePressed(self):
         if self.radioPlayer.playing:
             self.radioPlayer.pauseSong()
-            self.playPauseButton.setIcon(QIcon("images/play.png"))
+            self.playPauseButton.setIcon(QIcon.fromTheme("media-playback-start", QIcon("images/play")))
             self.playPauseButton.setToolTip(QApplication.translate("qAndora", "Play", None, QApplication.UnicodeUTF8))
             self.playPauseAction.setText("Play")
-            self.playPauseAction.setIcon(QIcon("images/play.png"))
+            self.playPauseAction.setIcon(QIcon.fromTheme("media-playback-start", QIcon("images/play")))
         else:
             self.radioPlayer.playSong()
-            self.playPauseButton.setIcon(QIcon("images/pause.png"))
+            self.playPauseButton.setIcon(QIcon.fromTheme("media-playback-pause", QIcon("images/pause")))
             self.playPauseButton.setToolTip(QApplication.translate("qAndora", "Pause", None, QApplication.UnicodeUTF8))
             self.playPauseAction.setText("Pause")
-            self.playPauseAction.setIcon(QIcon("images/pause.png"))
-    
-    def skipPressed( self ):
+            self.playPauseAction.setIcon(QIcon.fromTheme("media-playback-pause", QIcon("images/pause")))
+        
+    def skipPressed(self):
         self.radioPlayer.skipSong()
-    
-    def tiredPressed( self ):
+  
+    def tiredPressed(self):       
         self.radioPlayer.tiredSong()
         self.radioPlayer.skipSong()
-    
-    def lovePressed( self ):
+
+    def lovePressed(self):
         self.radioPlayer.loveSong()
-        self.loveButton.setIcon(QIcon("images/love.png"))
-        self.loveButton.setToolTip(QApplication.translate("qAndora", "Favorited", None, QApplication.UnicodeUTF8))
+        self.loveButton.setIcon(QIcon.fromTheme("emblem-favorite", QIcon("images/love")))
+        self.loveButton.setToolTip(QApplication.translate("qAndora", "Song Loved", None, QApplication.UnicodeUTF8))
+        self.loveAction.setText("Song Loved")
+        self.loveAction.setIcon(QIcon.fromTheme("emblem-favorite", QIcon("images/love")))
         
-    def banPressed( self ):
+    def banPressed(self):
         self.radioPlayer.banSong()
         self.radioPlayer.skipSong()
+
+    def infoPressed(self):
+        infoUrl = self.info['object'].songDetailURL
+        openBrowser(infoUrl)
+
+    def mutePressed(self):
+        #Alternative volume button icons will need to be found
+        if not self.muted:
+            self.muteButton.setIcon(QIcon.fromTheme("audio-volume-muted", QIcon("images/audio-mute")))
+            self.muteButton.setToolTip(QApplication.translate("qAndora", "Unmute Volume", None, QApplication.UnicodeUTF8))
+            self.muted = True      
+            
+        else:
+            self.muteButton.setIcon(QIcon.fromTheme("audio-volume-high", QIcon("images/audio-volume")))
+            self.muteButton.setToolTip(QApplication.translate("qAndora", "Mute Volume", None, QApplication.UnicodeUTF8))
+            self.muted = None
+            
+        self.radioPlayer.toggleMute()
+        
+    def exitPressed(self):
+        sys.exit()
 
     def winKBevent(self, event):
         if event.KeyID == 179 or event.Key == 'Media_Play_Pause':
@@ -348,7 +440,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.assignShortcuts()
             if not "arm" in platform.machine():
                 loaded = self.bindLinux()
-
+        
 class PreferencesWindow(QDialog, Ui_qPreferences):
     def __init__(self, parent=None):
         super(PreferencesWindow, self).__init__(parent)
@@ -357,6 +449,10 @@ class PreferencesWindow(QDialog, Ui_qPreferences):
         self.rent = parent
         self.assignCallbacks()
         self.populateDrops()
+        self.fillInLoginText()
+        
+    def closeEvent(self, event):
+        self.close()
         
     def populateDrops( self ):
         qualities = ['High', 'Medium', 'Low']
@@ -396,6 +492,8 @@ class PreferencesWindow(QDialog, Ui_qPreferences):
         self.rateCheck.stateChanged.connect(self.rateCheckChanged)
         self.rateCheck.setChecked(self.rent.preferences['banskips'])
         self.rent.radioPlayer.setAutoSkip( "ban", self.rent.preferences['banskips'] )
+        self.loginButton.clicked.connect(self.loginPressed)
+        self.accountButton.clicked.connect(self.accountPressed)
         
     def liveCheckChanged( self, state ):
         if state == Qt.Checked:
@@ -434,41 +532,43 @@ class PreferencesWindow(QDialog, Ui_qPreferences):
         self.rent.savePreferences()
     
     def logoutPressed( self ):
-        self.rent.hide()
-        self.hide()
+        self.nameEdit.setText("")
+        self.passwordEdit.setText("")
         self.rent.radioPlayer.pauseSong()
         self.rent.defaultPreferences()
-        self.rent.loginWin.show()
-
-class LoginWindow(QDialog, Ui_qLogin):
-    def __init__(self, parent=None):
-        super(LoginWindow, self).__init__(parent)
-        self.setupUi(self)
-        self.assignCallbacks()
+        self.rent.radioPlayer = volcanoPlayer()
+        self.rent.radioPlayer.setChangeCallBack(self.rent.songChangeQ)
+        self.rent.tray.hide()
+        self.rent.hide()
         
-        self.rent = parent
-        
-    def assignCallbacks( self ):
-        self.loginButton.clicked.connect(self.loginPressed)
-        self.accountButton.clicked.connect(self.accountPressed)
-        
-    def loginPressed( self ):
+    def loginPressed(self):
         self.hide()
-        self.rent.loginUser( self.nameEdit.text(), self.passwordEdit.text() )
-        
+        self.rent.loginUser(self.nameEdit.text(), self.passwordEdit.text())
+      
+    def fillInLoginText(self):
+        if self.rent.preferences['username']:
+            self.nameEdit.setText(self.rent.preferences['username'])    
+
+        if self.rent.preferences['password']:
+            self.passwordEdit.setText(self.rent.preferences['password'])
+
     def accountPressed( self ):
-        openBrowser("http://www.pandora.com")
+        openBrowser("https://www.pandora.com/account/register")
+        
+class ErrorWindow(QDialog, Ui_qError):
+    def __init__(self, parent=None):
+        super(ErrorWindow, self).__init__(parent)
+        self.setupUi(self)
+        
+    def closeEvent(self, event):
+        sys.exit()
         
 def openBrowser(url):
-    print("Opening %s"%url)
     webbrowser.open(url)
     try:
-        os.wait() # workaround for http://bugs.python.org/issue5993
+        os.wait()
     except:
         pass
-"""Code from stack overflow to add events to the GUI thread from VLC backend
-
-http://stackoverflow.com/questions/10991991/pyside-easier-way-of-updating-gui-from-another-thread"""
 import Queue
 
 class Invoker(QObject):
@@ -495,5 +595,5 @@ if __name__ == '__main__':
     mainWin = MainWindow()
     ret = app.exec_()
     if os.name == 'posix' and "arm" not in platform.machine():
-        mainWin.hookman.cancel()
+        mainWin.hookman.cancel()    
     sys.exit( ret )

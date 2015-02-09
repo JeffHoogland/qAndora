@@ -5,11 +5,11 @@ import urllib
 import re
 import tempfile
 import os
-
+import time
 CachePath = tempfile.gettempdir()
 
 class volcanoPlayer(object):
-    def __init__( self ):
+    def __init__(self):
         self.pandora = pandora.Pandora()
         self.curStation = ""
         self.curSong = -1
@@ -23,28 +23,31 @@ class volcanoPlayer(object):
         self.displaysongs = []
         self.songCount = 0
         self.songChangeCallBack = None
-        self.curVolume = 75
+        self.curVolume = 100
         self.player = vlc.MediaPlayer()
-    
-    def getPosition( self ):
-        #try:
-        return self.player.get_time() / 1000.0
-        #except:
-        #    return 0
-            
-    def getLength( self ):
-        #try:
-        return self.player.get_length() / 1000.0
-        #except:
-        #    return 0
+
+    def play(self):
+        self.eventManager = self.player.event_manager()
+        self.eventManager.event_attach(vlc.EventType.MediaPlayerEndReached, self.songIsOver)
+        self.player.play()
         
+    def songIsOver(self, event):
+        if event.type == vlc.EventType.MediaPlayerEndReached:
+            self.nextSong()
+        
+    def getPosition(self):
+        return self.player.get_time()
+      
+    def getLength(self):
+        return self.player.get_length()
+
     def setAutoSkip( self, sType, sBool ):
         self.skip[sType] = sBool
-        
-    def setChangeCallBack( self, callback ):
+
+    def setChangeCallBack(self, callback):
         self.songChangeCallBack = callback
     
-    def auth( self, user, passwd):
+    def auth(self, user, passwd):
         self.settings['username'] = user
         self.settings['password'] = passwd
         try:
@@ -52,81 +55,68 @@ class volcanoPlayer(object):
         except:
             pass
             
-    def setVolume( self, newVol ):
-        self.player.audio_set_volume( newVol )
+    def setVolume(self, newVol):
+        self.player.audio_set_volume(newVol)
         self.curVolume = newVol
 
-    def playSong( self ):
+    def playSong(self):
         self.playing = True
         self.player.play()
 
-    def pauseSong( self ):
+    def pauseSong(self):
         self.playing = False
         self.player.pause()
 
-    def skipSong( self ):
+    def skipSong(self):
         self.nextSong()
 
-    def setStation( self, station ):
+    def setStation(self, station):
         self.curStation = pandora.Station(self.pandora, station)
 
-    def getStations( self ):
+    def getStations(self):
         return self.pandora.get_stations()
 
-    def getStation( self ):
+    def getStation(self):
         return self.curStation
 
-    def getCurSongInfo( self ):
+    def getCurSongInfo(self):
         return self.songinfo[self.curSong]
 
-    def getSongInfo( self ):
+    def getSongInfo(self):
         return self.songinfo
 
-    def getStationFromName( self, name):
+    def getStationFromName(self, name):
         stations = self.getStations()
         for station in stations:
             if station['stationName'] == name:
                 return station
 
-    def getSongDuration( self ):
-        print "Getting Song duration"
-        seconds = self.player.get_length() / 1000.0
-        print "Starting Seconds %s"%seconds
-        mins = 0
-        while seconds >= 60:
-            seconds -= 60
-            mins += 1
-        print "Minutes %s Seconds %s"%(mins, seconds) 
-        return mins, seconds
-
-    def getSongRating( self ):
+    def getSongRating(self):
         return self.songinfo[self.curSong]['rating']
 
-    def search( self, searchstring ):
-        return self.pandora.search(searchstring)
-
-    def createStation( self, station ):
-        self.pandora.add_station_by_music_id(station)
-
-    def deleteStation( self, station ):
-        pandora.Station(self.pandora, station).delete()
-
-    def renameStation( self, station, name ):
-        pandora.Station(self.pandora, station).rename(name)
-
-    def banSong( self ):
+    def banSong(self):
         info = self.songinfo[self.curSong]
         info['object'].rate('ban')
         
-    def tiredSong( self ):
+    def tiredSong(self):
         info = self.songinfo[self.curSong]
         info['object'].set_tired()
 
-    def loveSong( self ):
+    def loveSong(self):
         info = self.songinfo[self.curSong]
         info['object'].rate('love')
+        
+    def unloveSong(self):
+        info = self.songinfo[self.curSong]
+        info['object'].rate('None')        
 
-    def clearSongs( self ):
+    def toggleMute(self):
+        self.player.audio_toggle_mute()
+            
+    def is_playing(self):
+        return self.player.is_playing()
+        
+    def clearSongs(self):
         self.song = None
         self.songCount = 0
         self.curSong = -1
@@ -160,26 +150,26 @@ class volcanoPlayer(object):
                 self.songinfo.append(info)
         if not self.song:
             self.startPlaying()
-
-    def startPlaying( self ):
-        self.nextSong()
             
+    def startPlaying(self):
+        self.nextSong()
+        
     def setAudioFormat( self, fmt ):
         self.pandora.set_audio_format("%sQuality"%fmt.lower())
-
-    def nextSong( self, event=False ):
+        
+    def nextSong(self, event=False):
         self.curSong += 1
 
         info = self.songinfo[self.curSong]
         if self.player.is_playing():
             self.player.stop()
         self.player = vlc.MediaPlayer()
-        self.player.audio_set_volume( self.curVolume )
+        self.player.audio_set_volume(self.curVolume)
         self.displaysongs.append(info)
         self.song = info['title']
         self.player.set_media(vlc.Media(info['url']))
         self.playing = True
-        self.player.play()
+        self.play()
         self.songChangeCallBack()
         
         if self.curSong >= len(self.songinfo)-1:
@@ -188,4 +178,3 @@ class volcanoPlayer(object):
         if self.songCount >= 15:
             self.songCount = 0
             self.auth(self.settings['username'], self.settings['password'])
-
