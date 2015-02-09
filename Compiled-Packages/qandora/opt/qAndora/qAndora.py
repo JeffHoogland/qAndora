@@ -113,10 +113,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if self.isVisible:
                 self.hide()
                 self.isVisible = False
+                self.viewToggle.setText("Show qAndora")
             else:
                 invoke_in_main_thread(self.updateSongTimeText)
                 self.show()
                 self.isVisible = True
+                self.viewToggle.setText("Hide qAndora")
                 
     def readPreferences(self):
         home = os.path.expanduser("~")
