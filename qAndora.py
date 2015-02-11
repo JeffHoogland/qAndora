@@ -41,9 +41,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.notGotSongDuration = True
         self.albumart = None
         self.radioPlayer = volcanoPlayer()
-        self.menu = QMenu()
         self.ErrorWin = ErrorWindow(self)
         self.assignWidgets()
+        self.setSongChangeCallback()
         self.sysTrayIcon()
         ourUser = self.readPreferences()
         self.preferencesWin = PreferencesWindow(self)
@@ -70,42 +70,44 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.isVisible = not self.isVisible
     
     def sysTrayIcon(self):
-        icon = QIcon("images/qAndora.png")
+        icon = (QIcon("images/qAndora.png"))
+        menu = QMenu()
         
-        self.songHeader = self.menu.addAction("Song Title")
+        self.viewToggle = menu.addAction("Hide qAndora")
+        self.viewToggle.triggered.connect(self.viewTogglePressed)
+        self.viewToggle.setIcon(QIcon("images/qAndora.png"))
+        
+        self.songHeader = menu.addAction("Song Title")
         self.songHeader.setIcon(QIcon("images/albumart"))
         self.songHeader.triggered.connect(self.infoPressed)
         
-        self.viewToggle = self.menu.addAction("Hide qAndora")
-        self.viewToggle.triggered.connect(self.viewTogglePressed)
-        
-        self.playPauseAction = self.menu.addAction("Pause")
+        self.playPauseAction = menu.addAction("Pause")
         self.playPauseAction.setIcon(QIcon.fromTheme("media-playback-pause", QIcon("images/pause.png")))
         self.playPauseAction.triggered.connect(self.playPausePressed)
         
-        skipTrackAction = self.menu.addAction("Skip")
+        skipTrackAction = menu.addAction("Skip")
         skipTrackAction.triggered.connect(self.skipPressed)
         skipTrackAction.setIcon(QIcon.fromTheme("media-skip-forward", QIcon("images/skip.png")))
 
-        self.loveAction = self.menu.addAction("Love this Song")
+        self.loveAction = menu.addAction("Love this Song")
         self.loveAction.triggered.connect(self.lovePressed)
         self.loveAction.setIcon(QIcon.fromTheme("favorites", QIcon("images/favorite.png")))
         
-        banAction = self.menu.addAction("Ban this Song")
+        banAction = menu.addAction("Ban this Song")
         banAction.triggered.connect(self.banPressed)
         banAction.setIcon(QIcon.fromTheme("edit-delete", QIcon("images/ban.png")))
         
-        tiredAction = self.menu.addAction("Tired of this Song")
+        tiredAction = menu.addAction("Tired of this Song")
         tiredAction.triggered.connect(self.tiredPressed)
         tiredAction.setIcon(QIcon.fromTheme("edit-redo", QIcon("images/tired.png")))
         
-        exitAction = self.menu.addAction("Quit")
+        exitAction = menu.addAction("Quit")
         exitAction.triggered.connect(self.exitPressed)
         exitAction.setIcon(QIcon.fromTheme("application-exit", QIcon("images/exit.png")))
         
         self.tray = QSystemTrayIcon()
         self.tray.setIcon(icon)
-        self.tray.setContextMenu(self.menu)
+        self.tray.setContextMenu(menu)
         self.tray.activated.connect(self.trayClicked)
         
     def trayClicked(self, reason):
@@ -253,10 +255,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.muteButton.setToolTip(QApplication.translate("qAndora", "Mute Volume", None, QApplication.UnicodeUTF8))
         self.infoButton.clicked.connect(self.infoPressed)
         self.infoButton.setIcon(QIcon.fromTheme("dialog-information", QIcon("images/about.png")))
-        
-        #Moved this here from getLastStation to make them not double apply when you relog
-        self.radioPlayer.setChangeCallBack(self.songChangeQ)
         self.stationBox.activated[str].connect(self.stationChange)
+        
+    def setSongChangeCallback(self):
+        self.radioPlayer.setChangeCallBack(self.songChangeQ)
 
     def volumeChange(self, val):
         self.preferences['volume'] = val
